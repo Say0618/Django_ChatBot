@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 
 # Create your views here.
 # from django.http import HttpResponse
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt, csrf_protect
 from django.conf import settings
@@ -26,3 +26,7 @@ def login_attempt(request):
         return redirect(settings.LOGIN_REDIRECT_URL)
     else:
         return render(request, 'registration/login.html')    
+
+def logout_attempt(request):
+    logout(request)
+    return redirect(settings.LOGOUT_REDIRECT_URL)
