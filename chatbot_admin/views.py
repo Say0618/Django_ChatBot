@@ -20,7 +20,6 @@ def login_attempt(request):
     password = request.POST['password']
 
     user = authenticate(request, username=username, password=password)
-    print("----------------------------user is -------------------------------",user)
     if user is not None:
         login(request, user)
         return redirect(settings.LOGIN_REDIRECT_URL)
@@ -30,3 +29,43 @@ def login_attempt(request):
 def logout_attempt(request):
     logout(request)
     return redirect(settings.LOGOUT_REDIRECT_URL)
+
+@login_required
+def settings(request):
+    return render(request, 'settings.html')
+
+@login_required
+def users(request):
+    return render(request, 'users.html')
+
+@login_required
+def read_sheet(request):
+    return render(request, 'input/read_sheet.html')
+
+@login_required
+def master_sheet(request):
+    return render(request, 'input/master_sheet.html')
+
+@login_required
+def interpretation_sheet(request):
+    return render(request, 'input/interpretation_sheet.html')
+
+@login_required
+def write_sheet(request):
+    return render(request, 'output/write_sheet.html')
+
+@login_required
+def aa_output(request):
+    return render(request, 'output/aa_output.html')
+
+@login_required
+def images(request):
+    return render(request, 'attachments/images.html')
+
+@login_required
+def videos(request):
+    return render(request, 'attachments/videos.html')
+
+@login_required
+def database(request):
+    return render(request, 'attachments/database.html')
