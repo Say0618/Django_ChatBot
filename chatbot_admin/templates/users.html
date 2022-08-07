@@ -7,10 +7,79 @@
 
 {% block content %}
 <div id="main_content">
-    <div class="">
-        <table id="users_table">
-            
+    <div class="offset-md-10">
+        <button id="add_user" class="btn btn-primary"><i  class="fas fa-plus"></i>&nbsp;New User</button>
+    </div>
+    <br/>
+    <div class="row">
+        <table id="users_table" class="ableau table datatable table-fixed table-bordered table-hover ">
+            <thead>
+                <tr>
+                   <th>No</th>
+                   <th>Username</th>
+                   <th>Date&time</th>
+                   <th>Status</th>
+                   <th></th>
+                </tr>
+             </thead>
+             <tbody>
+                {% for user in user_list %}
+               
+                    <tr>
+                        <td>1</td>
+                        <td>{{ user.username }}</td>
+                        <td>{{ user.date_joined }}</td>
+                        <td>
+                            {% if user.is_active == 1 %}
+                                active
+                            {% else %}
+                                inactive
+                            {% endif %}
+                        </td>
+                        <td>
+                            <!-- <div class="dropdown-menu">
+                                <a class="dropdown-item" href="#">Action</a>
+                                <a class="dropdown-item" href="#">Another action</a>
+                                <a class="dropdown-item" href="#">Something else here</a>
+                                <a class="dropdown-item" href="#">Separated link</a>
+                            </div> -->
+                        </td>
+                    </tr>
+                {% endfor %}
+             </tbody>
         </table>
     </div>
 </div>
+{% endblock %}
+{% block script %}
+<script>
+    $().ready(function() {
+
+        toastr.options = {
+            'closeButton': true,
+            'debug': false,
+            'newestOnTop': false,
+            'progressBar': true,
+            'positionClass': 'toast-top-right',
+            'preventDuplicates': false,
+            'showDuration': '1000',
+            'hideDuration': '1000',
+            'timeOut': '2000',
+            'extendedTimeOut': '1000',
+            'showEasing': 'swing',
+            'hideEasing': 'linear',
+            'showMethod': 'fadeIn',
+            'hideMethod': 'fadeOut',
+        }
+		
+        $('#add_user').click(function() {
+            toastr.success('you clicked add user button!')
+        });
+
+        $('#users_table').DataTable({
+
+            paging: true,
+        });
+    });
+</script>
 {% endblock %}

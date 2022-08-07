@@ -7,6 +7,9 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt, csrf_protect
 from django.conf import settings
 
+from django.contrib.auth.models import User
+
+
 @login_required
 def index(request):
     if request.user.is_authenticated:
@@ -36,7 +39,12 @@ def settings(request):
 
 @login_required
 def users(request):
-    return render(request, 'users.html')
+    user_list = User.objects.exclude(is_superuser=1)
+    user_list = User.objects.all()
+    print('userlist is.....', user_list)
+    return render(request, 'users.html', {
+        'user_list': user_list
+    })
 
 @login_required
 def read_sheet(request):
