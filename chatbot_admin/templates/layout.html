@@ -12,6 +12,7 @@
         
         <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
         <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
+        {% block 'css' %}{% endblock %}
     </head>
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
@@ -118,5 +119,7 @@
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
         <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
+
+        {% block script %}{% endblock%}
     </body>
 </html>
