@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 # Create your views here.
 # from django.http import HttpResponse
@@ -9,21 +9,20 @@ from django.conf import settings
 
 @login_required
 def index(request):
-    print('fdefdfdfdfdf', request.user.is_authenticated)
     if request.user.is_authenticated:
         return render(request, 'index.html')
     else:
         return render(request, 'registration/login.html')
 
-# @csrf_protect
-# def login(request):
-#     username = request.GET['username']
-#     password = request.GET['password']
+@csrf_protect
+def login_attempt(request):
+    username = request.POST['username']
+    password = request.POST['password']
 
-#     user = authenticate(request, username=username, password=password)
-#     print("----------------------------user is -------------------------------",password)
-#     if user is not None:
-#         login(request, user)
-#         return redirect(settings.LOGIN_REDIRECT_URL)
-#     else:
-#         return render(request, 'registration/login.html')    
+    user = authenticate(request, username=username, password=password)
+    print("----------------------------user is -------------------------------",user)
+    if user is not None:
+        login(request, user)
+        return redirect(settings.LOGIN_REDIRECT_URL)
+    else:
+        return render(request, 'registration/login.html')    
