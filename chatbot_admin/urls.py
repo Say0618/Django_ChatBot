@@ -21,4 +21,5 @@ urlpatterns = [
     path('attachments/images', views.images, name='images'),
     path('attachments/videos', views.videos, name='videos'),
     path('attachments/database', views.database, name='database'),
+    path('upload/mastersheet', views.uploadMasterSheet, name='uploadMasterSheet'),
 ]

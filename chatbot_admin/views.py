@@ -12,6 +12,8 @@ from django.core import serializers
 
 
 from django.contrib.auth.models import User
+from .models import MasterSheet
+from .forms import MasterSheetForm
 
 
 @login_required
@@ -133,22 +135,31 @@ def editUser(request):
                 'msg': 'edited'
             })
 
-# @csrf_protect
-# def activateUser(request):
-#     return 0
-
-# @csrf_protect
-# def deActivateUser(request):
-#     return 0
-
-
 @login_required
 def read_sheet(request):
     return render(request, 'input/read_sheet.html')
 
 @login_required
 def master_sheet(request):
-    return render(request, 'input/master_sheet.html')
+    sheets = MasterSheet.objects.all()
+    # master_sheets = serializers.serialize('json', query_set)
+    return render(request, 'input/master_sheet.html', {
+        'sheets': sheets
+    })
+    
+
+def uploadMasterSheet(request):
+    if request.method == "POST":
+        form = MasterSheetForm(request.POST, request.FILES)
+        if form.is_valid():
+            file = request.FILES['file']
+            form.save()
+            sheet = MasterSheet.objects.last()
+            sheet.name = file
+            sheet.save()
+            return redirect('master_sheet')
+        else:
+            return redirect('master_sheet')
 
 @login_required
 def interpretation_sheet(request):
