@@ -90,7 +90,6 @@ def operateUser(request):
     if is_ajax(request) and request.method == "POST":
         id = request.POST['id']
         type = request.POST['type']
-        print(id)
 
         if type == 'delete':
 
@@ -120,7 +119,19 @@ def operateUser(request):
 
 @csrf_protect
 def editUser(request):
-    return 0
+    if is_ajax(request) and request.method == "POST":
+        id = request.POST['id']
+        username = request.POST['username']
+        pwd = request.POST['pwd']
+
+        user = User.objects.filter(pk=id).get()
+        user.username = username
+        user.set_password(pwd)
+        user.save()
+
+        return JsonResponse({
+                'msg': 'edited'
+            })
 
 # @csrf_protect
 # def activateUser(request):

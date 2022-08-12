@@ -85,6 +85,43 @@
     </div>
 </div>
 
+<div class="modal" id="edit_user_modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Edit User</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div class="row">
+                    <form action="/action_page.php">
+                        {% csrf_token %}
+                        <div class="mb-3 mt-3">
+                            <label for="email" class="form-label">Username:</label>
+                            <input type="input" class="form-control" id="eusername" placeholder="Enter username" name="username">
+                        </div>
+                        <div class="mb-3">
+                            <label for="pwd" class="form-label">Password:</label>
+                            <input type="password" class="form-control" id="epwd" placeholder="Enter password" name="pwd">
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" id="edit_user_btn" class="btn btn-primary">Edit</button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
 <div class="modal" id="delModal">
     <div class="modal-dialog modal-sm">
       <div class="modal-content">
@@ -115,6 +152,7 @@
 <script>
     $().ready(function() {
         var del_id = -1;
+        var edit_id = -1;
 
         toastr.options = {
             'closeButton': true,
@@ -237,7 +275,7 @@
             url = "{% url 'operateUser' %}";
         } else if (val == 'view') {
             type = 'edit';
-            url = "{% url 'editUser' %}"
+            edit_id = id;
         } else if (val == 'Activate') {
             type = 'activate';
             url = "{% url 'operateUser' %}";
@@ -249,7 +287,7 @@
             }
         });
 
-        if (type != 'delete') {
+        if (type == 'activate' || type == 'de-activate') {
             $.ajax({
                 type: 'POST',
                 url: url,
@@ -295,9 +333,54 @@
                     toastr.error('error occured while processing.');
                 }
             });
-        } else {
+        } else if (type == 'delete') {
             $('#delModal').modal('show');
+        } else if (type == 'edit') {
+            $('#edit_user_modal').modal('show');
+            $('#eusername').val(tr.siblings()[1].innerHTML);
+            $('#epwd').val('');
         }
+
+        
+    });
+
+    $('#edit_user_btn').click(function() {
+        $.ajaxSetup({
+            headers: {
+                "X-CSRFToken": csrftoken
+            }
+        });
+
+        username = $('#eusername').val();
+        pwd = $('#epwd').val();
+
+        if (username == '') {
+            toastr.error('please enter username!')
+            return;
+        } else if (pwd == '') {
+            toastr.error('please enter password!')
+            return;
+        }
+
+        $.ajax({
+            type: 'POST',
+            url: "{% url 'editUser' %}",
+            data: {id: edit_id, username: username, pwd: pwd},
+            success: function(res) {
+                if (res.msg == 'edited') {
+                    $('#edit_user_modal').modal('hide');
+                    toastr.success('user deleted successfully!');
+
+                    setTimeout(function() {
+                        location.reload();
+                    }, 2000);
+                }
+            },
+            error: function(res) {
+                toastr.error('error occured while processing.');
+            }
+        });
+
     });
 
     $('#del_btn').click(function() {
@@ -308,23 +391,23 @@
         });
 
         $.ajax({
-                type: 'POST',
-                url: "{% url 'operateUser' %}",
-                data: {id: id, type: 'delete'},
-                success: function(res) {
-                    var table = $('#users_table').DataTable();
-    
-                    if (res.msg == 'deleted') {
-                        toastr.success('user deleted successfully!');
-                        setTimeout(function() {
-                            location.reload();
-                        }, 2000);
-                    }
-                },
-                error: function(res) {
-                    toastr.error('error occured while processing.');
+            type: 'POST',
+            url: "{% url 'operateUser' %}",
+            data: {id: del_id, type: 'delete'},
+            success: function(res) {
+                // var table = $('#users_table').DataTable();
+
+                if (res.msg == 'deleted') {
+                    toastr.success('user deleted successfully!');
+                    setTimeout(function() {
+                        location.reload();
+                    }, 2000);
                 }
-            });
+            },
+            error: function(res) {
+                toastr.error('error occured while processing.');
+            }
+        });
     });
 
     });
