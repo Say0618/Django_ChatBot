@@ -6,6 +6,10 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt, csrf_protect
 from django.conf import settings
+from django.http import JsonResponse
+import datetime
+from django.core import serializers
+
 
 from django.contrib.auth.models import User
 
@@ -23,11 +27,17 @@ def login_attempt(request):
     password = request.POST['password']
 
     user = authenticate(request, username=username, password=password)
-    if user is not None:
+    print('user active and superuser is ......', user)
+    print('user active and superuser is ......')
+    if user is not None and user.is_active:
         login(request, user)
-        return redirect(settings.LOGIN_REDIRECT_URL)
+        if user.is_superuser == 1:
+            return redirect(settings.LOGIN_REDIRECT_URL)
+        else:
+            return render(request, 'nomarl_user/nomal_user.html')
+            
     else:
-        return render(request, 'registration/login.html')    
+        return render(request, 'registration/login.html', {'msg': 'failed'})    
 
 def logout_attempt(request):
     logout(request)
@@ -40,11 +50,86 @@ def settings(request):
 @login_required
 def users(request):
     user_list = User.objects.exclude(is_superuser=1)
-    user_list = User.objects.all()
-    print('userlist is.....', user_list)
+    # user_list = User.objects.all()
+    # print('userlist is.....', user_list)
     return render(request, 'users.html', {
         'user_list': user_list
     })
+@login_required
+
+def is_ajax(request):
+    return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
+
+@csrf_protect
+def addUser(request):
+    if is_ajax(request) and request.method == "POST":
+        username = request.POST['username']
+        pwd = request.POST['pwd']
+        
+        search_user = User.objects.filter(username=username).count()
+        if search_user > 0 :
+            return JsonResponse({
+                'msg': 'user already exists'
+            })
+
+        newUser = User.objects.create(username=username)
+        newUser.set_password(pwd)
+        newUser.save()
+
+        count = User.objects.all().count() - 1
+
+        user_list = serializers.serialize('json', [newUser])
+        return JsonResponse({
+            'msg': 'success',
+            'user_list': user_list,
+            'count': count
+        })
+
+@csrf_protect
+def operateUser(request):
+    if is_ajax(request) and request.method == "POST":
+        id = request.POST['id']
+        type = request.POST['type']
+        print(id)
+
+        if type == 'delete':
+
+            User.objects.filter(pk=id).delete()
+
+            return JsonResponse({
+                'msg': 'deleted'
+            })
+        
+        if type == 'de-activate':
+            user = User.objects.filter(pk=id).get()
+            user.is_active = 0
+            user.save()
+
+            return JsonResponse({
+                'msg': 'de-activated'
+            })
+
+        if type == 'activate':
+            user = User.objects.filter(pk=id).get()
+            user.is_active = 1
+            user.save()
+
+            return JsonResponse({
+                'msg': 'activated'
+            })
+
+@csrf_protect
+def editUser(request):
+    return 0
+
+# @csrf_protect
+# def activateUser(request):
+#     return 0
+
+# @csrf_protect
+# def deActivateUser(request):
+#     return 0
+
 
 @login_required
 def read_sheet(request):

@@ -4,15 +4,19 @@
 
 {% block breadcrumb %}Users{% endblock %}
 {% block breadcrumb-item %}Users{% endblock %}
-
+{% block css %}
+<style>
+    
+</style>
+{% endblock %}
 {% block content %}
 <div id="main_content">
     <div class="offset-md-10">
-        <button id="add_user" class="btn btn-primary"><i  class="fas fa-plus"></i>&nbsp;New User</button>
+        <button id="modal_btn" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#add_user_modal"><i  class="fas fa-plus"></i>&nbsp;New User</button>
     </div>
     <br/>
     <div class="row">
-        <table id="users_table" class="ableau table datatable table-fixed table-bordered table-hover ">
+        <table id="users_table" class="ableau table datatable table-fixed table-bordered table-hover">
             <thead>
                 <tr>
                    <th>No</th>
@@ -25,8 +29,8 @@
              <tbody>
                 {% for user in user_list %}
                
-                    <tr>
-                        <td>1</td>
+                    <tr user_id="{{ user.id }}">
+                        <td>{{ forloop.counter }}</td>
                         <td>{{ user.username }}</td>
                         <td>{{ user.date_joined }}</td>
                         <td>
@@ -36,30 +40,87 @@
                                 inactive
                             {% endif %}
                         </td>
-                        <td>
-                            <!-- <div class="dropdown-menu">
-                                <a class="dropdown-item" href="#">Action</a>
-                                <a class="dropdown-item" href="#">Another action</a>
-                                <a class="dropdown-item" href="#">Something else here</a>
-                                <a class="dropdown-item" href="#">Separated link</a>
-                            </div> -->
-                        </td>
+                        <td ></td>
                     </tr>
                 {% endfor %}
              </tbody>
         </table>
     </div>
 </div>
+
+<div class="modal" id="add_user_modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Add New User</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div class="row">
+                    <form action="/action_page.php">
+                        {% csrf_token %}
+                        <div class="mb-3 mt-3">
+                            <label for="email" class="form-label">Username:</label>
+                            <input type="input" class="form-control" id="username" placeholder="Enter username" name="username">
+                        </div>
+                        <div class="mb-3">
+                            <label for="pwd" class="form-label">Password:</label>
+                            <input type="password" class="form-control" id="pwd" placeholder="Enter password" name="pwd">
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" id="add_user_btn" class="btn btn-primary">add</button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="delModal">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+  
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Modal Heading</h4>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+  
+        <!-- Modal body -->
+        <div class="modal-body">
+          Are you sure to delete?
+        </div>
+  
+        <!-- Modal footer -->
+        <div class="modal-footer">
+            <button type="button" id="del_btn" data-bs-dismiss="modal" class="btn btn-primary">Ok</button>
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+        </div>
+  
+      </div>
+    </div>
+</div>
+  
 {% endblock %}
 {% block script %}
 <script>
     $().ready(function() {
+        var del_id = -1;
 
         toastr.options = {
             'closeButton': true,
-            'debug': false,
+            // 'debug': true,
             'newestOnTop': false,
-            'progressBar': true,
+            // 'progressBar': true,
             'positionClass': 'toast-top-right',
             'preventDuplicates': false,
             'showDuration': '1000',
@@ -72,14 +133,200 @@
             'hideMethod': 'fadeOut',
         }
 		
-        $('#add_user').click(function() {
-            toastr.success('you clicked add user button!')
+
+        var users_table = $('#users_table').DataTable({
+           columnDefs: [
+               {
+                    "targets": -1,
+                    'render': function(data, type, row, meta) {
+                        // console.log(row);
+                        let active = row[3] != 'active' ? 'Activate' : 'De-activate';
+                        return `<div class="select">
+                                    <select id="standard-select">
+                                        <option value="">Option</option>
+                                        <option value="${active}">${active}</option>
+                                        <option value="view">View/Edit</option>
+                                        <option value="delete">delete</option>
+                                    </select>
+                                    <span class="focus"></span>
+                                </div>`;
+                    }
+               }
+           ],
+        });
+        
+    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    $('#add_user_btn').click(function() {
+        
+        let username = $('#username').val();
+        let pwd = $('#pwd').val();
+        // const csrftoken = getCookie('csrftoken');
+        // const csrftoken = Cookies.get('csrftoken');
+
+        if (username == '') {
+            toastr.error('please enter username!')
+            return;
+        } else if (pwd == '') {
+            toastr.error('please enter password!')
+            return;
+        }
+
+        $.ajaxSetup({
+            headers: {
+                "X-CSRFToken": csrftoken
+            }
+        })
+        $.ajax({
+            type: 'POST',
+            url: "{% url 'addUser' %}",
+            data: {
+                username: username,
+                pwd: pwd
+            },
+            success: function(res) {
+                if (res.msg == 'success') {
+                    $('#add_user_modal').modal('hide');
+                    toastr.success('User successfully added!', "Sucess");
+                    $('#username').val('');
+                    $('#pwd').val('');
+
+                    setTimeout(function() {
+                        location.reload();
+                    }, 2000)
+                    // var dataset = JSON.parse(res.user_list)[0].fields;
+                    // // console.log(dataset)
+                    // var count = res.count
+                    // var users_table = $('#users_table').DataTable();
+
+                    // // console.log(count);
+                    // users_table.row.add([
+                    //         count,
+                    //         dataset['username'],
+                    //         dataset['date_joined'],
+                    //         dataset['is_active'] == 1 ? "active" : "inactive",
+                        
+                    // ]).draw().node();
+                }
+
+                if (res.msg == 'user already exists')
+                    toastr.error(res.msg)
+            },
+            error: function(res) {
+                toastr.error('Error occured while adding data!');
+            }
+
+        });
+    });
+    
+
+    $('select').change(function() {
+        // var table = $('#users_table').DataTable();
+
+        val = this.value;
+        id = $(this).parent().parent().parent().attr('user_id');
+        tr = $(this).parent().parent();
+        select = $(this);
+
+        let url = '';
+        let type = '';
+        if (val == 'delete') {
+            type = 'delete';
+            del_id = id;
+        } else if (val == 'De-activate') {
+            type = 'de-activate';
+            url = "{% url 'operateUser' %}";
+        } else if (val == 'view') {
+            type = 'edit';
+            url = "{% url 'editUser' %}"
+        } else if (val == 'Activate') {
+            type = 'activate';
+            url = "{% url 'operateUser' %}";
+        }
+        
+        $.ajaxSetup({
+            headers: {
+                "X-CSRFToken": csrftoken
+            }
         });
 
-        $('#users_table').DataTable({
+        if (type != 'delete') {
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: {id: id, type: type},
+                success: function(res) {
+    
+                    if (res.msg == 'activated') {
+                        toastr.success('user activated successfully!');
+                        tr.siblings()[3].innerHTML = 'active';
 
-            paging: true,
+                        var new_select = `
+                                <div class="select">
+                                    <select id="standard-select">
+                                        <option value="">Option</option>
+                                        <option value="De-activate">De-activate</option>
+                                        <option value="view">View/Edit</option>
+                                        <option value="delete">delete</option>
+                                    </select>
+                                    <span class="focus"></span>
+                                </div>
+                        `;
+                        select.html(new_select);
+                    }
+                    if (res.msg == 'de-activated') {
+                        toastr.success('user de-activated successfully!');
+                        tr.siblings()[3].innerHTML = 'inactive';
+
+                        var new_select = `
+                                <div class="select">
+                                    <select id="standard-select">
+                                        <option value="">Option</option>
+                                        <option value="Activate">Activate</option>
+                                        <option value="view">View/Edit</option>
+                                        <option value="delete">delete</option>
+                                    </select>
+                                    <span class="focus"></span>
+                                </div>
+                        `;
+                        select.html(new_select);
+                    }
+                },
+                error: function(res) {
+                    toastr.error('error occured while processing.');
+                }
+            });
+        } else {
+            $('#delModal').modal('show');
+        }
+    });
+
+    $('#del_btn').click(function() {
+        $.ajaxSetup({
+            headers: {
+                "X-CSRFToken": csrftoken
+            }
         });
+
+        $.ajax({
+                type: 'POST',
+                url: "{% url 'operateUser' %}",
+                data: {id: id, type: 'delete'},
+                success: function(res) {
+                    var table = $('#users_table').DataTable();
+    
+                    if (res.msg == 'deleted') {
+                        toastr.success('user deleted successfully!');
+                        setTimeout(function() {
+                            location.reload();
+                        }, 2000);
+                    }
+                },
+                error: function(res) {
+                    toastr.error('error occured while processing.');
+                }
+            });
+    });
+
     });
 </script>
 {% endblock %}
