@@ -14,6 +14,7 @@ urlpatterns = [
     # path('user/deactivate', views.deActivateUser, name='deActivateUser'),
     path('settings', views.settings, name='settings'),
     path('input/master_sheet', views.master_sheet, name='master_sheet'),
+    path('input/master_sheet/operate', views.operateMasterSheet, name='operateMasterSheet'),
     path('input/read_sheet', views.read_sheet, name='read_sheet'),
     path('input/interpretation_sheet', views.interpretation_sheet, name='interpretation_sheet'),
     path('output/write_sheet', views.write_sheet, name='write_sheet'),

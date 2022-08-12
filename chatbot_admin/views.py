@@ -161,6 +161,39 @@ def uploadMasterSheet(request):
         else:
             return redirect('master_sheet')
 
+def operateMasterSheet(request):
+    if is_ajax(request) and request.method == "POST":
+        id = request.POST['id']
+        type = request.POST['type']
+
+        if type == 'delete':
+            mm = MasterSheet.objects.filter(pk=id).get()
+            mm.file.close()
+            mm.file.delete()
+            MasterSheet.objects.filter(pk=id).delete()
+
+            return JsonResponse({
+                'msg': 'deleted'
+            })
+        
+        if type == 'de-activate':
+            sheet = MasterSheet.objects.filter(pk=id).get()
+            sheet.status = 0
+            sheet.save()
+
+            return JsonResponse({
+                'msg': 'de-activated'
+            })
+
+        if type == 'activate':
+            sheet = MasterSheet.objects.filter(pk=id).get()
+            sheet.status = 1
+            sheet.save()
+
+            return JsonResponse({
+                'msg': 'activated'
+            })
+
 @login_required
 def interpretation_sheet(request):
     return render(request, 'input/interpretation_sheet.html')
