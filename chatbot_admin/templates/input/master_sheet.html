@@ -116,8 +116,23 @@
 
             <!-- Modal body -->
             <div class="modal-body">
-                <div class="row" style="overflow: auto;">
-                    
+                <div class="row" style="overflow: auto; max-height: 400px;">
+                    <form>
+                        <input type="checkbox" id="all_check" name="all_check" value="all_check">
+                        <label for="vehicle1"> Check all</label>
+                    </form>
+                    <table class="table table-bordered table-condensed table-hover table-stripped">
+                        <tbody>
+                            {% for sheet in sheets %}
+                                <tr>
+                                    <td>
+                                        <input class="realcheck" style="margin-left: 3px;" type="checkbox" id="sheet{{sheet.id}}" name="sheet{{sheet.id}}" value="{{sheet.id}}">
+                                    </td>
+                                    <td>{{sheet.name}}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
                 </div>
             </div>
 
@@ -136,6 +151,7 @@
 <script>
     $().ready(function() {
         var del_id = -1;
+        var export_list = []
         var table = $('#ms_table').DataTable({
             columnDefs: [
                 {
@@ -266,6 +282,23 @@
 
 
         $('#export_btn').click(function() {
+            $('input[type="checkbox"]:checked').each(function() {
+                if (this.value != 'all_check')
+                    export_list.push(this.value);
+            });
+
+            $.ajax({
+                type: "POST",
+                url : "{% url 'masterSheetDownload' %}",
+
+            });
+        });
+
+        $('#all_check').click(function() {
+            if (this.checked) 
+                $('input[type=checkbox]').attr('checked', 'checked');
+            else
+                $('input[type=checkbox]').attr('checked', false);
 
         });
     });
