@@ -22,7 +22,7 @@
         font-family: sans-serif;
     }
 
-    #export_btn {
+    #export {
         margin-top: 1.05rem;
     }
 </style>
@@ -32,7 +32,7 @@
     <div class="offset-md-6">
         <div class="row">
             <div class="col-md-3">
-                <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#export_modal">Export</button>
+                <button class="btn btn-success" id="export" data-bs-toggle="modal" data-bs-target="#export_modal">Export</button>
             </div>
             <div class="col-md-9">
                 <form method="POST" action="{% url 'uploadMasterSheet' %}" enctype="multipart/form-data">
@@ -116,7 +116,7 @@
 
             <!-- Modal body -->
             <div class="modal-body">
-                <div class="row">
+                <div class="row" style="overflow: auto;">
                     
                 </div>
             </div>
