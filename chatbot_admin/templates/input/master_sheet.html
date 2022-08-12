@@ -32,7 +32,7 @@
     <div class="offset-md-6">
         <div class="row">
             <div class="col-md-3">
-                <button class="btn btn-success" id="export_btn">Export</button>
+                <button class="btn btn-success" id="export_btn" data-bs-toggle="modal" data-bs-target="#export_modal">Export</button>
             </div>
             <div class="col-md-9">
                 <form method="POST" action="{% url 'uploadMasterSheet' %}" enctype="multipart/form-data">
@@ -101,6 +101,43 @@
         </div>
   
       </div>
+    </div>
+</div>
+
+<div class="modal" id="export_modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Export Excel</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div class="row">
+                    <form>
+                        {% csrf_token %}
+                        <div class="mb-3 mt-3">
+                            <label for="email" class="form-label">Username:</label>
+                            <input type="input" class="form-control" id="username" placeholder="Enter username" name="username">
+                        </div>
+                        <div class="mb-3">
+                            <label for="pwd" class="form-label">Password:</label>
+                            <input type="password" class="form-control" id="pwd" placeholder="Enter password" name="pwd">
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" id="add_user_btn" class="btn btn-primary">add</button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+            </div>
+
+        </div>
     </div>
 </div>
 
@@ -238,9 +275,9 @@
         });
 
 
-        $('#export_btn').click(function() {
+        // $('#export_btn').click(function() {
 
-        });
+        // });
     });
 </script>
 {% endblock %}
