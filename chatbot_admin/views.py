@@ -225,7 +225,8 @@ def masterSheetDownload(request):
 
             paths = []
             for file in files:
-                prefix = os.getcwd() + '\\media\\master_sheets\\'
+                # prefix = os.getcwd() + '\\media\\master_sheets\\'
+                prefix = os.getcwd() + '/media/master_sheets/'
                 path = prefix + file.filename()
                 paths.append(path)
             
