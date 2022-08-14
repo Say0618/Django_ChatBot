@@ -701,3 +701,8 @@ def exportAAOutputSheet(request):
 @login_required
 def videos(request):
     return render(request, 'attachments/videos.html')
+
+
+@login_required
+def chatbot(request):
+    return render(request, 'chatbot.html')

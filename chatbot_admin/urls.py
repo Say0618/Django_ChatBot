@@ -49,4 +49,6 @@ urlpatterns = [
     path('output/export_aa_output_sheet', views.exportAAOutputSheet, name='exportAAOutputSheet'),
 
     path('attachments/videos', views.videos, name='videos'),
+
+    path('chatbot', views.chatbot, name='chatbot')
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
