@@ -5,6 +5,12 @@
 {% block breadcrumb %}Wrtie Sheet{% endblock %}
 {% block breadcrumb-item %}Wrtie Sheet{% endblock %}
 {% block css %}
+<style>
+
+    body {
+        overflow-x: hidden;
+    }
+</style>
 {% endblock %}
 {% block content %}
 <div id="main_content">
@@ -19,7 +25,7 @@
         </div>
     </div>
     <br/>
-    <div class="row" style="overflow: auto; height: 400px;">
+    <div class="row" style="overflow: auto; max-height: 400px; max-width: 1600px;">
         <table id="ws_table" class="table table-fixed table-bordered table-hover table-stripped">
             <thead>
                 <tr>
