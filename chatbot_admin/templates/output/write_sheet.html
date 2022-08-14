@@ -32,7 +32,11 @@
                 {% for x in dataset %}
                     <tr>
                         {% for r in x %}
-                            <td>{{r}}</td>
+                            {% if r == None %}
+                               <td></td>
+                            {% else %}
+                                <td>{{r}}</td>
+                            {% endif %}
                         {% endfor %}
                     </tr>
                 {% endfor %}
@@ -44,10 +48,9 @@
 
 {% endblock %}
 {% block script %}
-<!-- <script type="text/javascript" src="https://oss.sheetjs.com/sheetjs/xlsx.full.min.js"></script> -->
 <script>
     $().ready(function() {
-        $('#ws_table').DataTable();
+        // $('#ws_table').DataTable();
 
     });
 </script>
