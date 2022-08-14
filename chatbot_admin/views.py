@@ -584,7 +584,7 @@ def databaseDownload(request):
 
             paths = []
             for file in files:
-                prefix = os.getcwd() + '\\media\\attachments\\database'
+                prefix = os.getcwd() + '\\media\\attachments\\database\\'
                 path = prefix + file.filename()
                 paths.append(path)
             
