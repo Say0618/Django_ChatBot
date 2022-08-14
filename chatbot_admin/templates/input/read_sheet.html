@@ -139,7 +139,7 @@
 
             <!-- Modal footer -->
             <div class="modal-footer">
-                <button type="button" id="export1_btn" data-bs-dismiss="modal" class="btn btn-primary">Confirm</button>
+                <button type="button" id="export_btn" data-bs-dismiss="modal" class="btn btn-primary">Confirm</button>
                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
             </div>
 
@@ -282,7 +282,7 @@
         });
 
 
-        $('#export1_btn').click(function() {
+        $('#export_btn').click(function() {
             var export_list = [];
             $('input[type="checkbox"]:checked').each(function() {
                 if (this.value != 'all_check')
