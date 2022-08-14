@@ -49,11 +49,5 @@ class Migration(migrations.Migration):
                 ('upload_date', models.DateTimeField(auto_now_add=True)),
                 ('file', models.FileField(upload_to='master_sheets')),
             ],
-        ),
-        migrations.DeleteModel(
-            name='Attachment',
-        ),
-        migrations.DeleteModel(
-            name='Sheet',
-        ),
+        )
     ]

@@ -262,12 +262,82 @@ def uploadReadSheet(request):
         if form.is_valid():
             file = request.FILES['file']
             form.save()
-            sheet = MasterSheet.objects.last()
+            sheet = ReadSheet.objects.last()
             sheet.name = file
             sheet.save()
             return redirect('read_sheet')
         else:
             return redirect('read_sheet')
+
+def operateReadSheet(request):
+    if is_ajax(request) and request.method == "POST":
+        id = request.POST['id']
+        type = request.POST['type']
+
+        if type == 'delete':
+            mm = ReadSheet.objects.filter(pk=id).get()
+            mm.file.close()
+            mm.file.delete()
+            ReadSheet.objects.filter(pk=id).delete()
+
+            return JsonResponse({
+                'msg': 'deleted'
+            })
+        
+        if type == 'de-activate':
+            sheet = ReadSheet.objects.filter(pk=id).get()
+            sheet.status = 0
+            sheet.save()
+
+            return JsonResponse({
+                'msg': 'de-activated'
+            })
+
+        if type == 'activate':
+            sheet = ReadSheet.objects.filter(pk=id).get()
+            sheet.status = 1
+            sheet.save()
+
+            return JsonResponse({
+                'msg': 'activated'
+            })
+
+def readSheetDownload(request):
+    if request.method == "POST":
+        ids = request.POST['ids']
+        ids = ids.split(',')
+
+        print(ids)
+        if len(ids) > 0:
+
+            files = ReadSheet.objects.filter(id__in=ids)
+
+            paths = []
+            for file in files:
+                prefix = os.getcwd() + '\\media\\read_sheets\\'
+                path = prefix + file.filename()
+                paths.append(path)
+            
+            print('path is ...', paths)
+            
+            zip_filename = "read.zip"
+
+            in_memory = BytesIO()
+            zip = ZipFile(in_memory, "a")
+
+            for path in paths:
+                fname = os.path.split(path)[1]
+                zip.write(path, fname)
+
+            zip.close()
+            
+            resp = HttpResponse(content_type = "application/x-zip-compressed")
+            resp['Content-Disposition'] = 'attachment; filename=%s' % zip_filename
+
+            in_memory.seek(0)    
+            resp.write(in_memory.read())
+
+            return resp
 
 @login_required
 def interpretation_sheet(request):
@@ -276,6 +346,89 @@ def interpretation_sheet(request):
         'sheets': sheets
     })
 
+def uploadInterpretationSheet(request):
+    if request.method == "POST":
+        form = InterpretationSheetForm(request.POST, request.FILES)
+        if form.is_valid():
+            file = request.FILES['file']
+            form.save()
+            sheet = InterpretationSheet.objects.last()
+            sheet.name = file
+            sheet.save()
+            return redirect('interpretation_sheet')
+        else:
+            return redirect('interpretation_sheet')
+
+def operateInterpretationSheet(request):
+    if is_ajax(request) and request.method == "POST":
+        id = request.POST['id']
+        type = request.POST['type']
+
+        if type == 'delete':
+            mm = InterpretationSheet.objects.filter(pk=id).get()
+            mm.file.close()
+            mm.file.delete()
+            InterpretationSheet.objects.filter(pk=id).delete()
+
+            return JsonResponse({
+                'msg': 'deleted'
+            })
+        
+        if type == 'de-activate':
+            sheet = InterpretationSheet.objects.filter(pk=id).get()
+            sheet.status = 0
+            sheet.save()
+
+            return JsonResponse({
+                'msg': 'de-activated'
+            })
+
+        if type == 'activate':
+            sheet = InterpretationSheet.objects.filter(pk=id).get()
+            sheet.status = 1
+            sheet.save()
+
+            return JsonResponse({
+                'msg': 'activated'
+            })
+
+def interpretationSheetDownload(request):
+    if request.method == "POST":
+        ids = request.POST['ids']
+        ids = ids.split(',')
+
+        print(ids)
+        if len(ids) > 0:
+
+            files = InterpretationSheet.objects.filter(id__in=ids)
+
+            paths = []
+            for file in files:
+                prefix = os.getcwd() + '\\media\\interpretation_sheets\\'
+                path = prefix + file.filename()
+                paths.append(path)
+            
+            print('path is ...', paths)
+            
+            zip_filename = "interpretation.zip"
+
+            in_memory = BytesIO()
+            zip = ZipFile(in_memory, "a")
+
+            for path in paths:
+                fname = os.path.split(path)[1]
+                zip.write(path, fname)
+
+            zip.close()
+            
+            resp = HttpResponse(content_type = "application/x-zip-compressed")
+            resp['Content-Disposition'] = 'attachment; filename=%s' % zip_filename
+
+            in_memory.seek(0)    
+            resp.write(in_memory.read())
+
+            return resp
+
 @login_required
 def images(request):
     sheets = Images_Bot.objects.all()
@@ -283,12 +436,178 @@ def images(request):
         'sheets': sheets
     })
 
+def uploadImages(request):
+    if request.method == "POST":
+        form = Images_BotForm(request.POST, request.FILES)
+        if form.is_valid():
+            file = request.FILES['file']
+            form.save()
+            sheet = Images_Bot.objects.last()
+            sheet.name = file
+            sheet.save()
+            return redirect('images')
+        else:
+            return redirect('images')
+
+def operateImages(request):
+    if is_ajax(request) and request.method == "POST":
+        id = request.POST['id']
+        type = request.POST['type']
+
+        if type == 'delete':
+            mm = Images_Bot.objects.filter(pk=id).get()
+            mm.file.close()
+            mm.file.delete()
+            Images_Bot.objects.filter(pk=id).delete()
+
+            return JsonResponse({
+                'msg': 'deleted'
+            })
+        
+        if type == 'de-activate':
+            sheet = Images_Bot.objects.filter(pk=id).get()
+            sheet.status = 0
+            sheet.save()
+
+            return JsonResponse({
+                'msg': 'de-activated'
+            })
+
+        if type == 'activate':
+            sheet = Images_Bot.objects.filter(pk=id).get()
+            sheet.status = 1
+            sheet.save()
+
+            return JsonResponse({
+                'msg': 'activated'
+            })
+
+def imagesDownload(request):
+    if request.method == "POST":
+        ids = request.POST['ids']
+        ids = ids.split(',')
+
+        print(ids)
+        if len(ids) > 0:
+
+            files = Images_Bot.objects.filter(id__in=ids)
+
+            paths = []
+            for file in files:
+                prefix = os.getcwd() + '\\media\\attachments\\images\\'
+                path = prefix + file.filename()
+                paths.append(path)
+            
+            print('path is ...', paths)
+            
+            zip_filename = "images.zip"
+
+            in_memory = BytesIO()
+            zip = ZipFile(in_memory, "a")
+
+            for path in paths:
+                fname = os.path.split(path)[1]
+                zip.write(path, fname)
+
+            zip.close()
+            
+            resp = HttpResponse(content_type = "application/x-zip-compressed")
+            resp['Content-Disposition'] = 'attachment; filename=%s' % zip_filename
+
+            in_memory.seek(0)    
+            resp.write(in_memory.read())
+
+            return resp
+
 @login_required
 def database(request):
     sheets = Database_Excel.objects.all()
     return render(request, 'attachments/database.html', {
         'sheets': sheets
     })
+
+def uploadDatabase(request):
+    if request.method == "POST":
+        form = Database_ExcelForm(request.POST, request.FILES)
+        if form.is_valid():
+            file = request.FILES['file']
+            form.save()
+            sheet = Database_Excel.objects.last()
+            sheet.name = file
+            sheet.save()
+            return redirect('database')
+        else:
+            return redirect('database')
+
+def operateDatabase(request):
+    if is_ajax(request) and request.method == "POST":
+        id = request.POST['id']
+        type = request.POST['type']
+
+        if type == 'delete':
+            mm = Database_Excel.objects.filter(pk=id).get()
+            mm.file.close()
+            mm.file.delete()
+            Database_Excel.objects.filter(pk=id).delete()
+
+            return JsonResponse({
+                'msg': 'deleted'
+            })
+        
+        if type == 'de-activate':
+            sheet = Database_Excel.objects.filter(pk=id).get()
+            sheet.status = 0
+            sheet.save()
+
+            return JsonResponse({
+                'msg': 'de-activated'
+            })
+
+        if type == 'activate':
+            sheet = Database_Excel.objects.filter(pk=id).get()
+            sheet.status = 1
+            sheet.save()
+
+            return JsonResponse({
+                'msg': 'activated'
+            })
+
+def databaseDownload(request):
+    if request.method == "POST":
+        ids = request.POST['ids']
+        ids = ids.split(',')
+
+        print(ids)
+        if len(ids) > 0:
+
+            files = Database_Excel.objects.filter(id__in=ids)
+
+            paths = []
+            for file in files:
+                prefix = os.getcwd() + '\\media\\attachments\\database'
+                path = prefix + file.filename()
+                paths.append(path)
+            
+            print('path is ...', paths)
+            
+            zip_filename = "master.zip"
+
+            in_memory = BytesIO()
+            zip = ZipFile(in_memory, "a")
+
+            for path in paths:
+                fname = os.path.split(path)[1]
+                zip.write(path, fname)
+
+            zip.close()
+            
+            resp = HttpResponse(content_type = "application/x-zip-compressed")
+            resp['Content-Disposition'] = 'attachment; filename=%s' % zip_filename
+
+            in_memory.seek(0)    
+            resp.write(in_memory.read())
+
+            return resp
 
 @login_required
 def videos(request):

@@ -49,7 +49,7 @@ class ReadSheet(models.Model):
     status = models.IntegerField(default=1)
     upload_date = models.DateTimeField(auto_now_add=True)
 
-    file = models.FileField(upload_to='master_sheets')
+    file = models.FileField(upload_to='read_sheets')
 
     def filename(self):
         return os.path.basename(self.file.name)
@@ -60,7 +60,7 @@ class InterpretationSheet(models.Model):
     status = models.IntegerField(default=1)
     upload_date = models.DateTimeField(auto_now_add=True)
 
-    file = models.FileField(upload_to='master_sheets')
+    file = models.FileField(upload_to='Interpretation_sheets')
 
     def filename(self):
         return os.path.basename(self.file.name)
@@ -71,7 +71,7 @@ class Images_Bot(models.Model):
     status = models.IntegerField(default=1)
     upload_date = models.DateTimeField(auto_now_add=True)
 
-    file = models.FileField(upload_to='master_sheets')
+    file = models.FileField(upload_to='attachments/images')
 
     def filename(self):
         return os.path.basename(self.file.name)
@@ -82,7 +82,7 @@ class Database_Excel(models.Model):
     status = models.IntegerField(default=1)
     upload_date = models.DateTimeField(auto_now_add=True)
 
-    file = models.FileField(upload_to='master_sheets')
+    file = models.FileField(upload_to='attachments/database')
 
     def filename(self):
         return os.path.basename(self.file.name)

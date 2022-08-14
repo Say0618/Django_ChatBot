@@ -35,7 +35,7 @@
                 <button class="btn btn-success" id="export" data-bs-toggle="modal" data-bs-target="#export_modal">Export</button>
             </div>
             <div class="col-md-9">
-                <form method="POST" action="{% url 'uploadMasterSheet' %}" enctype="multipart/form-data">
+                <form method="POST" action="{% url 'uploadImages' %}" enctype="multipart/form-data">
                     {% csrf_token %}
                     <input type="file" name = 'file' id="id_file" required hidden/>
                     <label id="actual-btn-label" for="id_file">Choose File</label>
@@ -195,10 +195,10 @@
                 del_id = id;
             } else if (val == 'De-activate') {
                 type = 'de-activate';
-                url = "{% url 'operateMasterSheet' %}";
+                url = "{% url 'operateImages' %}";
             } else if (val == 'Activate') {
                 type = 'activate';
-                url = "{% url 'operateMasterSheet' %}";
+                url = "{% url 'operateImages' %}";
             }
             
             $.ajaxSetup({
@@ -265,7 +265,7 @@
 
             $.ajax({
                 type: 'POST',
-                url: "{% url 'operateMasterSheet' %}",
+                url: "{% url 'operateImages' %}",
                 data: {id: del_id, type: 'delete'},
                 success: function(res) {
                     if (res.msg == 'deleted') {
@@ -295,7 +295,7 @@
 
             var form = document.createElement("form");
             form.setAttribute("method", "POST");
-            form.setAttribute("action", "{% url 'masterSheetDownload' %}");
+            form.setAttribute("action", "{% url 'imagesDownload' %}");
 
             var ids = document.createElement("input");
             ids.setAttribute("name", "ids")
