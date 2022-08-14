@@ -290,31 +290,34 @@
                     this.checked = false; 
             });
             
-            var form = document.createElement("form");
-            form.setAttribute("method", "POST");
-            form.setAttribute("action", "{% url 'interpretationSheetDownload' %}");
+            if (export_list.length) {
 
-            var ids = document.createElement("input");
-            ids.setAttribute("name", "ids")
-            ids.setAttribute("type", "text");
-            ids.setAttribute("value", export_list);
-            form.appendChild(ids)
-
-            var submit = document.createElement("input");
-            submit.setAttribute("type", "text");
-            form.appendChild(submit)
-
-            var csrf = document.createElement('input');
-            csrf.setAttribute('name', "csrfmiddlewaretoken")
-            csrf.setAttribute('type', "hidden")
-            csrf.setAttribute('value', csrftoken)
-
-            form.appendChild(csrf)
-
-            var sudoform = document.getElementById('sudo_form');
-            sudoform.appendChild(form)
-            form.style.display = 'none';
-            form.submit();
+                var form = document.createElement("form");
+                form.setAttribute("method", "POST");
+                form.setAttribute("action", "{% url 'interpretationSheetDownload' %}");
+    
+                var ids = document.createElement("input");
+                ids.setAttribute("name", "ids")
+                ids.setAttribute("type", "text");
+                ids.setAttribute("value", export_list);
+                form.appendChild(ids)
+    
+                var submit = document.createElement("input");
+                submit.setAttribute("type", "text");
+                form.appendChild(submit)
+    
+                var csrf = document.createElement('input');
+                csrf.setAttribute('name', "csrfmiddlewaretoken")
+                csrf.setAttribute('type', "hidden")
+                csrf.setAttribute('value', csrftoken)
+    
+                form.appendChild(csrf)
+    
+                var sudoform = document.getElementById('sudo_form');
+                sudoform.appendChild(form)
+                form.style.display = 'none';
+                form.submit();
+            }
         });
 
         $('#all_check').click(function() {

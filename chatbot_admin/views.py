@@ -591,7 +591,7 @@ def databaseDownload(request):
             
             print('path is ...', paths)
             
-            zip_filename = "master.zip"
+            zip_filename = "database.zip"
 
             in_memory = BytesIO()
             zip = ZipFile(in_memory, "a")
