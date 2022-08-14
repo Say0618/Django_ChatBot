@@ -149,7 +149,8 @@ LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = 'login'
 
 STATIC_URL = '/static/'
-BASE_URL = 'http://127.0.0.1:8000'
+# BASE_URL = 'http://127.0.0.1:8000'
+BASE_URL = '185.143.45.33'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "chatbot_web_version/static"),
 )
