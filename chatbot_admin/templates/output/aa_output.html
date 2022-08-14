@@ -20,22 +20,24 @@
     </div>
     <br/>
     <div class="row">
-        <table id="write_table" class="ableau table datatable table-fixed table-bordered table-hover">
+        <table id="aa_table" class="table table-fixed table-bordered table-hover table-stripped">
+            <thead>
+                <tr>
+                    {% for x in thead %}
+                        <th>{{x}}</th>
+                    {% endfor %}
+                </tr>
+             </thead>
              <tbody>
-                {% for sheet in sheets %}
-               
-                    <tr user_id="{{ sheet.id }}">
-                        <td>{{ forloop.counter }}</td>
-                        <td>{{ sheet.name }}</td>
-                        <td>{{ sheet.upload_date }}</td>
-                        <td>
-                            {% if sheet.status == 1 %}
-                                active
+                {% for x in dataset %}
+                    <tr>
+                        {% for r in x %}
+                            {% if r == None %}
+                               <td></td>
                             {% else %}
-                                inactive
+                                <td>{{r}}</td>
                             {% endif %}
-                        </td>
-                        <td ></td>
+                        {% endfor %}
                     </tr>
                 {% endfor %}
              </tbody>
@@ -46,7 +48,6 @@
 
 {% endblock %}
 {% block script %}
-<script type="text/javascript" src="https://oss.sheetjs.com/sheetjs/xlsx.full.min.js"></script>
 <script>
     $().ready(function() {
     
