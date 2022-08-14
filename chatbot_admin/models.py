@@ -1,4 +1,5 @@
 from django.db import models
+import os
 
 from django.utils.translation import gettext_lazy as _
 
@@ -39,4 +40,6 @@ class MasterSheet(models.Model):
 
     file = models.FileField(upload_to='master_sheets')
 
+    def filename(self):
+        return os.path.basename(self.file.name)
 

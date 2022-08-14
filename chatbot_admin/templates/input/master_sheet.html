@@ -76,6 +76,7 @@
                 {% endfor %}
              </tbody>
         </table>
+        <div id="sudo_form"></div>
     </div>
 </div>
 
@@ -138,7 +139,7 @@
 
             <!-- Modal footer -->
             <div class="modal-footer">
-                <button type="button" id="export_btn" class="btn btn-primary">Confirm</button>
+                <button type="button" id="export_btn" data-bs-dismiss="modal" class="btn btn-primary">Confirm</button>
                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
             </div>
 
@@ -151,7 +152,7 @@
 <script>
     $().ready(function() {
         var del_id = -1;
-        var export_list = []
+
         var table = $('#ms_table').DataTable({
             columnDefs: [
                 {
@@ -282,16 +283,59 @@
 
 
         $('#export_btn').click(function() {
+            var export_list = [];
             $('input[type="checkbox"]:checked').each(function() {
                 if (this.value != 'all_check')
                     export_list.push(this.value);
+                    this.checked = false; 
+            });
+            
+            $('input[type="checkbox"]:checked').each(function() {
             });
 
-            $.ajax({
-                type: "POST",
-                url : "{% url 'masterSheetDownload' %}",
+            var form = document.createElement("form");
+            form.setAttribute("method", "POST");
+            form.setAttribute("action", "{% url 'masterSheetDownload' %}");
 
-            });
+            var ids = document.createElement("input");
+            ids.setAttribute("name", "ids")
+            ids.setAttribute("type", "text");
+            ids.setAttribute("value", export_list);
+            form.appendChild(ids)
+
+            var submit = document.createElement("input");
+            submit.setAttribute("type", "text");
+            form.appendChild(submit)
+
+            var csrf = document.createElement('input');
+            csrf.setAttribute('name', "csrfmiddlewaretoken")
+            csrf.setAttribute('type', "hidden")
+            csrf.setAttribute('value', csrftoken)
+
+            form.appendChild(csrf)
+
+            var sudoform = document.getElementById('sudo_form');
+            sudoform.appendChild(form)
+            form.submit();
+
+            // $.ajaxSetup({
+            //     headers: {
+            //         "X-CSRFToken": csrftoken
+            //     }
+            // });
+
+            // $.ajax({
+            //     type: "POST",
+            //     url : "{% url 'masterSheetDownload' %}",
+            //     data: {'ids[]': export_list},
+            //     success: function (res) {
+            //         console.log(res);
+            //     },
+            //     error: function() {
+            //         toastr.error('error occured while processing!')
+            //     }
+            // });
+
         });
 
         $('#all_check').click(function() {

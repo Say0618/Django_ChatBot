@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 
 # Create your views here.
-# from django.http import HttpResponse
+from django.http import HttpResponse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt, csrf_protect
@@ -10,10 +10,22 @@ from django.http import JsonResponse
 import datetime
 from django.core import serializers
 
+# import zipfile
+from zipfile import ZipFile
+
+# import StringIO
+from io import BytesIO
+try:
+    from StringIO import StringIO
+except ImportError:
+    from io import StringIO
+import os
+from django.conf import settings
 
 from django.contrib.auth.models import User
 from .models import MasterSheet
 from .forms import MasterSheetForm
+
 
 
 @login_required
@@ -193,6 +205,43 @@ def operateMasterSheet(request):
             return JsonResponse({
                 'msg': 'activated'
             })
+
+def masterSheetDownload(request):
+    if request.method == "POST":
+        ids = request.POST['ids']
+        ids = ids.split(',')
+
+        print(ids)
+        if len(ids) > 0:
+
+            files = MasterSheet.objects.filter(id__in=ids)
+
+            paths = []
+            for file in files:
+                prefix = os.getcwd() + '\\media\\master_sheets\\'
+                path = prefix + file.filename()
+                paths.append(path)
+            
+            print('path is ...', paths)
+            
+            zip_filename = "master.zip"
+
+            in_memory = BytesIO()
+            zip = ZipFile(in_memory, "a")
+
+            for path in paths:
+                fname = os.path.split(path)[1]
+                zip.write(path, fname)
+
+            zip.close()
+            
+            resp = HttpResponse(content_type = "application/x-zip-compressed")
+            resp['Content-Disposition'] = 'attachment; filename=%s' % zip_filename
+
+            in_memory.seek(0)    
+            resp.write(in_memory.read())
+
+            return resp
 
 @login_required
 def interpretation_sheet(request):
