@@ -11,16 +11,19 @@ from django.core import serializers
 
 # import zipfile
 from zipfile import ZipFile
+import json
 
 # import StringIO
 from io import BytesIO
-try:
-    from StringIO import StringIO
-except ImportError:
-    from io import StringIO
+# try:
+#     from StringIO import StringIO
+# except ImportError:
+#     from io import StringIO
 import os
 import mimetypes
 from django.conf import settings as conf_settings
+import openpyxl
+from os.path import exists
 
 from django.contrib.auth.models import User
 from .models import MasterSheet
@@ -609,8 +612,33 @@ def databaseDownload(request):
 
 @login_required
 def write_sheet(request):
-    
-    return render(request, 'output/write_sheet.html')
+    read_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + "\\Media\\write_sheets\\Write.xlsx"
+
+    if os.path.exists(read_path):
+        wb = openpyxl.load_workbook(read_path)
+        ws = wb.active
+
+        rows_cnt = ws.max_row
+        cols_cnt = ws.max_column
+        
+        total_result = []
+        for r in range(1, rows_cnt + 1):
+            record = []
+            for i in range(1, cols_cnt + 1):
+                record.append(ws.cell(row=r, column=i).value)
+            total_result.append(record)
+
+        thead = total_result[0]
+        total_result.pop(0)
+
+        print('total_result is ................',total_result)
+
+        return render(request, 'output/write_sheet.html', {
+            'thead': thead,
+            'dataset': total_result
+        })
+    else:
+        return render(request, 'output/write_sheet.html')
 
 def exportWriteSheet(request):
     if request.method == 'POST':
