@@ -43,3 +43,47 @@ class MasterSheet(models.Model):
     def filename(self):
         return os.path.basename(self.file.name)
 
+class ReadSheet(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=255)
+    status = models.IntegerField(default=1)
+    upload_date = models.DateTimeField(auto_now_add=True)
+
+    file = models.FileField(upload_to='master_sheets')
+
+    def filename(self):
+        return os.path.basename(self.file.name)
+
+class InterpretationSheet(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=255)
+    status = models.IntegerField(default=1)
+    upload_date = models.DateTimeField(auto_now_add=True)
+
+    file = models.FileField(upload_to='master_sheets')
+
+    def filename(self):
+        return os.path.basename(self.file.name)
+
+class Images_Bot(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=255)
+    status = models.IntegerField(default=1)
+    upload_date = models.DateTimeField(auto_now_add=True)
+
+    file = models.FileField(upload_to='master_sheets')
+
+    def filename(self):
+        return os.path.basename(self.file.name)
+
+class Database_Excel(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=255)
+    status = models.IntegerField(default=1)
+    upload_date = models.DateTimeField(auto_now_add=True)
+
+    file = models.FileField(upload_to='master_sheets')
+
+    def filename(self):
+        return os.path.basename(self.file.name)
+

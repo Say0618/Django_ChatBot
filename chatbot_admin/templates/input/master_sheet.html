@@ -318,24 +318,6 @@
             sudoform.appendChild(form)
             form.submit();
 
-            // $.ajaxSetup({
-            //     headers: {
-            //         "X-CSRFToken": csrftoken
-            //     }
-            // });
-
-            // $.ajax({
-            //     type: "POST",
-            //     url : "{% url 'masterSheetDownload' %}",
-            //     data: {'ids[]': export_list},
-            //     success: function (res) {
-            //         console.log(res);
-            //     },
-            //     error: function() {
-            //         toastr.error('error occured while processing!')
-            //     }
-            // });
-
         });
 
         $('#all_check').click(function() {

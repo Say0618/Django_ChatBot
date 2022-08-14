@@ -4,7 +4,328 @@
 
 {% block breadcrumb %}Database{% endblock %}
 {% block breadcrumb-item %}Database{% endblock %}
+{% block css %}
+<style>
+    #actual-btn-label{
+        display: inline-block;
+        background-color: #0d6efd;
+        color: white;
+        padding: 0.5rem;
+        font-family: sans-serif;
+        border-radius: 0.3rem;
+        cursor: pointer;
+        margin-top: 1rem;
+    }
 
+    #file-chosen{
+        margin-left: 0.3rem;
+        font-family: sans-serif;
+    }
+
+    #export {
+        margin-top: 1.05rem;
+    }
+</style>
+{% endblock %}
 {% block content %}
+<div id="main_content">
+    <div class="offset-md-6">
+        <div class="row">
+            <div class="col-md-3">
+                <button class="btn btn-success" id="export" data-bs-toggle="modal" data-bs-target="#export_modal">Export</button>
+            </div>
+            <div class="col-md-9">
+                <form method="POST" action="{% url 'uploadMasterSheet' %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type="file" name = 'file' id="id_file" required hidden/>
+                    <label id="actual-btn-label" for="id_file">Choose File</label>
+                    <span id="file-chosen">No file chosen</span>
+                    <button class="btn btn-primary " type="submit" value="Upload">Upload</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <br/>
+    <div class="row">
+        <table id="ms_table" class="ableau table datatable table-fixed table-bordered table-hover">
+            <thead>
+                <tr>
+                   <th>No</th>
+                   <th>Name of sheet</th>
+                   <th>Date&time</th>
+                   <th>Status</th>
+                   <th></th>
+                </tr>
+             </thead>
+             <tbody>
+                {% for sheet in sheets %}
+               
+                    <tr user_id="{{ sheet.id }}">
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ sheet.name }}</td>
+                        <td>{{ sheet.upload_date }}</td>
+                        <td>
+                            {% if sheet.status == 1 %}
+                                active
+                            {% else %}
+                                inactive
+                            {% endif %}
+                        </td>
+                        <td ></td>
+                    </tr>
+                {% endfor %}
+             </tbody>
+        </table>
+        <div id="sudo_form"></div>
+    </div>
+</div>
 
+<div class="modal" id="delModal">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+  
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Modal Heading</h4>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+  
+        <!-- Modal body -->
+        <div class="modal-body">
+          Are you sure to delete?
+        </div>
+  
+        <!-- Modal footer -->
+        <div class="modal-footer">
+            <button type="button" id="del_btn" data-bs-dismiss="modal" class="btn btn-primary">Ok</button>
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+        </div>
+  
+      </div>
+    </div>
+</div>
+
+<div class="modal" id="export_modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Export Excel</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div class="row" style="overflow: auto; max-height: 400px;">
+                    <form>
+                        <input type="checkbox" id="all_check" name="all_check" value="all_check">
+                        <label for="vehicle1"> Check all</label>
+                    </form>
+                    <table class="table table-bordered table-condensed table-hover table-stripped">
+                        <tbody>
+                            {% for sheet in sheets %}
+                                <tr>
+                                    <td>
+                                        <input class="realcheck" style="margin-left: 3px;" type="checkbox" id="sheet{{sheet.id}}" name="sheet{{sheet.id}}" value="{{sheet.id}}">
+                                    </td>
+                                    <td>{{sheet.name}}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" id="export_btn" data-bs-dismiss="modal" class="btn btn-primary">Confirm</button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+{% block script %}
+<script>
+    $().ready(function() {
+        var del_id = -1;
+
+        var table = $('#ms_table').DataTable({
+            columnDefs: [
+                {
+                    "targets": -1,
+                    'render': function(data, type, row, meta) {
+                        // console.log(row);
+                        let active = row[3] != 'active' ? 'Activate' : 'De-activate';
+                        return `<div class="select">
+                                    <select id="standard-select">
+                                        <option value="">Action</option>
+                                        <option value="${active}">${active}</option>
+                                        <option value="delete">delete</option>
+                                    </select>
+                                    <span class="focus"></span>
+                                </div>`;
+                    }
+                }
+            ],
+        });
+    
+        const actualBtn = document.getElementById('id_file');
+    
+        const fileChosen = document.getElementById('file-chosen');
+    
+        actualBtn.addEventListener('change', function(){
+        fileChosen.textContent = this.files[0].name
+        })
+
+        const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+        $('select').change(function() {
+            val = this.value;
+            id = $(this).parent().parent().parent().attr('user_id');
+            tr = $(this).parent().parent();
+            select = $(this);
+
+            let url = '';
+            let type = '';
+            if (val == 'delete') {
+                type = 'delete';
+                del_id = id;
+            } else if (val == 'De-activate') {
+                type = 'de-activate';
+                url = "{% url 'operateMasterSheet' %}";
+            } else if (val == 'Activate') {
+                type = 'activate';
+                url = "{% url 'operateMasterSheet' %}";
+            }
+            
+            $.ajaxSetup({
+                headers: {
+                    "X-CSRFToken": csrftoken
+                }
+            });
+
+            if (type == 'activate' || type == 'de-activate') {
+                $.ajax({
+                    type: 'POST',
+                    url: url,
+                    data: {id: id, type: type},
+                    success: function(res) {
+        
+                        if (res.msg == 'activated') {
+                            toastr.success('user activated successfully!');
+                            tr.siblings()[3].innerHTML = 'active';
+
+                            var new_select = `
+                                    <div class="select">
+                                        <select id="standard-select">
+                                            <option value="">Action</option>
+                                            <option value="De-activate">De-activate</option>
+                                            <option value="delete">delete</option>
+                                        </select>
+                                        <span class="focus"></span>
+                                    </div>
+                            `;
+                            select.html(new_select);
+                        }
+                        if (res.msg == 'de-activated') {
+                            toastr.success('user de-activated successfully!');
+                            tr.siblings()[3].innerHTML = 'inactive';
+
+                            var new_select = `
+                                    <div class="select">
+                                        <select id="standard-select">
+                                            <option value="">Action</option>
+                                            <option value="Activate">Activate</option>
+                                            <option value="delete">delete</option>
+                                        </select>
+                                        <span class="focus"></span>
+                                    </div>
+                            `;
+                            select.html(new_select);
+                        }
+                    },
+                    error: function(res) {
+                        toastr.error('error occured while processing.');
+                    }
+                });
+            } else if (type == 'delete') {
+                $('#delModal').modal('show');
+            } 
+        });
+
+        $('#del_btn').click(function() {
+            $.ajaxSetup({
+                headers: {
+                    "X-CSRFToken": csrftoken
+                }
+            });
+
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'operateMasterSheet' %}",
+                data: {id: del_id, type: 'delete'},
+                success: function(res) {
+                    if (res.msg == 'deleted') {
+                        toastr.success('user deleted successfully!');
+                        setTimeout(function() {
+                            location.reload();
+                        }, 2000);
+                    }
+                },
+                error: function(res) {
+                    toastr.error('error occured while processing.');
+                }
+            });
+        });
+
+
+        $('#export_btn').click(function() {
+            var export_list = [];
+            $('input[type="checkbox"]:checked').each(function() {
+                if (this.value != 'all_check')
+                    export_list.push(this.value);
+                    this.checked = false; 
+            });
+            
+            $('input[type="checkbox"]:checked').each(function() {
+            });
+
+            var form = document.createElement("form");
+            form.setAttribute("method", "POST");
+            form.setAttribute("action", "{% url 'masterSheetDownload' %}");
+
+            var ids = document.createElement("input");
+            ids.setAttribute("name", "ids")
+            ids.setAttribute("type", "text");
+            ids.setAttribute("value", export_list);
+            form.appendChild(ids)
+
+            var submit = document.createElement("input");
+            submit.setAttribute("type", "text");
+            form.appendChild(submit)
+
+            var csrf = document.createElement('input');
+            csrf.setAttribute('name', "csrfmiddlewaretoken")
+            csrf.setAttribute('type', "hidden")
+            csrf.setAttribute('value', csrftoken)
+
+            form.appendChild(csrf)
+
+            var sudoform = document.getElementById('sudo_form');
+            sudoform.appendChild(form)
+            form.submit();
+        });
+
+        $('#all_check').click(function() {
+            if (this.checked) 
+                $('input[type=checkbox]').attr('checked', 'checked');
+            else
+                $('input[type=checkbox]').attr('checked', false);
+
+        });
+    });
+</script>
 {% endblock %}

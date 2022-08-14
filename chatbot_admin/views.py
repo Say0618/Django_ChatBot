@@ -24,7 +24,16 @@ from django.conf import settings
 
 from django.contrib.auth.models import User
 from .models import MasterSheet
+from .models import ReadSheet
+from .models import InterpretationSheet
+from .models import Images_Bot
+from .models import Database_Excel
+
 from .forms import MasterSheetForm
+from .forms import ReadSheetForm
+from .forms import InterpretationSheetForm
+from .forms import Images_BotForm
+from .forms import Database_ExcelForm
 
 
 
@@ -147,9 +156,6 @@ def editUser(request):
                 'msg': 'edited'
             })
 
-@login_required
-def read_sheet(request):
-    return render(request, 'input/read_sheet.html')
 
 @login_required
 def master_sheet(request):
@@ -244,8 +250,49 @@ def masterSheetDownload(request):
             return resp
 
 @login_required
+def read_sheet(request):
+    sheets = ReadSheet.objects.all()
+    return render(request, 'input/read_sheet.html', {
+        'sheets': sheets
+    })
+
+def uploadReadSheet(request):
+    if request.method == "POST":
+        form = ReadSheetForm(request.POST, request.FILES)
+        if form.is_valid():
+            file = request.FILES['file']
+            form.save()
+            sheet = MasterSheet.objects.last()
+            sheet.name = file
+            sheet.save()
+            return redirect('read_sheet')
+        else:
+            return redirect('read_sheet')
+
+@login_required
 def interpretation_sheet(request):
-    return render(request, 'input/interpretation_sheet.html')
+    sheets = InterpretationSheet.objects.all()
+    return render(request, 'input/interpretation_sheet.html', {
+        'sheets': sheets
+    })
+
+@login_required
+def images(request):
+    sheets = Images_Bot.objects.all()
+    return render(request, 'attachments/images.html', {
+        'sheets': sheets
+    })
+
+@login_required
+def database(request):
+    sheets = Database_Excel.objects.all()
+    return render(request, 'attachments/database.html', {
+        'sheets': sheets
+    })
+
+@login_required
+def videos(request):
+    return render(request, 'attachments/videos.html')
 
 @login_required
 def write_sheet(request):
@@ -254,15 +301,3 @@ def write_sheet(request):
 @login_required
 def aa_output(request):
     return render(request, 'output/aa_output.html')
-
-@login_required
-def images(request):
-    return render(request, 'attachments/images.html')
-
-@login_required
-def videos(request):
-    return render(request, 'attachments/videos.html')
-
-@login_required
-def database(request):
-    return render(request, 'attachments/database.html')
