@@ -1,4 +1,7 @@
 from django.urls import path
+from django.conf.urls.static import static
+from django.conf import settings
+
 
 from . import views
 
@@ -40,6 +43,10 @@ urlpatterns = [
     path('input/database/download', views.databaseDownload, name='databaseDownload'),
 
     path('output/write_sheet', views.write_sheet, name='write_sheet'),
-    path('output/aa_output', views.aa_output, name='aa_output'),
+    path('output/export_write_sheet', views.exportWriteSheet, name='exportWriteSheet'),
+
+    path('output/aa_output_sheet', views.aa_output_sheet, name='aa_output_sheet'),
+    path('output/export_aa_output_sheet', views.exportAAOutputSheet, name='exportAAOutputSheet'),
+
     path('attachments/videos', views.videos, name='videos'),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

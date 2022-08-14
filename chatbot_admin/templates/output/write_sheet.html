@@ -1,10 +1,64 @@
 {% extends "layout.html" %}
 
-{% block title %}Write Sheet{% endblock %}
+{% block title %}Wrtie Sheet{% endblock %}
 
-{% block breadcrumb %}Write Sheet{% endblock %}
-{% block breadcrumb-item %}Write Sheet{% endblock %}
-
+{% block breadcrumb %}Wrtie Sheet{% endblock %}
+{% block breadcrumb-item %}Wrtie Sheet{% endblock %}
+{% block css %}
+{% endblock %}
 {% block content %}
+<div id="main_content">
+    <div class="offset-md-6">
+        <div class="row">
+            <div class="offset-md-9">
+                <form action="{% url 'exportWriteSheet' %}" method="POST">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-success" id="export_btn">Export</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <br/>
+    <div class="row" style="overflow: auto;">
+        <table id="write_table" class="table table-fixed table-bordered table-hover table-stripped">
+            <!-- <thead>
+                <tr>
+                   <th>No</th>
+                   <th>Name of sheet</th>
+                   <th>Date&time</th>
+                   <th>Status</th>
+                   <th></th>
+                </tr>
+             </thead> -->
+             <tbody>
+                {% for sheet in sheets %}
+               
+                    <tr user_id="{{ sheet.id }}">
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ sheet.name }}</td>
+                        <td>{{ sheet.upload_date }}</td>
+                        <td>
+                            {% if sheet.status == 1 %}
+                                active
+                            {% else %}
+                                inactive
+                            {% endif %}
+                        </td>
+                        <td ></td>
+                    </tr>
+                {% endfor %}
+             </tbody>
+        </table>
+        <div id="sudo_form"></div>
+    </div>
+</div>
 
+{% endblock %}
+{% block script %}
+<!-- <script type="text/javascript" src="https://oss.sheetjs.com/sheetjs/xlsx.full.min.js"></script> -->
+<script>
+    $().ready(function() {
+
+    });
+</script>
 {% endblock %}

@@ -1,10 +1,55 @@
 {% extends "layout.html" %}
 
-{% block title %}AA Output{% endblock %}
+{% block title %}AA Output Sheet{% endblock %}
 
-{% block breadcrumb %}AA Output{% endblock %}
-{% block breadcrumb-item %}AA Output{% endblock %}
-
+{% block breadcrumb %}AA Output Sheet{% endblock %}
+{% block breadcrumb-item %}AA Output Sheet{% endblock %}
+{% block css %}
+{% endblock %}
 {% block content %}
+<div id="main_content">
+    <div class="offset-md-6">
+        <div class="row">
+            <div class="offset-md-9">
+                <form action="{% url 'exportAAOutputSheet' %}" method="POST">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-success" id="export_btn">Export</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <br/>
+    <div class="row">
+        <table id="write_table" class="ableau table datatable table-fixed table-bordered table-hover">
+             <tbody>
+                {% for sheet in sheets %}
+               
+                    <tr user_id="{{ sheet.id }}">
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ sheet.name }}</td>
+                        <td>{{ sheet.upload_date }}</td>
+                        <td>
+                            {% if sheet.status == 1 %}
+                                active
+                            {% else %}
+                                inactive
+                            {% endif %}
+                        </td>
+                        <td ></td>
+                    </tr>
+                {% endfor %}
+             </tbody>
+        </table>
+        <div id="sudo_form"></div>
+    </div>
+</div>
 
+{% endblock %}
+{% block script %}
+<script type="text/javascript" src="https://oss.sheetjs.com/sheetjs/xlsx.full.min.js"></script>
+<script>
+    $().ready(function() {
+    
+    });
+</script>
 {% endblock %}

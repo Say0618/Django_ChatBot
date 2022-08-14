@@ -5,7 +5,6 @@ from django.http import HttpResponse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt, csrf_protect
-from django.conf import settings
 from django.http import JsonResponse
 import datetime
 from django.core import serializers
@@ -20,7 +19,8 @@ try:
 except ImportError:
     from io import StringIO
 import os
-from django.conf import settings
+import mimetypes
+from django.conf import settings as conf_settings
 
 from django.contrib.auth.models import User
 from .models import MasterSheet
@@ -73,8 +73,6 @@ def settings(request):
 @login_required
 def users(request):
     user_list = User.objects.exclude(is_superuser=1)
-    # user_list = User.objects.all()
-    # print('userlist is.....', user_list)
     return render(request, 'users.html', {
         'user_list': user_list
     })
@@ -610,13 +608,42 @@ def databaseDownload(request):
             return resp
 
 @login_required
-def videos(request):
-    return render(request, 'attachments/videos.html')
-
-@login_required
 def write_sheet(request):
+    
     return render(request, 'output/write_sheet.html')
 
+def exportWriteSheet(request):
+    if request.method == 'POST':
+        BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+        file_path = BASE_DIR + '\\Media\\write_sheets\\write.xlsx'
+        if os.path.exists(file_path):
+            with open(file_path, 'rb') as fh:
+                response = HttpResponse(fh.read(), content_type="application/vnd.ms-excel")
+                response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
+                return response
+        else:
+            return render(request, 'output/write_sheet.html')
+
 @login_required
-def aa_output(request):
+def aa_output_sheet(request):
     return render(request, 'output/aa_output.html')
+
+def exportAAOutputSheet(request):
+    if request.method == 'POST':
+        BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+        file_path = BASE_DIR + '\\Media\\aa_outputs\\aaOutputSheet.xlsx'
+        if os.path.exists(file_path):
+            with open(file_path, 'rb') as fh:
+                response = HttpResponse(fh.read(), content_type="application/vnd.ms-excel")
+                response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
+                return response
+        else:
+            return render(request, 'output/aa_output.html')
+
+    return 0
+
+@login_required
+def videos(request):
+    return render(request, 'attachments/videos.html')
