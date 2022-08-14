@@ -19,7 +19,7 @@
         </div>
     </div>
     <br/>
-    <div class="row">
+    <div class="row" style="overflow: auto; height: 400px;">
         <table id="aa_table" class="table table-fixed table-bordered table-hover table-stripped">
             <thead>
                 <tr>
@@ -35,7 +35,13 @@
                             {% if r == None %}
                                <td></td>
                             {% else %}
-                                <td>{{r}}</td>
+                                {% if r == 'Index' or r == 'Score' %}
+                                    <td style="background: yellow;">{{r}}</td>
+                                {% elif r == 'Top 1' %}
+                                    <td style="background: yellow;">{{r}}</td>
+                                {% else %}
+                                    <td>{{r}}</td>
+                                {% endif %}
                             {% endif %}
                         {% endfor %}
                     </tr>
