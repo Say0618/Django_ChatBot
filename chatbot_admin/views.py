@@ -687,7 +687,7 @@ def aa_output_sheet(request):
             'dataset': total_result
         })
     else:
-        return "file not exist!"
+        return JsonResponse({'msg':'file not exist!'})
         # return render(request, 'output/aa_output.html')
         
 
@@ -704,7 +704,8 @@ def exportAAOutputSheet(request):
                 response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
                 return response
         else:
-            return "file not exist!"
+            return JsonResponse({'msg':'file not exist!'})
+            # return "file not exist!"
             # return render(request, 'output/aa_output.html')
 
 @login_required
