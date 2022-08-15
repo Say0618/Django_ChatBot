@@ -667,10 +667,10 @@ def aa_output_sheet(request):
     if os.path.exists(read_path):
         wb = openpyxl.load_workbook(read_path)
         ws = wb.active
-        return JsonResponse({'wb': wb})
 
-    #     rows_cnt = ws.max_row
-    #     cols_cnt = ws.max_column
+        rows_cnt = ws.max_row
+        cols_cnt = ws.max_column
+        return JsonResponse({'wb': wb})
 
     #     total_result = []
     #     for r in range(1, rows_cnt + 1):
