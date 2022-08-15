@@ -617,8 +617,8 @@ def databaseDownload(request):
 
 @login_required
 def write_sheet(request):
-    # read_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + "\\Media\\write_sheets\\Write.xlsx"
-    read_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + "/Media/write_sheets/Write.xlsx"
+    # read_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + "\\Media\\write_sheets\\write.xlsx"
+    read_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + "/Media/write_sheets/write.xlsx"
 
     if os.path.exists(read_path):
         wb = openpyxl.load_workbook(read_path)
