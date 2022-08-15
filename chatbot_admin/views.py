@@ -687,7 +687,8 @@ def aa_output_sheet(request):
             'dataset': total_result
         })
     else:
-        return render(request, 'output/aa_output.html')
+        return "file not exist!"
+        # return render(request, 'output/aa_output.html')
         
 
 
@@ -703,7 +704,8 @@ def exportAAOutputSheet(request):
                 response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
                 return response
         else:
-            return render(request, 'output/aa_output.html')
+            return "file not exist!"
+            # return render(request, 'output/aa_output.html')
 
 @login_required
 def videos(request):
