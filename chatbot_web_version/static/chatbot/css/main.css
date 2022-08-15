@@ -11,17 +11,9 @@ iframe {
     height: 100%;
 }
 
-/* input:disabled {
-    color: white !;
-} */
-
 #database {
     background-color: #03C0FC;
     background-image: linear-gradient(315deg, #03C0FC 0%, #253ADE 74%);
-    /* position: absolute;
-    right: 20px;
-    border-radius: 10%;
-    padding: 1%; */
     border-radius: 5px;
     padding: 1%;
     cursor: pointer;
@@ -30,7 +22,6 @@ iframe {
     width: 65px;
     height: 35px;
     font-size: 14px;
-    /* bottom: 49px; */
 }
 
 #database:hover {
@@ -77,14 +68,11 @@ iframe {
   position: fixed;
   bottom: 0;
   right: 22px;
-  /* border: 3px solid #f1f1f1; */
   z-index: 9;
 }
 .chat {
-  /* position: fixed; */
   bottom: 0;
   right: 15px;
-  /* border: 3px solid #f1f1f1; */
   z-index: 9;
 }
 
@@ -94,13 +82,8 @@ iframe {
   background-color: white;
 }
 .form-container-first {
-    /* max-width: 340px; */
     width: 100%;
-    /* max-width: 640px; */
     text-align: center;
-    /* padding-top: 325px; */
-    /* padding-top: 400px; */
-    /* background-image: url("../assets/images/Lux Prototype.png"); */
     background-size: 100%;
     transition: 2s;
 }
@@ -157,24 +140,17 @@ iframe {
   opacity: 1;
 }
 .bot-image {
-    width: 46%;
-    /* padding: 6%; */
-    /* margin: 11.5% 0%; */
+    width: 20%;
 }
 .bot-way {
     font-weight: bold;
     font-size: 17px;
-    padding: 6%;
-        padding-top: 6%;
-        padding-bottom: 6%;
     padding-top: 6%;
     text-align: center;
     padding-bottom: 2%;
     word-spacing: 1px;
 	letter-spacing: 1px;
-    /* color: cornsilk; */
     position: relative;
-    /* top: 10px; */
 }
 .chat-header{
     background-color: #03C0FC;
@@ -235,7 +211,6 @@ hr {
 }
 .form-container > input {
     width: 90%;
-    /*border: navajowhite;*/
     padding: 3% 5%;
     font-weight: bold;
     font-size: 13px;
@@ -303,15 +278,12 @@ input:focus, textarea:focus, select:focus{
 }
 #options > p {
     display: inline;
-    /* background: #DFEEEC; */
     background: transparent;
     margin: 0% .5%;
     padding: 3% 4%;
     border-radius: 50px;
     font-size: 12px;
     cursor: pointer;
-    /* border-top: 2px solid #253ADE;
-    border-bottom:2px solid #03C0FC; */
     border-top: 1px solid #253ADE;
     border-bottom:1px solid #03C0FC;
     transition: .3s;
@@ -330,8 +302,6 @@ input:focus, textarea:focus, select:focus{
     border-radius: 50px;
     font-size: 12px;
     cursor: pointer;
-    /* border-top: 2px solid #253ADE;
-    border-bottom:2px solid #03C0FC; */
     border-top: 1px solid #253ADE;
     border-bottom:1px solid #03C0FC;
     transition: .3s;
@@ -397,10 +367,6 @@ input:focus, textarea:focus, select:focus{
     bottom: 53px;
 }
 .greeting-img {
-    /*border-top: 2px solid #253ADE;
-    border-left: 2px solid #253ADE;
-    border-bottom:2px solid #03C0FC;
-    border-right:2px solid #03C0FC;*/
 	border-radius: 10px;
     width: 180px;
     height: 100px;
@@ -440,16 +406,11 @@ p > input {
   	position: relative;
 }
 p > .spn {
-    /* background: #fff; */
-    /* background: rgb(8 75 209);
-     */
     background-image: linear-gradient(315deg, #03C0FC 0%, #253ADE 74%);
-    /* color: #000; */
     color: white;
     text-align: center;
     position: absolute;
     width: 148px;
-    /* bottom: 6px; */
     bottom: 4px;
     left: 1px;
     padding: 2% 8%;
@@ -457,16 +418,11 @@ p > .spn {
     z-index: 999;
 }
 p > .spn1 {
-    /* background: #fff; */
-    /* background: rgb(8 75 209);
-     */
     background-image: linear-gradient(315deg, #03C0FC 0%, #253ADE 74%);
-    /* color: #000; */
     color: white;
     text-align: center;
     position: absolute;
     width: 179px;
-    /* bottom: 6px; */
     bottom: 4px;
     left: 1px;
     padding: 2% 8%;
@@ -481,7 +437,6 @@ p > .greeting-img {
 }
 #options > .opt {
     display: inline-grid;
-    /*background: #DFEEEC;*/
     margin: 0% .5%;
     border-radius: 50px;
     font-size: 12px;
@@ -490,7 +445,6 @@ p > .greeting-img {
 }
 #optionsVid > .opt {
     display: inline-grid;
-    /*background: #DFEEEC;*/
     margin: 0% .5%;
     border-radius: 50px;
     font-size: 10px;
@@ -505,21 +459,13 @@ p > .greeting-img {
 #optionsVid > .opt > input {
     margin-left: 0px;
     margin-bottom: 6px;
-    /* margin-bottom: -8px; */
     color: #03C0FC;
-    /* border: 1px solid; */
-    /* border-image-source: linear-gradient(315deg, #03C0FC 0%, #253ADE 74%) !important; */
-    /* border-image-slice: 1; */
-    /* outline: auto; */
     width: 7%;
-    /* margin-left: 40px; */
     margin-left: 83px;
     margin-bottom: 22px;
 }
 .opt > span {
     position: absolute;
-    /* background: #fff; */
-    /* background: rgb(8 75 209); */
     background-image: linear-gradient(315deg, #03C0FC 0%, #253ADE 74%);
     width: 180px;
     color: white;
@@ -528,7 +474,6 @@ p > .greeting-img {
     text-align: center;
     padding: 2% 8%;
     left: 1px;
-    /* border-radius: 0px 0px 10px 10px; */
     border-radius: 0px 0px 8px 8px;
     overflow: hidden;
     z-index: 2;
@@ -538,14 +483,12 @@ p > .greeting-img {
 }
 .opt > input {
     margin-left: 45px;
-    /* margin-bottom: 2px; */
     margin-bottom: 8px;
 }
 
 input[type='checkbox'] {
     color: #03C0FC;
     outline: auto;
-    /* width: 11%; */
 }
 
 input[type='checkbox']:hover {
@@ -568,13 +511,8 @@ input[type='checkbox']:hover {
 input[type="radio"] {
     appearance: none;
     font: inherit;
-    /* color: #253ADE; */
     color: #03C0FC;
-    /* border: 1px solid; */
-    /* border-image-source: linear-gradient(315deg, #03C0FC 0%, #253ADE 74%) !important; */
-    /* border-image-slice: 1; */
     padding: 1px;
-    /* background-image: linear-gradient(315deg, #03C0FC 0%, #253ADE 74%); */
     width: 1.15em;
     height: 1.15em;
     border: 0.15em solid currentColor;
