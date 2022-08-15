@@ -670,7 +670,7 @@ def aa_output_sheet(request):
 
         rows_cnt = ws.max_row
         cols_cnt = ws.max_column
-        return JsonResponse({'wb': wb})
+        return JsonResponse({'wb': cols_cnt})
 
     #     total_result = []
     #     for r in range(1, rows_cnt + 1):
