@@ -712,3 +712,7 @@ def videos(request):
 def chatbot(request):
     
     return render(request, 'chatbot.html')
+
+@login_required
+def terms_conditions(request):
+    return render(request, 'terms_and_conditions.html')
