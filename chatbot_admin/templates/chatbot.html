@@ -8,7 +8,7 @@
 {% block css %}
 <link rel="stylesheet" type="text/css" href="{% static 'chatbot/css/main.css' %}">
 <link rel="stylesheet" type="text/css" href="{% static 'chatbot/css/responsive.css' %}">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css"> -->
 <link rel="icon" href="{% static 'chatbot/favicon.ico' %}" type="image/x-icon" />
 <style>
 </style>
@@ -47,7 +47,7 @@
         <hr>
         <!-- <br> -->
         <input type="text" name="bot-message" id="userAnswer" placeholder="Enter your message...">
-        <button class="submit-button" onclick="send();return false;"><i class="fa fa-send"></i></button>
+        <button class="submit-button" onclick="send();return false;"><i class="far fa-paper-plane"></i></button>
         <div class="bot-footer">
             <p>Powered by </p> <img src="{% static 'chatbot/assets/images/image.png' %}" alt="powered by">
         </div>
