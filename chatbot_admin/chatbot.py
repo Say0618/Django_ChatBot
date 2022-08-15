@@ -8,7 +8,7 @@ from PIL import Image
 import sys
 import time
 
-from Calcs import *
+from .calc_algo_v6 import *
 import os
 import pathlib
 
