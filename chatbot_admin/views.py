@@ -670,24 +670,23 @@ def aa_output_sheet(request):
 
         rows_cnt = ws.max_row
         cols_cnt = ws.max_column
-        return JsonResponse({'wb': cols_cnt})
 
-    #     total_result = []
-    #     for r in range(1, rows_cnt + 1):
-    #         record = []
-    #         for i in range(1, cols_cnt + 1):
-    #             record.append(ws.cell(row=r, column=i).value)
-    #         total_result.append(record)
+        total_result = []
+        for r in range(1, rows_cnt + 1):
+            record = []
+            for i in range(1, cols_cnt + 1):
+                record.append(ws.cell(row=r, column=i).value)
+            total_result.append(record)
 
-    #     thead = total_result[0]
-    #     total_result.pop(0)
-
+        thead = total_result[0]
+        total_result.pop(0)
+        
+        return JsonResponse({'wb': total_result})
     #     return render(request, 'output/aa_output.html', {
     #         'thead': thead,
     #         'dataset': total_result
     #     })
     # else:
-    #     # return JsonResponse({'msg':'file not exist!'})
     #     return render(request, 'output/aa_output.html')
         
 
@@ -705,7 +704,6 @@ def exportAAOutputSheet(request):
                 response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
                 return response
         else:
-            # return JsonResponse({'msg':'file not exist!'})
             return render(request, 'output/aa_output.html')
 
 @login_required
