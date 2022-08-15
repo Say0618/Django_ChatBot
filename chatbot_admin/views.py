@@ -662,8 +662,8 @@ def exportWriteSheet(request):
 
 @login_required
 def aa_output_sheet(request):
-    # read_path = read_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + "\\Media\\aa_outputs\\aaOutputSheet.xlsx"
-    read_path = read_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + "/Media/aa_outputs/aaOutputSheet.xlsx"
+    # read_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + "\\Media\\aa_outputs\\aaOutputSheet.xlsx"
+    read_path =  os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + "/Media/aa_outputs/aaOutputSheet.xlsx"
     
     if os.path.exists(read_path):
         wb = openpyxl.load_workbook(read_path)
