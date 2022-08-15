@@ -37,7 +37,8 @@ from .forms import ReadSheetForm
 from .forms import InterpretationSheetForm
 from .forms import Images_BotForm
 from .forms import Database_ExcelForm
-
+#chat bot 
+from .chatbot import *
 
 
 @login_required

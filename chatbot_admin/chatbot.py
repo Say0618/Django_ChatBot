@@ -1,10 +1,8 @@
 from ast import Not
-import eel
 import openpyxl
 from os.path import exists
 from datetime import datetime
 import base64
-# import time
 import json
 from PIL import Image 
 import sys
@@ -13,13 +11,11 @@ import time
 from Calcs import *
 import os
 import pathlib
-# import datetime
 
-# read_path = "excel/test-1.xlsx"
-read_path = "excel/read.xlsx"
-write_path = "excel/write.xlsx"
-master_path = "excel/master_sheet.xlsx"
-interpretation_path = "excel/Interpretation table v1.xlsx"
+read_path = os.getcwd() + "/media/read_sheets/read.xlsx"
+write_path = os.getcwd() + "/media/write_sheets/write.xlsx"
+master_path = os.getcwd() + "/media/master_sheets/master_sheet.xlsx"
+interpretation_path = os.getcwd() + "/media/interpretation_sheets/Interpretation table v1.xlsx"
 
 dataset = []
 def getData():
@@ -113,12 +109,12 @@ def getImageData(img_path):
 
 getData()
 
-@eel.expose
+# @eel.expose
 def getFirstQuestion():
     # dataset = getData()
     return dataset[0]
 
-@eel.expose
+# @eel.expose
 def getQuestion(index):
     # dataset = getData()
     return dataset[index-1]
@@ -377,7 +373,7 @@ def data_science():
     output_result_to_excel(output_file_name)
 
 # data_science();
-@eel.expose
+# @eel.expose
 def getFeedback(mode):
     time.sleep(7)
     feedbacks = []
@@ -470,7 +466,7 @@ def getFeedback(mode):
 # getFeedback("User")
 # getFeedback("Tester")
 
-@eel.expose
+# @eel.expose
 def getDatabase(filename):
     database_path = "excel/" + filename
 
@@ -542,7 +538,3 @@ def numToAlpha(param):
         return "Y"
     if param == 26:
         return "Z"
-
-eel.init('web')
-
-eel.start('index.html', size=(960, 720), port=0)
