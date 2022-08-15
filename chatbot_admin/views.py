@@ -664,28 +664,28 @@ def exportWriteSheet(request):
 def aa_output_sheet(request):
     # read_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + "\\Media\\aa_outputs\\aaOutputSheet.xlsx"
     read_path =  os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + "/Media/aa_outputs/aaOutputSheet.xlsx"
-    return JsonResponse({'wb': os.path.isfile(read_path)})
+    # return JsonResponse({'wb': os.path.isfile(read_path)})
+    wb = openpyxl.load_workbook(read_path)
+    ws = wb.active
+
+    rows_cnt = ws.max_row
+    cols_cnt = ws.max_column
+
+    total_result = []
+    for r in range(1, rows_cnt + 1):
+        record = []
+        for i in range(1, cols_cnt + 1):
+            record.append(ws.cell(row=r, column=i).value)
+        total_result.append(record)
+
+    thead = total_result[0]
+    total_result.pop(0)
+    
+    return render(request, 'output/aa_output.html', {
+        'thead': thead,
+        'dataset': total_result
+    })
     # if os.path.exists(read_path):
-    #     wb = openpyxl.load_workbook(read_path)
-    #     ws = wb.active
-
-    #     rows_cnt = ws.max_row
-    #     cols_cnt = ws.max_column
-
-    #     total_result = []
-    #     for r in range(1, rows_cnt + 1):
-    #         record = []
-    #         for i in range(1, cols_cnt + 1):
-    #             record.append(ws.cell(row=r, column=i).value)
-    #         total_result.append(record)
-
-    #     thead = total_result[0]
-    #     total_result.pop(0)
-        
-    #     return render(request, 'output/aa_output.html', {
-    #         'thead': thead,
-    #         'dataset': total_result
-    #     })
     # else:
     #     return render(request, 'output/aa_output.html')
         
