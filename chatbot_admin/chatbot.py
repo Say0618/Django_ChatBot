@@ -107,7 +107,7 @@ def getImageData(img_path):
 
     return data
 
-getData()
+# getData()
 
 # @eel.expose
 def getFirstQuestion():
@@ -168,7 +168,7 @@ def getAlpha():
 # getAlpha()
 # sys.exit("Error message")
 
-@eel.expose 
+# @eel.expose 
 def writeExcel(write_data_set):
     wb1 = openpyxl.load_workbook(read_path)
     ws1 = wb1.active
