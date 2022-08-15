@@ -687,8 +687,6 @@ def aa_output_sheet(request):
     else:
         return render(request, 'output/aa_output.html')
         
-
-
 def exportAAOutputSheet(request):
     if request.method == 'POST':
         BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -711,4 +709,5 @@ def videos(request):
 
 @login_required
 def chatbot(request):
+    
     return render(request, 'chatbot.html')

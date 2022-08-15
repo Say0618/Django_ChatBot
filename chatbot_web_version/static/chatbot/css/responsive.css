@@ -1,0 +1,166 @@
+@media screen and (min-width: 1200px) and (max-width:1350px) {
+    .chat-popup {
+        display: none;
+        position: fixed;
+        bottom: 0;
+        left: 14px;
+        z-index: 9;
+        margin: 0% 16%;
+        width: 100%;
+    }
+    #options {
+        width: 67%;
+        margin-left: 0% !important;
+        padding: 1% 2% !important;
+    }
+    #options>p {
+        padding: 2% 2% !important;
+    }
+}
+
+@media screen and (min-width: 1200px) and (max-width:1350px) {
+    .chat-popup {
+        display: none;
+        position: fixed;
+        bottom: 0;
+        left: 14px;
+        z-index: 9;
+        margin: 0% 16%;
+        width: 100%;
+    }
+    #options {
+        width: 67%;
+        margin-left: 0% !important;
+        padding: 1% 2% !important;
+    }
+    #options>p {
+        padding: 2% 2% !important;
+    }
+}
+
+@media screen and (min-width: 1050px) and (max-width:1200px) {
+    .chat-popup {
+        display: none;
+        position: fixed;
+        bottom: 0;
+        left: 14px;
+        z-index: 9;
+        margin: 0% 8%;
+        width: 100%;
+    }
+    #options {
+        width: 77%;
+    }
+    #options>p {
+        padding: 2% 2% !important;
+    }
+}
+
+@media screen and (min-width: 940px) {
+    .form-container>input {
+        width: 96%;
+        padding: 1.2% 3%;
+        font-weight: bold;
+        font-size: 15px;
+        font-family: inherit;
+        color: #565C5D;
+        margin: 0% 2%;
+    }
+    .submit-button {
+        background-color: #03C0FC;
+        background-image: linear-gradient(315deg, #03C0FC 0%, #253ADE 74%);
+        position: absolute;
+        right: 20px;
+        border-radius: 50%;
+        padding: 0.8%;
+        cursor: pointer;
+        border: none;
+        transition: .5s;
+        bottom: 55px;
+    }
+    .chat-header {
+        background-color: #03C0FC;
+        background-image: linear-gradient(315deg, #03C0FC 0%, #253ADE 74%);
+        display: flex;
+        padding: 2%;
+    }
+    /*.chat-header::after {
+	    content: "";
+	    position: absolute;
+	    border-radius: 50%;
+	    height: 25px;
+	    background: #3E88D1;
+	    width: 25px;
+	    right: 10px;
+	    top: 22px;
+	}*/
+    .form-container {
+        width: 900px;
+        /* width: 100%; */
+        background-color: white;
+    }
+    .bot-footer {
+        padding-top: 1%;
+    }
+    .form-container .bot-body {
+        max-height: 420px !important;
+        min-height: 420px !important;
+    }
+    #options>p {
+        padding: 2% 2% !important;
+    }
+    #viewOption>p>img {
+        /* width: 91% !important; */
+        /* height: 300px !important; */
+        /* bottom: 210px !important; */
+        max-width: 830px !important;
+        max-height: 323px;
+        width: auto;
+        height: auto;
+        bottom: 250px !important;
+        z-index: 1000;
+    }
+    #viewOption>p>video {
+        width: 55% !important;
+        height: 300px !important;
+        bottom: 210px !important;
+        left: 190px !important;
+    }
+    .bot-typing-hidden {
+        padding: 0% !important;
+    }
+    .bot-typing {
+        width: 85px !important;
+        bottom: 80px !important;
+        position: absolute !important;
+    }
+    #options {
+        position: absolute !important;
+        /* bottom: 50px !important; */
+        /* bottom: 70px !important; */
+        bottom: 55px !important;
+    }
+    #optionsVid {
+        position: absolute !important;
+        bottom: 50px !important;
+    }
+    .bot-footer>img {
+        bottom: 18px !important;
+    }
+    #botChat>div:last-child {
+        padding-bottom: 100px !important;
+        /* padding-bottom: 0px !important; */
+    }
+    .options {
+        width: 98%;
+        margin-left: 0% !important;
+        padding: 1% 2% !important;
+    }
+    .dots {
+        width: 62px !important;
+    }
+    /*.chat-popup {
+	    right: initial !important;
+	    left: 13% !important;
+	}*/
+}
