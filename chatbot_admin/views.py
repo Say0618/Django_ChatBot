@@ -617,8 +617,8 @@ def databaseDownload(request):
 
 @login_required
 def write_sheet(request):
-    # read_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + "\\Media\\write_sheets\\write.xlsx"
-    read_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + "/Media/write_sheets/write.xlsx"
+    # read_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + "\\media\\write_sheets\\write.xlsx"
+    read_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + "/media/write_sheets/write.xlsx"
 
     if os.path.exists(read_path):
         wb = openpyxl.load_workbook(read_path)
@@ -637,8 +637,6 @@ def write_sheet(request):
         thead = total_result[0]
         total_result.pop(0)
 
-        # print('total_result is ................',total_result)
-
         return render(request, 'output/write_sheet.html', {
             'thead': thead,
             'dataset': total_result
@@ -650,8 +648,8 @@ def exportWriteSheet(request):
     if request.method == 'POST':
         BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-        # file_path = BASE_DIR + '\\Media\\write_sheets\\write.xlsx'
-        file_path = BASE_DIR + '/Media/write_sheets/write.xlsx'
+        # file_path = BASE_DIR + '\\media\\write_sheets\\write.xlsx'
+        file_path = BASE_DIR + '/media/write_sheets/write.xlsx'
         if os.path.exists(file_path):
             with open(file_path, 'rb') as fh:
                 response = HttpResponse(fh.read(), content_type="application/vnd.ms-excel")
@@ -662,32 +660,32 @@ def exportWriteSheet(request):
 
 @login_required
 def aa_output_sheet(request):
-    # read_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + "\\Media\\aa_outputs\\aaOutputSheet.xlsx"
-    read_path =  os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + "/Media/aa_outputs/aaOutputSheet.xlsx"
-    # return JsonResponse({'wb': os.path.isfile(read_path)})
-    wb = openpyxl.load_workbook(read_path)
-    ws = wb.active
-
-    rows_cnt = ws.max_row
-    cols_cnt = ws.max_column
-
-    total_result = []
-    for r in range(1, rows_cnt + 1):
-        record = []
-        for i in range(1, cols_cnt + 1):
-            record.append(ws.cell(row=r, column=i).value)
-        total_result.append(record)
-
-    thead = total_result[0]
-    total_result.pop(0)
+    # read_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + "\\media\\aa_outputs\\aaOutputSheet.xlsx"
+    read_path =  os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + "/media/aa_outputs/aaOutputSheet.xlsx"
     
-    return render(request, 'output/aa_output.html', {
-        'thead': thead,
-        'dataset': total_result
-    })
-    # if os.path.exists(read_path):
-    # else:
-    #     return render(request, 'output/aa_output.html')
+    if os.path.exists(read_path):
+        wb = openpyxl.load_workbook(read_path)
+        ws = wb.active
+
+        rows_cnt = ws.max_row
+        cols_cnt = ws.max_column
+
+        total_result = []
+        for r in range(1, rows_cnt + 1):
+            record = []
+            for i in range(1, cols_cnt + 1):
+                record.append(ws.cell(row=r, column=i).value)
+            total_result.append(record)
+
+        thead = total_result[0]
+        total_result.pop(0)
+        
+        return render(request, 'output/aa_output.html', {
+            'thead': thead,
+            'dataset': total_result
+        })
+    else:
+        return render(request, 'output/aa_output.html')
         
 
 
@@ -695,9 +693,9 @@ def exportAAOutputSheet(request):
     if request.method == 'POST':
         BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-        # file_path = BASE_DIR + '\\Media\\aa_outputs\\aaOutputSheet.xlsx'
-        file_path = BASE_DIR + '/Media/aa_outputs/aaOutputSheet.xlsx'
-        # return JsonResponse({'file_path': file_path})
+        # file_path = BASE_DIR + '\media\\aa_outputs\\aaOutputSheet.xlsx'
+        file_path = BASE_DIR + 'media/aa_outputs/aaOutputSheet.xlsx'
+        
         if os.path.exists(file_path):
             with open(file_path, 'rb') as fh:
                 response = HttpResponse(fh.read(), content_type="application/vnd.ms-excel")
