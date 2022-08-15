@@ -694,7 +694,7 @@ def exportAAOutputSheet(request):
         BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
         # file_path = BASE_DIR + '\media\\aa_outputs\\aaOutputSheet.xlsx'
-        file_path = BASE_DIR + 'media/aa_outputs/aaOutputSheet.xlsx'
+        file_path = BASE_DIR + '/media/aa_outputs/aaOutputSheet.xlsx'
         
         if os.path.exists(file_path):
             with open(file_path, 'rb') as fh:
