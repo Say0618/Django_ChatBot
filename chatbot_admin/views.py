@@ -316,7 +316,8 @@ def readSheetDownload(request):
 
             paths = []
             for file in files:
-                prefix = os.getcwd() + '\\media\\read_sheets\\'
+                # prefix = os.getcwd() + '\\media\\read_sheets\\'
+                prefix = os.getcwd() + '/media/read_sheets/'
                 path = prefix + file.filename()
                 paths.append(path)
             
@@ -406,7 +407,8 @@ def interpretationSheetDownload(request):
 
             paths = []
             for file in files:
-                prefix = os.getcwd() + '\\media\\interpretation_sheets\\'
+                # prefix = os.getcwd() + '\\media\\interpretation_sheets\\'
+                prefix = os.getcwd() + '/media/interpretation_sheets/'
                 path = prefix + file.filename()
                 paths.append(path)
             
@@ -496,7 +498,8 @@ def imagesDownload(request):
 
             paths = []
             for file in files:
-                prefix = os.getcwd() + '\\media\\attachments\\images\\'
+                # prefix = os.getcwd() + '\\media\\attachments\\images\\'
+                prefix = os.getcwd() + '/media/attachments/images/'
                 path = prefix + file.filename()
                 paths.append(path)
             
@@ -586,7 +589,8 @@ def databaseDownload(request):
 
             paths = []
             for file in files:
-                prefix = os.getcwd() + '\\media\\attachments\\database\\'
+                # prefix = os.getcwd() + '\\media\\attachments\\database\\'
+                prefix = os.getcwd() + '/media/attachments/database/'
                 path = prefix + file.filename()
                 paths.append(path)
             
@@ -613,7 +617,8 @@ def databaseDownload(request):
 
 @login_required
 def write_sheet(request):
-    read_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + "\\Media\\write_sheets\\Write.xlsx"
+    # read_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + "\\Media\\write_sheets\\Write.xlsx"
+    read_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + "/Media/write_sheets/Write.xlsx"
 
     if os.path.exists(read_path):
         wb = openpyxl.load_workbook(read_path)
@@ -645,7 +650,8 @@ def exportWriteSheet(request):
     if request.method == 'POST':
         BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-        file_path = BASE_DIR + '\\Media\\write_sheets\\write.xlsx'
+        # file_path = BASE_DIR + '\\Media\\write_sheets\\write.xlsx'
+        file_path = BASE_DIR + '/Media/write_sheets/write.xlsx'
         if os.path.exists(file_path):
             with open(file_path, 'rb') as fh:
                 response = HttpResponse(fh.read(), content_type="application/vnd.ms-excel")
@@ -656,7 +662,8 @@ def exportWriteSheet(request):
 
 @login_required
 def aa_output_sheet(request):
-    read_path = read_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + "\\Media\\aa_outputs\\aaOutputSheet.xlsx"
+    # read_path = read_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + "\\Media\\aa_outputs\\aaOutputSheet.xlsx"
+    read_path = read_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + "/Media/aa_outputs/aaOutputSheet.xlsx"
     
     if os.path.exists(read_path):
         wb = openpyxl.load_workbook(read_path)
@@ -688,7 +695,8 @@ def exportAAOutputSheet(request):
     if request.method == 'POST':
         BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-        file_path = BASE_DIR + '\\Media\\aa_outputs\\aaOutputSheet.xlsx'
+        # file_path = BASE_DIR + '\\Media\\aa_outputs\\aaOutputSheet.xlsx'
+        file_path = BASE_DIR + '/Media/aa_outputs/aaOutputSheet.xlsx'
         if os.path.exists(file_path):
             with open(file_path, 'rb') as fh:
                 response = HttpResponse(fh.read(), content_type="application/vnd.ms-excel")
