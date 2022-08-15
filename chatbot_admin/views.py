@@ -665,30 +665,30 @@ def aa_output_sheet(request):
     # read_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + "\\Media\\aa_outputs\\aaOutputSheet.xlsx"
     read_path =  os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + "/Media/aa_outputs/aaOutputSheet.xlsx"
     return JsonResponse({'read_path': read_path})
-    if os.path.exists(read_path):
-        wb = openpyxl.load_workbook(read_path)
-        ws = wb.active
+    # if os.path.exists(read_path):
+    #     wb = openpyxl.load_workbook(read_path)
+    #     ws = wb.active
 
-        rows_cnt = ws.max_row
-        cols_cnt = ws.max_column
+    #     rows_cnt = ws.max_row
+    #     cols_cnt = ws.max_column
 
-        total_result = []
-        for r in range(1, rows_cnt + 1):
-            record = []
-            for i in range(1, cols_cnt + 1):
-                record.append(ws.cell(row=r, column=i).value)
-            total_result.append(record)
+    #     total_result = []
+    #     for r in range(1, rows_cnt + 1):
+    #         record = []
+    #         for i in range(1, cols_cnt + 1):
+    #             record.append(ws.cell(row=r, column=i).value)
+    #         total_result.append(record)
 
-        thead = total_result[0]
-        total_result.pop(0)
+    #     thead = total_result[0]
+    #     total_result.pop(0)
 
-        return render(request, 'output/aa_output.html', {
-            'thead': thead,
-            'dataset': total_result
-        })
-    else:
-        # return JsonResponse({'msg':'file not exist!'})
-        return render(request, 'output/aa_output.html')
+    #     return render(request, 'output/aa_output.html', {
+    #         'thead': thead,
+    #         'dataset': total_result
+    #     })
+    # else:
+    #     # return JsonResponse({'msg':'file not exist!'})
+    #     return render(request, 'output/aa_output.html')
         
 
 
@@ -699,14 +699,14 @@ def exportAAOutputSheet(request):
         # file_path = BASE_DIR + '\\Media\\aa_outputs\\aaOutputSheet.xlsx'
         file_path = BASE_DIR + '/Media/aa_outputs/aaOutputSheet.xlsx'
         return JsonResponse({'file_path': file_path})
-        if os.path.exists(file_path):
-            with open(file_path, 'rb') as fh:
-                response = HttpResponse(fh.read(), content_type="application/vnd.ms-excel")
-                response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
-                return response
-        else:
-            # return JsonResponse({'msg':'file not exist!'})
-            return render(request, 'output/aa_output.html')
+        # if os.path.exists(file_path):
+        #     with open(file_path, 'rb') as fh:
+        #         response = HttpResponse(fh.read(), content_type="application/vnd.ms-excel")
+        #         response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
+        #         return response
+        # else:
+        #     # return JsonResponse({'msg':'file not exist!'})
+        #     return render(request, 'output/aa_output.html')
 
 @login_required
 def videos(request):
