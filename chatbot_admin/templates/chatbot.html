@@ -1,26 +1,61 @@
 {% extends "layout.html" %}
 
-{% block title %}chatbot{% endblock %}
+{% block title %}Chatbot{% endblock %}
 
-{% block breadcrumb %}chatbot{% endblock %}
-{% block breadcrumb-item %}chatbot{% endblock %}
+{% block breadcrumb %}Chatbot{% endblock %}
+{% block breadcrumb-item %}Chatbot{% endblock %}
+{% load static %}
 {% block css %}
+<link rel="stylesheet" type="text/css" href="{% static 'chatbot/css/main.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'chatbot/css/responsive.css' %}">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+<link rel="icon" href="{% static 'chatbot/favicon.ico' %}" type="image/x-icon" />
 <style>
-
-    body {
-        overflow: hidden;
-    }
 </style>
 {% endblock %}
 {% block content %}
-<div>
-    
+<div class="chat" id="chatStart">
+    <form class="form-container-first" id="formStart">
+        <img src="{% static 'chatbot/assets/images/Bot.png' %}" alt="Bot-chat" class="bot-image">
+        <p class="bot-way" id="welcome">Empathy has no script.<br> There is no right or wrong way.<br>I will try my best!</p>
+        <button class="open-button" id="startChat" onclick="openForm();return false;">Start Chat</button>
+    </form>
 </div>
+
+<div class="chat-popup" id="myForm">
+    <form class="form-container">
+        <div class="chat-header">
+            <img src="{% static 'chatbot/assets/images/back.png' %}" alt="back" class="back-errow" onclick="closeForm();return false;">
+            <img src="{% static 'chatbot/assets/images/Profile-Pic.png' %}" alt="profile picture" class="profile-image">
+            <p class="user-name">Lux <span><br>Chat Bot</span></p>
+        </div>
+        <div class="bot-time">
+            <p></p>
+        </div>
+        <div class="bot-body" id="botChat"></div>
+        <div class="viewOption" id="viewOption"></div>
+        <!---place where individual video and image lay on -->
+        <!-- <div id="youtube" style="display: none;"></div> -->
+        <div class="bot-typing" id="typing">
+            <img src="{% static 'chatbot/assets/images/Profile-Pic-chat.png' %}" class="chat-img" alt="profile picture">
+            <img src="{% static 'chatbot/assets/images/20.gif' %}" class="dots" alt="profile picture">
+        </div>
+        <div class="bot-typing-hidden" id="typingHidden">
+        </div>
+        <div class="options" id="options"></div>
+        <div class="options" id="optionsVid"></div>
+        <hr>
+        <!-- <br> -->
+        <input type="text" name="bot-message" id="userAnswer" placeholder="Enter your message...">
+        <button class="submit-button" onclick="send();return false;"><i class="fa fa-send"></i></button>
+        <div class="bot-footer">
+            <p>Powered by </p> <img src="{% static 'chatbot/assets/images/image.png' %}" alt="powered by">
+        </div>
+        <input type="hidden" name="flag" id="flag" value="">
+    </form>
+</div>
+
 {% endblock %}
 {% block script %}
-<script>
-    $().ready(function() {
-    
-    });
-</script>
+<script type="text/javascript" src="{% static 'chatbot/js/main.js' %}"></script>
 {% endblock %}
