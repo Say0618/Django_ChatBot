@@ -705,8 +705,6 @@ def exportAAOutputSheet(request):
         else:
             return render(request, 'output/aa_output.html')
 
-    return 0
-
 @login_required
 def videos(request):
     return render(request, 'attachments/videos.html')
