@@ -664,10 +664,10 @@ def exportWriteSheet(request):
 def aa_output_sheet(request):
     # read_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + "\\Media\\aa_outputs\\aaOutputSheet.xlsx"
     read_path =  os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + "/Media/aa_outputs/aaOutputSheet.xlsx"
-    return JsonResponse({'read_path': os.path.exists(read_path)})
-    # if os.path.exists(read_path):
-    #     wb = openpyxl.load_workbook(read_path)
-    #     ws = wb.active
+    if os.path.exists(read_path):
+        wb = openpyxl.load_workbook(read_path)
+        ws = wb.active
+        return JsonResponse({'wb': wb})
 
     #     rows_cnt = ws.max_row
     #     cols_cnt = ws.max_column
