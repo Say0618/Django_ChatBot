@@ -681,13 +681,12 @@ def aa_output_sheet(request):
         thead = total_result[0]
         total_result.pop(0)
         
-        return JsonResponse({'wb': total_result})
-    #     return render(request, 'output/aa_output.html', {
-    #         'thead': thead,
-    #         'dataset': total_result
-    #     })
-    # else:
-    #     return render(request, 'output/aa_output.html')
+        return render(request, 'output/aa_output.html', {
+            'thead': thead,
+            'dataset': total_result
+        })
+    else:
+        return render(request, 'output/aa_output.html')
         
 
 
