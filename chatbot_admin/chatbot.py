@@ -121,9 +121,9 @@ def getFirstQuestion():
     return dataset[0]
 
 # @eel.expose
-def getQuestion(index):
-    # dataset = getData()
-    return dataset[index-1]
+# def getQuestion(index):
+#     # dataset = getData()
+#     return dataset[index-1]
 
 def getAlpha():
     wb = openpyxl.load_workbook(read_path)
@@ -350,8 +350,8 @@ def writeExcel(write_data_set):
     data_science()
 
 def data_science():
-    if not os.path.isdir("AA"):
-        os.mkdir("AA")
+    # if not os.path.isdir("AA"):
+    #     os.mkdir("AA")
 
     # global preprocess_flag
     process_master_file(master_path)
@@ -474,7 +474,8 @@ def getFeedback(mode):
 
 # @eel.expose
 def getDatabase(filename):
-    database_path = "excel/" + filename
+    base_path = os.getcwd() + '/media/attachments/database/'
+    database_path = base_path + filename
 
     wb = openpyxl.load_workbook(database_path)
     ws = wb.active

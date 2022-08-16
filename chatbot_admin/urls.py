@@ -52,5 +52,10 @@ urlpatterns = [
 
     path('chatbot', views.chatbot, name='chatbot'),
     path('chatbot/start', views.chatbot_start, name='chatbot_start'),
+    path('chatbot/get_database', views.chatbot_getDatabase, name='chatbot_getDatabase'),
+    path('chatbot/get_next_query', views.getNextQuery, name='getNextQuery'),
+    path('chatbot/get_feedbacks', views.get_Feedback, name='getFeedback'),
+    path('chatbot/write_output', views.writeOutput, name='writeOutput'),
+
     path('terms_conditions', views.terms_conditions, name='terms_conditions')
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

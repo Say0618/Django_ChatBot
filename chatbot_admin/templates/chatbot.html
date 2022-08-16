@@ -60,9 +60,40 @@
 {% block script %}
 <!-- <script type="text/javascript" src="{% static 'chatbot/js/main.js' %}"></script> -->
 <script>
+    // declaring global variables
     const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
 
+    var results = [];
+    var type = "";
+    var global_next = -1;
+    var database_ans = "";
+    var up_video = false;
+    var up_img = false;
+    var up_txt = false;
+    var up_pt = false;
+    var up_mt = false;
+    var start_time = "";
+    var checkBox_click = false;
+    var index = 0;
+
+    var y = '';
+    var n = '';
+    let vidArray = []; //multiple media response
+    let vidArrayP = []; //multiple picture response
+    let vidArrayT = []; //multiple text response
+    let vidArrayPT = []; //Q.picture multiple response
+    let vidArrayMT = []; //Q.media multiple response
+
+    let global_order = "";
+    let dob = 0;
+    var MTR_GROUP = [];
+
+    //start chat
     function openForm() {
+
+        setCurTime();
+        start_time = getCurDateTime();
+
         document.getElementById("myForm").style.display = "block";
         document.getElementById("chatStart").style.display = "none";
         document.getElementById("viewOption").style.display = "none";
@@ -83,14 +114,61 @@
 
     }
 
+    //cors ajax setup
     function ajax_setup() {
         $.ajaxSetup({
             headers: {
                 "X-CSRFToken": csrftoken
             }
         });
-    } 
+    }
+    
+    // get and set time
+    function setCurTime() {
+        var today = new Date();
+        var hour = parseInt(today.getHours());
+        var min = parseInt(today.getMinutes());
+        if (hour < 10) {
+            hour = "0" + hour;
+        }
 
+        if (min < 10) {
+            min = "0" + min;
+        }
+
+        // var cur_time =  "Today " + hour + ":" + min + suffix;
+        var cur_time = "Today " + hour + ":" + min;
+        $('.bot-time').children().text(cur_time);
+    }
+
+    function getCurDateTime() {
+        var today = new Date();
+
+        var year = today.getFullYear();
+        var month = parseInt(today.getMonth()) + 1;
+        if (month < 10)
+            month = "0" + month;
+        var date = today.getDate();
+        if (date < 10)
+            date = "0" + date;
+
+        var hour = parseInt(today.getHours());
+        var min = parseInt(today.getMinutes());
+        var second = parseInt(today.getSeconds());
+
+        if (hour < 10) {
+            hour = "0" + hour;
+        }
+        if (min < 10)
+            min = "0" + min;
+        if (second < 10)
+            second = "0" + second
+            // var curDateTime = month + "-" + date + "." + year + ", "  + hour + "." + min;
+        var curDateTime = date + "/" + month + "/" + year + " " + hour + ":" + min + ":" + second;
+        return curDateTime;
+    }
+    
+    //get the first question, prepare query set
     function get_First_Question() {
         ajax_setup();
         $.ajax({
@@ -103,7 +181,169 @@
         });
     }
 
-    //Bot chat display
+    //this function describes how to react when we click the send button
+    function send() {
+        var userAnswer = document.getElementById("userAnswer").value;
+
+        if (database_ans != "") {
+            document.getElementById("botChat").innerHTML += `<div class='userChat'><p order='${global_order}' class='userMsg'>${database_ans}</p></div>`;
+            document.getElementById("userAnswer").disabled = false;
+            document.getElementById('options').style.display = 'none';
+
+            $('#typing').show();
+            database_ans = "";
+            get_Next_Question(global_next);
+        }
+
+        if (up_video) {
+            if (vidArray.length == 0) {
+                return;
+            }
+            //part for youtube stop
+            document.getElementById("optionsVid").innerHTML = '';
+            //hide viewoption
+            document.getElementById("viewOption").style.display = "none";
+            //add videos to botchat when press submit button
+            if (vidArray.length > 0) {
+                for (var i = 0; i < vidArray.length; i++) {
+                    document.getElementById("botChat").innerHTML += `<div class='userChat'><p order='${global_order}'>${vidArray[i]}</p></div>`;
+                    scrollToBottom();
+                }
+                $('#typing').show();
+                get_Next_Question(global_next);
+            }
+
+            document.getElementById('optionsVid').style.display = 'none';
+            up_video = false;
+            vidArray = [];
+        }
+
+        if (up_img) {
+            if (vidArrayP.length == 0) {
+                return;
+            }
+            //hide viewoption
+            document.getElementById("viewOption").style.display = "none";
+            //add videos to botchat when press submit button
+            if (vidArrayP.length > 0) {
+                for (var i = 0; i < vidArrayP.length; i++) {
+                    document.getElementById("botChat").innerHTML += `<div class='userChat'><p order='${global_order}'>${vidArrayP[i]}</p></div>`;
+                    scrollToBottom();
+                }
+                $('#typing').show();
+                get_Next_Question(global_next);
+                // is_start = true;
+            }
+
+            document.getElementById('optionsVid').style.display = 'none';
+            up_img = false;
+            vidArrayP = [];
+        }
+
+        if (up_pt) {
+            if (vidArrayPT.length == 0) {
+                return;
+            }
+            //hide viewoption
+            document.getElementById("viewOption").style.display = "none";
+            document.getElementById("options").style.display = 'none';
+            //add videos to botchat when press submit button
+            if (vidArrayPT.length > 0) {
+                global_next = MTR_GROUP[0];
+                MTR_GROUP.splice(0, 1);
+
+                for (var i = 0; i < vidArrayPT.length; i++) {
+                    document.getElementById("botChat").innerHTML += `<div class='userChat'><p order='${global_order}' class='userMsg'>${vidArrayPT[i]}</p></div>`;
+                    scrollToBottom();
+                }
+                $('#typing').show();
+                get_Next_Question(global_next);
+                // is_start = true;
+            }
+
+            document.getElementById('optionsVid').style.display = 'none';
+            up_pt = false;
+            vidArrayPT = [];
+        }
+
+        if (up_txt) {
+            if (vidArrayT.length == 0) {
+                return;
+            }
+            //hide viewoption
+            document.getElementById("viewOption").style.display = "none";
+            document.getElementById("options").style.display = 'none';
+            //add videos to botchat when press submit button
+            if (vidArrayT.length > 0) {
+                global_next = MTR_GROUP[0];
+                MTR_GROUP.splice(0, 1);
+
+                for (var i = 0; i < vidArrayT.length; i++) {
+                    document.getElementById("botChat").innerHTML += `<div class='userChat'><p order='${global_order}' class='userMsg'>${vidArrayT[i]}</p></div>`;
+                    scrollToBottom();
+                }
+                console.log(global_next)
+                get_Next_Question(global_next);
+                $('#typing').show();
+            }
+
+            document.getElementById('optionsVid').style.display = 'none';
+            up_txt = false;
+            vidArrayT = [];
+        }
+
+        if (up_mt) {
+            if (vidArrayMT.length == 0) {
+                return;
+            }
+            //hide viewoption
+            document.getElementById("viewOption").style.display = "none";
+            document.getElementById("options").style.display = 'none';
+            //add videos to botchat when press submit button
+            if (vidArrayMT.length > 0) {
+                global_next = MTR_GROUP[0];
+                MTR_GROUP.splice(0, 1);
+
+                for (var i = 0; i < vidArrayMT.length; i++) {
+                    document.getElementById("botChat").innerHTML += `<div class='userChat'><p order='${global_order}' class='userMsg'>${vidArrayMT[i]}</p></div>`;
+                    scrollToBottom();
+                }
+                get_Next_Question(global_next);
+                $('#typing').show();
+            }
+
+            document.getElementById('optionsVid').style.display = 'none';
+            up_mt = false;
+            vidArrayMT = [];
+        }
+        //for open response
+        if (userAnswer != '') {
+            if (dob == 1) {
+                var date_regex = /^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$/;
+                if (!(date_regex.test(userAnswer))) {
+                    toastr.error("Type correct date format!");
+                    return;
+                }
+            }
+            document.getElementById('botChat').style.maxHeight = '265px';
+            document.getElementById('botChat').style.minHeight = '265px';
+            document.getElementById('typing').style.display = 'block';
+            document.getElementById('typingHidden').style.display = 'none';
+            document.getElementById("botChat").innerHTML += `<div class='userChat'><p order='${global_order}' class='userMsg'>${userAnswer}</p></div>`;
+            document.getElementById("userAnswer").value = "";
+            var flag = document.getElementById('flag').value;
+            if (flag != 'on') {
+                document.getElementById("userAnswer").disabled = true;
+                get_Next_Question(global_next);
+
+            }
+            scrollToBottom();
+        } else {
+            return;
+        }
+    }
+
+    //Displaying queries
     function display(data) {
         console.log("data is............", data)
         let question = data.question;
@@ -127,33 +367,44 @@
             }
 
             global_next = next_values[0];
+
+            ajax_setup();
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'chatbot_getDatabase' %}",
+                data: {'filename': ans[0]},
+                success: function(res) {
+                    var database_results = res.dataset
+                    
+                    setTimeout(function() {
+                        document.getElementById("botChat").innerHTML += "<div class='adminChat'><p class='adminMsg'>" + question + "</p></div>";
+                        // document.getElementById("userAnswer").disabled = true;
+                        document.getElementById('flag').value = 'off';
+                        document.getElementById('typing').style.display = 'none';
+                        document.getElementById('options').style.display = 'block';
+        
+                        var elem = `<input  type="text" id="wizards" name="wizards" list="wizards-list">
+                                    <datalist id="wizards-list">`;
+                        for (i = 0; i < database_results.length; i++) {
+                            elem += `<option>${database_results[i]}</option>`;
+                        }
+                        elem += "</datalist>";
+        
+                        document.getElementById("options").innerHTML = '';
+                        document.getElementById("options").innerHTML += elem;
+        
+        
+                        $('#wizards').focus();
+                        document.getElementById('typingHidden').style.display = 'none';
+                        scrollToBottom();
+                    }, 1500)
+        
+                    // $('#typing').hide();
+                    $("#userAnswer").attr('disabled', true);
+                }
+            });
             // var database_results = await eel.getDatabase(ans[0])();
 
-            setTimeout(function() {
-                document.getElementById("botChat").innerHTML += "<div class='adminChat'><p class='adminMsg'>" + question + "</p></div>";
-                // document.getElementById("userAnswer").disabled = true;
-                document.getElementById('flag').value = 'off';
-                document.getElementById('typing').style.display = 'none';
-                document.getElementById('options').style.display = 'block';
-
-                var elem = `<input  type="text" id="wizards" name="wizards" list="wizards-list">
-        <datalist id="wizards-list">`;
-                for (i = 0; i < database_results.length; i++) {
-                    elem += `<option>${database_results[i]}</option>`;
-                }
-                elem += "</datalist>";
-
-                document.getElementById("options").innerHTML = '';
-                document.getElementById("options").innerHTML += elem;
-
-
-                $('#wizards').focus();
-                document.getElementById('typingHidden').style.display = 'none';
-                scrollToBottom();
-            }, 1500)
-
-            // $('#typing').hide();
-            $("#userAnswer").attr('disabled', true);
         }
 
         if (type === 'Open response') {
@@ -568,6 +819,609 @@
         }
     }
 
+    // when we click p tag
+    document.querySelector('#options').addEventListener('click', function(event) {
+        // console.log(event.target.nodeName);
+        if (event.target.nodeName === 'DIV') { //fix div errors
+            return;
+        }
+
+        if ((event.target.nodeName === 'P') && (document.getElementById('flag').value != 'on')) {
+            if (event.target.getAttribute('multitext')) { //multiple text response
+                var x = event.target;
+                var mtr_next = parseInt(x.getAttribute('value'));
+                var flg = '0';
+                if (vidArrayT.length > 0) {
+                    for (var i = 0; i < vidArrayT.length; i++) {
+                        if (vidArrayT[i] == x.innerHTML) {
+                            vidArrayT.splice(i, 1);
+                            MTR_GROUP.splice(i, 1);
+                            flg = '1';
+
+                            // x.style.backgroundColor = "#DFEEEC";
+                            x.style.backgroundColor = "transparent";
+                            x.style.borderTop = "1px solid #253ADE";
+                            x.style.borderBottom = "1px solid #03C0FC";
+                            x.style.backgroundImage = "";
+                            x.style.color = "";
+                        }
+                    }
+
+                    if (flg != '1') {
+                        vidArrayT.push(x.innerHTML);
+                        MTR_GROUP.push(mtr_next);
+                        // global_next = parseInt(x.getAttribute('value'));
+
+                        x.style.backgroundColor = "#03C0FC";
+                        x.style.backgroundImage = "linear-gradient(315deg, #03C0FC 0%, #253ADE 74%)";
+                        x.style.color = "#fff";
+                    }
+
+                } else {
+                    vidArrayT.push(x.innerHTML);
+                    MTR_GROUP.push(mtr_next);
+
+                    x.style.backgroundColor = "#03C0FC";
+                    x.style.backgroundImage = "linear-gradient(315deg, #03C0FC 0%, #253ADE 74%)";
+                    x.style.color = "#fff";
+                    // global_next = parseInt(x.getAttribute('value'));
+                }
+
+                up_txt = true;
+
+            } else if (event.target.getAttribute('multitextP')) { //Q. picture multiple response
+                var x = event.target;
+                var mtr_next = parseInt(x.getAttribute('value'));
+
+                var flg = '0';
+                if (vidArrayPT.length > 0) {
+                    for (var i = 0; i < vidArrayPT.length; i++) {
+                        if (vidArrayPT[i] == x.innerHTML) {
+                            vidArrayPT.splice(i, 1);
+                            MTR_GROUP.splice(i, 1);
+                            flg = '1';
+
+                            // x.style.backgroundColor = "#DFEEEC";
+                            x.style.backgroundColor = "transparent";
+                            x.style.borderTop = "1px solid #253ADE";
+                            x.style.borderBottom = "1px solid #03C0FC";
+                            x.style.backgroundImage = "";
+                            x.style.color = "";
+                        }
+                    }
+
+                    if (flg != '1') {
+                        vidArrayPT.push(x.innerHTML);
+                        MTR_GROUP.push(mtr_next);
+                        // global_next = parseInt(x.getAttribute('value'));
+
+
+                        x.style.backgroundColor = "#03C0FC";
+                        x.style.backgroundImage = "linear-gradient(315deg, #03C0FC 0%, #253ADE 74%)";
+                        x.style.color = "#fff";
+                    }
+
+                } else {
+                    vidArrayPT.push(x.innerHTML);
+                    MTR_GROUP.push(mtr_next);
+                    // global_next = parseInt(x.getAttribute('value'));
+
+                    x.style.backgroundColor = "#03C0FC";
+                    x.style.backgroundImage = "linear-gradient(315deg, #03C0FC 0%, #253ADE 74%)";
+                    x.style.color = "#fff";
+                }
+
+                up_pt = true;
+
+            } else if (event.target.getAttribute('multitextM')) { //Q.media multiple response
+                var x = event.target;
+                var mtr_next = parseInt(x.getAttribute('value'));
+                var flg = '0';
+                if (vidArrayMT.length > 0) {
+                    for (var i = 0; i < vidArrayMT.length; i++) {
+                        if (vidArrayMT[i] == x.innerHTML) {
+                            vidArrayMT.splice(i, 1);
+                            MTR_GROUP.splice(i, 1);
+                            flg = '1';
+
+                            // x.style.backgroundColor = "#DFEEEC";
+                            x.style.backgroundColor = "transparent";
+                            x.style.borderTop = "1px solid #253ADE";
+                            x.style.borderBottom = "1px solid #03C0FC";
+                            x.style.backgroundImage = "";
+                            x.style.color = "";
+                        }
+                    }
+
+                    if (flg != '1') {
+                        vidArrayMT.push(x.innerHTML);
+                        MTR_GROUP.push(mtr_next);
+                        // global_next = parseInt(x.getAttribute('value'));
+
+
+                        x.style.backgroundColor = "#03C0FC";
+                        x.style.backgroundImage = "linear-gradient(315deg, #03C0FC 0%, #253ADE 74%)";
+                        x.style.color = "#fff";
+                    }
+
+                } else {
+                    vidArrayMT.push(x.innerHTML);
+                    MTR_GROUP.push(mtr_next);
+                    // global_next = parseInt(x.getAttribute('value'));
+
+
+                    x.style.backgroundColor = "#03C0FC";
+                    x.style.backgroundImage = "linear-gradient(315deg, #03C0FC 0%, #253ADE 74%)";
+                    x.style.color = "#fff";
+                }
+
+                up_mt = true;
+
+            } else { //single text resposne
+                var next = parseInt(event.target.getAttribute('value'));
+
+                document.getElementById("botChat").innerHTML += `<div class='userChat'><p order='${global_order}' class='userMsg'>${event.target.innerHTML}</p></div>`;
+                document.getElementById("userAnswer").disabled = false;
+                document.getElementById('options').style.display = 'none';
+                document.getElementById('typing').style.display = 'block';
+
+                if (next == 1000000) {
+                    var mode = event.target.innerHTML;
+                    console.log(mode);
+                    document.getElementById('typing').style.display = 'none';
+                    scrollToBottom();
+                    getFeedback_J(mode);
+
+                    // document.getElementById("userAnswer").disabled = true;
+
+                    return;
+                }
+
+                global_next = next;
+                get_Next_Question(global_next);
+            }
+
+        } else { //picture zooming
+            var x = event.target;
+            var z = x.attributes[1].nodeValue;
+            if (y == z) {
+                document.getElementById("viewOption").style.display = "none";
+                x.classList.remove("gre");
+                y = '';
+            } else {
+                if ((document.getElementById('flag').value != 'on') && (document.getElementById('flag').value != 'vid')) {
+                    x.classList.add("gre");
+                    document.getElementById("viewOption").style.display = "block";
+                    document.getElementById("viewOption").innerHTML = "<p>" + x.parentNode.innerHTML + "</p>";
+                    y = z;
+                }
+            }
+        }
+    });
+
+    //when we click image tag
+    document.querySelector('#optionsVid').addEventListener('click', function(event) {
+        // console.log(event.target.nodeName);
+        if (event.target.nodeName === 'DIV') { //fix div errors
+            return;
+        }
+
+        if ((event.target.nodeName === 'IMG') && (document.getElementById('flag').value != 'on')) {
+
+            // } else {//picture zooming
+            var x = event.target;
+            var z = x.attributes[1].nodeValue;
+            if (y == z) {
+                document.getElementById("viewOption").style.display = "none";
+                x.classList.remove("gre");
+                y = '';
+            } else {
+                if ((document.getElementById('flag').value != 'on') && (document.getElementById('flag').value != 'vid')) {
+                    x.classList.add("gre");
+                    document.getElementById("viewOption").style.display = "block";
+                    document.getElementById("viewOption").innerHTML = "<p>" + x.parentNode.innerHTML + "</p>";
+                    y = z;
+                }
+            }
+        }
+    });
+
+    //get next query
+    function get_Next_Question(next) {
+        if (!next) {
+            if (MTR_GROUP.length > 0) {
+                next = MTR_GROUP[0];
+                MTR_GROUP.splice(0, 1);
+            } else {
+
+                $('#typing').hide();
+                $("#userAnswer").attr('disabled', true);
+                var write_data_set = getResults();
+                console.log("write excel data is", write_data_set);
+
+                ajax_setup();
+                $.ajax({
+                    type: 'POST',
+                    url: "{% url 'writeOutput' %}",
+                    data: {'write_dataset': write_data_set}
+                });
+                // eel.writeExcel(write_data_set);
+
+                //choose option
+                $('#typing').show();
+                document.getElementById("userAnswer").disabled = true;
+                var alert = `Thanks for taking your time in completing the assesment.<br> 
+                        We will now analysing the information provided<br><br>Please choose your role`
+                setTimeout(
+                    function() {
+                        document.getElementById("botChat").innerHTML += "<div class='adminChat'><p class='adminMsg'>" + alert + "</p></div>";
+                        document.getElementById('flag').value = 'off';
+                        document.getElementById('typing').style.display = 'none';
+                        document.getElementById('options').style.display = 'block';
+
+                        document.getElementById("options").innerHTML = '';
+                        document.getElementById("options").innerHTML +=
+                            `<p value="1000000" class='opt'>` + "User" + `</p>`;
+                        document.getElementById("options").innerHTML +=
+                            `<p value="1000000" class='opt'>` + "Tester" + `</p>`;
+
+                        scrollToBottom();
+                        document.getElementById('typingHidden').style.display = 'none';
+                    }, 2500);
+
+                return;
+            }
+        }
+
+        ajax_setup();
+        $.ajax({
+            type: 'POST',
+            url: "{% url 'getNextQuery' %}",
+            data: {'index': next},
+            success: function(res) {
+                var data = res.dataset
+                display(data);
+            }
+        });
+        // data = await eel.getQuestion(next)();
+    }
+
+    //for single media and single picture response
+    function checkRadio(next) {
+        //stop youtube
+        if (type == 'Single media response') {
+            document.getElementById("optionsVid").innerHTML = "";
+        }
+        document.getElementById('flag').value = 'vid';
+        document.getElementById('botChat').style.maxHeight = '265px';
+        document.getElementById('botChat').style.minHeight = '265px';
+        var x = event.target;
+        document.getElementById("botChat").innerHTML += `<div class='userChat'><p order='${global_order}'>${x.parentNode.innerHTML}</p></div>`;
+        scrollToBottom();
+        document.getElementById("userAnswer").disabled = false;
+        document.getElementById('options').style.display = 'none';
+        document.getElementById('optionsVid').style.display = 'none';
+        document.getElementById("viewOption").style.display = "none";
+        document.getElementById('typing').style.display = 'block';
+        document.getElementById('options').classList.remove("imgv");
+
+        global_next = next;
+        get_Next_Question(global_next);
+    }
+    
+    //for multiple media response 
+    function checkBox(next) {
+        document.getElementById("viewOption").style.display = "none";
+        var x = event.target;
+        x.classList.remove("gre");
+        var flg = '0';
+
+        if (vidArray.length > 0) {
+            for (var i = 0; i < vidArray.length; i++) {
+                if (vidArray[i] == x.parentNode.innerHTML) {
+                    vidArray.splice(i, 1);
+                    flg = '1';
+                }
+            }
+
+            if (flg != '1') {
+                vidArray.push(x.parentNode.innerHTML);
+            }
+
+        } else {
+            vidArray.push(x.parentNode.innerHTML);
+        }
+
+        up_video = true;
+        global_next = next;
+    }
+
+    //for multiple picture response
+    function checkBoxP(next) {
+        document.getElementById("viewOption").style.display = "none";
+        var x = event.target;
+        x.classList.remove("imgv");
+        var flg = '0';
+        if (vidArrayP.length > 0) {
+            for (var i = 0; i < vidArrayP.length; i++) {
+                if (vidArrayP[i] == x.parentNode.innerHTML) {
+                    vidArrayP.splice(i, 1);
+                    flg = '1';
+                }
+            }
+
+            if (flg != '1') {
+                vidArrayP.push(x.parentNode.innerHTML);
+            }
+
+        } else {
+            vidArrayP.push(x.parentNode.innerHTML);
+        }
+
+        up_img = true;
+        global_next = next;
+    }
+
+    //video scroll view
+    const scrollContainerVid = document.getElementById("optionsVid");
+    if (scrollContainerVid != null) {
+        scrollContainerVid.addEventListener("wheel", (evt) => {
+            evt.preventDefault();
+            scrollContainerVid.scrollLeft += evt.deltaY;
+        });
+    }
+    //image scrollv view
+    const scrollContainer = document.getElementById("options");
+    if (scrollContainer != null) {
+        scrollContainer.addEventListener("wheel", (evt) => {
+            evt.preventDefault();
+            scrollContainer.scrollLeft += evt.deltaY;
+        });
+    }
+
+    //get the output of chatbot
+    function getResults() {
+        var answers = $(".userChat");
+        var time = start_time;
+
+        var ans = [];
+        for (i = 0; i < answers.length; i++) {
+            sub_ans = {};
+            sub_ans.order = $(answers[i]).children().attr('order');
+            sub_ans.ans = $(answers[i]).children().text().trim().replace('...', '');
+            ans.push(sub_ans);
+        }
+        results.push(ans);
+        results.push(time);
+
+        return results;
+    }
+
+    //get feedback from the AA
+    function getFeedback_J(mode) {
+        var elem = `<div id="progress" class="adminChat">
+                    <div id="myProgress">
+                    <div id="myBar">0%</div>
+                    </div>
+                    <p id="timer" style="display:none">Wait while analyzing the contents.<br><br>Your approximate waste time is 5 seconds</p>
+                </div>`;
+
+        $('#botChat').append(elem);
+        scrollToBottom();
+
+        countdown();
+        move();
+        
+        ajax_setup();
+        $.ajax({
+            type: "POST",
+            url: "{% url 'getFeedback' %}",
+            data: {'mode': mode},
+            success: function(res) {
+                var feedbacks = res.feedbacks
+                console.log("-------------feedbacks-------------------", feedbacks);
+
+                for (i = 0; i < feedbacks.length; i++) {
+                    if (mode == "User")
+                        sleep(1000);
+                    else
+                        sleep(600);
+        
+                    url_regx = /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/;
+                    feedback = feedbacks[i].replace(url_regx, function(url) {
+                        return '<a target="_blank" href="https://' + url + '">' + url + '</a>';
+                    });
+        
+                    document.getElementById("botChat").innerHTML += "<div class='adminChat'><p class='adminMsg'>" + feedback + "</p></div>";
+                    // document.getElementById("botChat").innerHTML += "<div class='adminChat'><p class='adminMsg'>" + feedbacks[i] + "</p></div>";
+                }
+        
+                document.getElementById('userAnswer').disabled = true;
+                document.getElementById('typing').style.display = 'none';
+                scrollToBottom();
+            }
+        });
+        // var feedbacks = await eel.getFeedback(mode)();
+
+    }
+
+    //click database item
+    $(document).on("click", "#database", function() {
+        if (database_ans == "") {
+            return;
+        }
+        document.getElementById("botChat").innerHTML += `<div class='userChat'><p order='${global_order}' class='userMsg'>${database_ans}</p></div>`;
+        document.getElementById("userAnswer").disabled = false;
+        document.getElementById('options').style.display = 'none';
+
+        $('#typing').show();
+        get_Next_Question(global_next);
+    });
+
+    //when we press enter
+    $(document).keydown(function(e) {
+        if (e.which == 13) {
+            if (up_video) {
+                if (vidArray.length == 0) {
+                    return;
+                }
+                //part for youtube stop
+                document.getElementById("optionsVid").innerHTML = '';
+                //hide viewoption
+                document.getElementById("viewOption").style.display = "none";
+                //add videos to botchat when press submit button
+                if (vidArray.length > 0) {
+                    for (var i = 0; i < vidArray.length; i++) {
+                        document.getElementById("botChat").innerHTML += `<div class='userChat'><p order='${global_order}'>${vidArray[i]}</p></div>`;
+                        scrollToBottom();
+                    }
+                    $('#typing').show();
+                    get_Next_Question(global_next);
+                }
+
+                document.getElementById('optionsVid').style.display = 'none';
+                up_video = false;
+                vidArray = [];
+            }
+
+            if (up_img) {
+                if (vidArrayP.length == 0) {
+                    return;
+                }
+                //hide viewoption
+                document.getElementById("viewOption").style.display = "none";
+                //add videos to botchat when press submit button
+                if (vidArrayP.length > 0) {
+                    for (var i = 0; i < vidArrayP.length; i++) {
+                        document.getElementById("botChat").innerHTML += `<div class='userChat'><p order='${global_order}'>${vidArrayP[i]}</p></div>`;
+                        scrollToBottom();
+                    }
+                    $('#typing').show();
+                    get_Next_Question(global_next);
+                    // is_start = true;
+                }
+
+                document.getElementById('optionsVid').style.display = 'none';
+                up_img = false;
+                vidArrayP = [];
+            }
+
+            if (up_pt) {
+                if (vidArrayPT.length == 0) {
+                    return;
+                }
+                //hide viewoption
+                document.getElementById("viewOption").style.display = "none";
+                document.getElementById("options").style.display = 'none';
+                //add videos to botchat when press submit button
+                if (vidArrayPT.length > 0) {
+                    global_next = MTR_GROUP[0];
+                    MTR_GROUP.splice(0, 1);
+
+                    for (var i = 0; i < vidArrayPT.length; i++) {
+                        document.getElementById("botChat").innerHTML += `<div class='userChat'><p order='${global_order}' class='userMsg'>${vidArrayPT[i]}</p></div>`;
+                        scrollToBottom();
+                    }
+                    $('#typing').show();
+                    get_Next_Question(global_next);
+                    // is_start = true;
+                }
+
+                document.getElementById('optionsVid').style.display = 'none';
+                up_pt = false;
+                vidArrayPT = [];
+            }
+
+            if (up_txt) {
+                if (vidArrayT.length == 0) {
+                    return;
+                }
+                //hide viewoption
+                document.getElementById("viewOption").style.display = "none";
+                document.getElementById("options").style.display = 'none';
+                //add videos to botchat when press submit button
+                if (vidArrayT.length > 0) {
+                    global_next = MTR_GROUP[0];
+                    MTR_GROUP.splice(0, 1);
+
+                    for (var i = 0; i < vidArrayT.length; i++) {
+                        document.getElementById("botChat").innerHTML += `<div class='userChat'><p order='${global_order}' class='userMsg'>${vidArrayT[i]}</p></div>`;
+                        scrollToBottom();
+                    }
+
+                    // console.log(global_next);
+                    get_Next_Question(global_next);
+                    $('#typing').show();
+                }
+
+                document.getElementById('optionsVid').style.display = 'none';
+                up_txt = false;
+                vidArrayT = [];
+            }
+
+            if (up_mt) {
+                if (vidArrayMT.length == 0) {
+                    return;
+                }
+                //hide viewoption
+                document.getElementById("viewOption").style.display = "none";
+                document.getElementById("options").style.display = 'none';
+                //add videos to botchat when press submit button
+                if (vidArrayMT.length > 0) {
+                    global_next = MTR_GROUP[0];
+                    MTR_GROUP.splice(0, 1);
+
+                    for (var i = 0; i < vidArrayMT.length; i++) {
+                        document.getElementById("botChat").innerHTML += `<div class='userChat'><p order='${global_order}' class='userMsg'>${vidArrayMT[i]}</p></div>`;
+                        scrollToBottom();
+                    }
+                    get_Next_Question(global_next);
+                    // is_start = true;
+                    $('#typing').show();
+                }
+
+                document.getElementById('optionsVid').style.display = 'none';
+                up_mt = false;
+                vidArrayMT = [];
+            }
+        }
+    });
+
+    //get database item value
+    $(document).on("change", "#wizards", function() {
+        database_ans = this.value;
+    });
+
+    //picture mcq zoom out
+    $(document).on('click', '.adminMsg > img', function() {
+        var x = event.target;
+        document.getElementById("viewOption").style.display = "block";
+        document.getElementById("viewOption").innerHTML = "<p>" + x.parentNode.innerHTML + "</p>";
+    });
+    //picture mcq zoom out
+    $(document).on('click', '#viewOption', function() {
+        document.getElementById("viewOption").style.display = "none";
+    });
+
+    //form hide
+    function closeForm() {
+        document.getElementById("myForm").style.display = "none";
+    }
+
+    //close viewOption
+    function close() {
+        document.getElementById("viewOption").style.display = "none";
+    }
+
+    //scroll bottom effect
+    const messages = document.getElementById('botChat');
+    function scrollToBottom() {
+        setTimeout(function() {
+            messages.scrollTop = messages.scrollHeight;
+        }, 400);
+    }
+
+    //sleep function
     function sleep(milliseconds) {
         const date = Date.now();
         let currentDate = null;
@@ -575,5 +1429,44 @@
             currentDate = Date.now();
         } while (currentDate - date < milliseconds);
     }
+
+    //coutdown the times when analyzing the chatbot output
+    function countdown() {
+        var timeleft = 5;
+        document.getElementById("timer").style.display = "block";
+        var downloadTimer = setInterval(function() {
+            if (timeleft <= 0) {
+                clearInterval(downloadTimer);
+            } else {
+                document.getElementById("timer").innerHTML = "Wait while analyzing the contents.<br><br>Your approximate waste time is " + timeleft + " seconds";
+            }
+            timeleft -= 1;
+        }, 900);
+    }
+
+    //anim for progress bar
+    function move() {
+        document.getElementById("myProgress").style.display = "block";
+        if (index == 0) {
+            index = 1;
+            var elem = document.getElementById("myBar");
+            var width = 10;
+            var id = setInterval(frame, 60);
+
+            function frame() {
+                if (width >= 100) {
+                    clearInterval(id);
+                    index = 2;
+                    document.getElementById("progress").style.display = 'none';
+                    document.getElementById('typing').style.display = 'block';
+                } else {
+                    width++;
+                    elem.style.width = width + "%";
+                    elem.innerHTML = width + "%";
+                }
+            }
+        }
+    }
+    
 </script>
 {% endblock %}

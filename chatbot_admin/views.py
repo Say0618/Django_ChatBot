@@ -40,7 +40,7 @@ from .forms import Database_ExcelForm
 #chat bot 
 from .chatbot import *
 
-dataset = []
+# dataset = []
 
 @login_required
 def index(request):
@@ -714,11 +714,48 @@ def chatbot(request):
     return render(request, 'chatbot.html')
 
 def chatbot_start(request):
+    global dataset
     dataset = getData()
     start_data = dataset[0]
     return JsonResponse({
         'start_data': start_data 
     })
+
+def getNextQuery(request):
+    if request.method == 'POST':
+        index = int(request.POST['index'])
+
+        print('index is --------------------------------------------', index)
+        data = dataset[index - 1]
+
+        return JsonResponse({
+            'dataset': data
+        })
+
+def chatbot_getDatabase(request):
+    if request.method == 'POST':
+        filename = request.POST['filename']
+
+        data = getDatabase(filename)
+        return JsonResponse({
+            'dataset': data
+        })
+
+def writeOutput(request):
+    if request.method == "POST":
+        write_dataset = request.POST['write_dataset']
+
+        writeExcel(write_dataset)
+
+def get_Feedback(request):
+    if request.method == 'POST':
+        mode = request.POST['mode']
+        
+        feedbacks = getFeedback(mode)
+
+        return JsonResponse({
+            'feedbacks': feedbacks
+        })
 
 @login_required
 def terms_conditions(request):
