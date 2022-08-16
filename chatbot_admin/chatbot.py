@@ -1,7 +1,9 @@
 from ast import Not
 import openpyxl
 from os.path import exists
-from datetime import datetime
+# from datetime import datetime
+import datetime
+print(datetime.__file__)
 import base64
 import json
 from PIL import Image 
@@ -21,7 +23,7 @@ from .forms import Database_ExcelForm
 read_path = os.getcwd() + "/media/read_sheets/read.xlsx"
 write_path = os.getcwd() + "/media/write_sheets/write.xlsx"
 master_path = os.getcwd() + "/media/master_sheets/master_sheet.xlsx"
-interpretation_path = os.getcwd() + "/media/interpretation_sheets/Interpretation table v1.xlsx"
+interpretation_path = os.getcwd() + "/media/interpretation_sheets/Interpretation_table_v1.xlsx"
 
 dataset = []
 def getData():
@@ -101,7 +103,6 @@ def getData():
 def getImageData(img_path):
     basewidth = 1600
     default_path = os.getcwd() + '/media/attachments/images/'
-    # default_path = os.getcwd() + '\\media\\attachments\\images\\'
     image = Image.open(default_path + img_path)
     wpercent = (basewidth / float(image.size[0]))
     hsize = int((float(image.size[1]) * float(wpercent)))
@@ -113,17 +114,9 @@ def getImageData(img_path):
 
     return data
 
-# getData()
-
-# @eel.expose
 def getFirstQuestion():
-    # dataset = getData()
     return dataset[0]
 
-# @eel.expose
-# def getQuestion(index):
-#     # dataset = getData()
-#     return dataset[index-1]
 
 def getAlpha():
     wb = openpyxl.load_workbook(read_path)
@@ -171,10 +164,6 @@ def getAlpha():
     return alpha_set
     print("alpha set is ....",alpha_set)
 
-# getAlpha()
-# sys.exit("Error message")
-
-# @eel.expose 
 def writeExcel(write_data_set):
     wb1 = openpyxl.load_workbook(read_path)
     ws1 = wb1.active
@@ -194,7 +183,6 @@ def writeExcel(write_data_set):
 
 
     ans = write_data_set[0]
-    # print(ans)
     alpha_set = getAlpha()
 
     for obj_ans in ans:
@@ -210,13 +198,12 @@ def writeExcel(write_data_set):
                             obj_ans['ans'] = i + 1
                             break_flag = True
                             break
-    # print(ans)
 
 
     start_time = write_data_set[1].split(' ')[1]
     date = write_data_set[1].split(' ')[0]
 
-    now = datetime.now()
+    now = datetime.datetime.now()
     last_time = now.strftime("%d/%m/%Y %H:%M:%S")
     last_time = last_time.split(' ')[1]
     
@@ -267,7 +254,7 @@ def writeExcel(write_data_set):
                         ws.cell(row=r+obj['ans']-1, column=start_point).value = numToAlpha(obj['ans'])
                         break
 
-        wb.save("excel/write.xlsx")
+        wb.save(write_path)
             
 
     else:
@@ -328,7 +315,7 @@ def writeExcel(write_data_set):
             ws.cell(row=7+increment,column=1).value = increment + 1
             
             increment+=1
-        wb.save("excel/write.xlsx")
+        wb.save(write_path)
 
         wb = openpyxl.load_workbook(write_path)
         ws = wb.active
@@ -345,48 +332,27 @@ def writeExcel(write_data_set):
                         ws.cell(row=r+obj['ans']-1, column=5).value = numToAlpha(obj['ans'])
                         break
 
-        wb.save("excel/write.xlsx")
+        wb.save(write_path)
 
     data_science()
 
 def data_science():
-    # if not os.path.isdir("AA"):
-    #     os.mkdir("AA")
-
-    # global preprocess_flag
     process_master_file(master_path)
 
-    # if not result[0]:
-    #     preprocess_flag = True
-
-    # process_case_file("excel/Sample test sheet 07.03.2022 (3).xlsx")
     process_case_file(write_path)
     do_calculation()
 
-    output_name = "AA.xlsx".split('.')[-2].split('/')[-1]+'_result_'+\
-        datetime.now().strftime('%d%m%y')
-    output_files = [f'{output_name}_{i}.xlsx' for i in range(0,10000)]
-    for output_file_name in output_files:
-        if output_file_name not in [x.name for x in pathlib.Path('AA').glob(f'{output_name}_*.xlsx')]:
-            break
-    else:
-        output_file_name = min(output_files, key=lambda x: pathlib.Path(x).stat().st_mtime)
-    output_file_name = "AA/" + output_file_name
+    output_file_name = os.getcwd() + '/media/aa_outputs/aaOutputSheet.xlsx'
     
     global aa
     aa = output_file_name
-    # print("aa is ...", aa)
     output_result_to_excel(output_file_name)
 
-# data_science();
-# @eel.expose
 def getFeedback(mode):
     time.sleep(7)
     feedbacks = []
     aa_path = aa
-    test_path = "AA/AA_result_240222_2.xlsx"
     wb1 = openpyxl.load_workbook(aa_path)
-    # wb1 = openpyxl.load_workbook(test_path)
     ws1 = wb1.active
     rows_cnt = ws1.max_row
     cols_cnt = ws1.max_column
@@ -469,17 +435,12 @@ def getFeedback(mode):
         print(len(feedbacks))
         return feedbacks;
     
-# getFeedback("User")
-# getFeedback("Tester")
-
-# @eel.expose
 def getDatabase(filename):
     base_path = os.getcwd() + '/media/attachments/database/'
     database_path = base_path + filename
 
     wb = openpyxl.load_workbook(database_path)
     ws = wb.active
-    # sheet_names = wb.sheetnames
     rows_cnt = ws.max_row
     
     result = []
@@ -488,9 +449,7 @@ def getDatabase(filename):
         result.append(item)
     
     return result
-    # print(result) 
 
-# getDatabase("Us cities.xlsx")
 
 def numToAlpha(param):
     if param == 1:

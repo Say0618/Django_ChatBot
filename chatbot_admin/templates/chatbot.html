@@ -108,7 +108,7 @@
         if (botChat === "") {
             document.getElementById('typingHidden').style.display = 'none';
             document.getElementById("userAnswer").disabled = true;
-            // get_Next_Question(7);
+            // get_Next_Question(8);
             get_First_Question();
         }
 
@@ -1043,7 +1043,10 @@
                 $.ajax({
                     type: 'POST',
                     url: "{% url 'writeOutput' %}",
-                    data: {'write_dataset': write_data_set}
+                    data: {'write_dataset': write_data_set},
+                    success: function(res) {
+                        toastr.success(res.msg)
+                    }
                 });
                 // eel.writeExcel(write_data_set);
 
@@ -1194,7 +1197,7 @@
         results.push(ans);
         results.push(time);
 
-        return results;
+        return JSON.stringify(results);
     }
 
     //get feedback from the AA

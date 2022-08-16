@@ -725,7 +725,6 @@ def getNextQuery(request):
     if request.method == 'POST':
         index = int(request.POST['index'])
 
-        print('index is --------------------------------------------', index)
         data = dataset[index - 1]
 
         return JsonResponse({
@@ -743,9 +742,11 @@ def chatbot_getDatabase(request):
 
 def writeOutput(request):
     if request.method == "POST":
-        write_dataset = request.POST['write_dataset']
-
+        write_dataset = json.loads(request.POST['write_dataset'])
         writeExcel(write_dataset)
+        return JsonResponse({
+            'msg': 'file processing is succeed!'
+        })
 
 def get_Feedback(request):
     if request.method == 'POST':
