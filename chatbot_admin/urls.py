@@ -51,5 +51,6 @@ urlpatterns = [
     path('attachments/videos', views.videos, name='videos'),
 
     path('chatbot', views.chatbot, name='chatbot'),
+    path('chatbot/start', views.chatbot_start, name='chatbot_start'),
     path('terms_conditions', views.terms_conditions, name='terms_conditions')
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

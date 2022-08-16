@@ -97,18 +97,18 @@ def getData():
 
     
     return dataset
-    print(json.dumps(dataset, default=lambda o: None))
-
 
 def getImageData(img_path):
-    basewidth = 1366
-    image = Image.open("assets/images/"+img_path)
+    basewidth = 1600
+    default_path = os.getcwd() + '/media/attachments/images/'
+    # default_path = os.getcwd() + '\\media\\attachments\\images\\'
+    image = Image.open(default_path + img_path)
     wpercent = (basewidth / float(image.size[0]))
     hsize = int((float(image.size[1]) * float(wpercent)))
     image = image.resize((basewidth, hsize), Image.ANTIALIAS)
-    image.save("assets/images/" + img_path)
+    image.save(default_path + img_path)
 
-    f=open("assets/images/"+img_path, "rb")
+    f=open(default_path + img_path, "rb")
     data = base64.b64encode(f.read()).decode('utf-8')
 
     return data

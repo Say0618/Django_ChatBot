@@ -19,6 +19,8 @@ function openForm() {
 
 }
 
+const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+console.log(csrftoken)
 function ajax_setup() {
     $.ajaxSetup({
         headers: {
@@ -30,7 +32,7 @@ function ajax_setup() {
 function get_First_Question() {
     ajax_setup();
     $.ajax({
-        url: "{% url 'chatbot/start' %}",
+        url: base_url + '/chatbot/start',
         type: 'POST',
         success: function(res) {
             display(data);
@@ -62,7 +64,7 @@ function display(data) {
         }
 
         global_next = next_values[0];
-        var database_results = await eel.getDatabase(ans[0])();
+        // var database_results = await eel.getDatabase(ans[0])();
 
         setTimeout(function() {
             document.getElementById("botChat").innerHTML += "<div class='adminChat'><p class='adminMsg'>" + question + "</p></div>";

@@ -40,6 +40,7 @@ from .forms import Database_ExcelForm
 #chat bot 
 from .chatbot import *
 
+dataset = []
 
 @login_required
 def index(request):
@@ -710,8 +711,14 @@ def videos(request):
 
 @login_required
 def chatbot(request):
-    
     return render(request, 'chatbot.html')
+
+def chatbot_start(request):
+    dataset = getData()
+    start_data = dataset[0]
+    return JsonResponse({
+        'start_data': start_data 
+    })
 
 @login_required
 def terms_conditions(request):
