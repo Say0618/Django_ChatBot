@@ -14,20 +14,32 @@ function openForm() {
         document.getElementById('typingHidden').style.display = 'none';
         document.getElementById("userAnswer").disabled = true;
         // get_Next_Question(7);
-        // get_Next_Question(103);
         get_First_Question();
     }
 
 }
 
-function get_First_Question() {
-    
+function ajax_setup() {
+    $.ajaxSetup({
+        headers: {
+            "X-CSRFToken": csrftoken
+        }
+    });
+} 
 
-    display(data);
+function get_First_Question() {
+    ajax_setup();
+    $.ajax({
+        url: "{% url 'chatbot/start' %}",
+        type: 'POST',
+        success: function(res) {
+            display(data);
+        }
+    });
 }
 
 //Bot chat display
-async function display(data) {
+function display(data) {
     console.log("data is............", data)
     let question = data.question;
     type = data.type.trim();

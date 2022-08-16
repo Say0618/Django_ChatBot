@@ -24,6 +24,7 @@
 
 <div class="chat-popup" id="myForm">
     <form class="form-container">
+        {% csrf_token %}
         <div class="chat-header">
             <img src="{% static 'chatbot/assets/images/back.png' %}" alt="back" class="back-errow" onclick="closeForm();return false;">
             <img src="{% static 'chatbot/assets/images/Profile-Pic.png' %}" alt="profile picture" class="profile-image">
@@ -57,5 +58,8 @@
 
 {% endblock %}
 {% block script %}
+<script>
+    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+</script>
 <script type="text/javascript" src="{% static 'chatbot/js/main.js' %}"></script>
 {% endblock %}

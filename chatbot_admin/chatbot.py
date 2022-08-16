@@ -12,6 +12,12 @@ from .calc_algo_v6 import *
 import os
 import pathlib
 
+from .forms import MasterSheetForm
+from .forms import ReadSheetForm
+from .forms import InterpretationSheetForm
+from .forms import Images_BotForm
+from .forms import Database_ExcelForm
+
 read_path = os.getcwd() + "/media/read_sheets/read.xlsx"
 write_path = os.getcwd() + "/media/write_sheets/write.xlsx"
 master_path = os.getcwd() + "/media/master_sheets/master_sheet.xlsx"
