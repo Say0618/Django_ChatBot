@@ -14,16 +14,21 @@ from .calc_algo_v6 import *
 import os
 import pathlib
 
-from .forms import MasterSheetForm
-from .forms import ReadSheetForm
-from .forms import InterpretationSheetForm
-from .forms import Images_BotForm
-from .forms import Database_ExcelForm
+from .models import MasterSheet
+from .models import ReadSheet
+from .models import InterpretationSheet
+from .models import Images_Bot
+from .models import Database_Excel
 
-read_path = os.getcwd() + "/media/read_sheets/read.xlsx"
+read_path = os.getcwd() + "/media/read_sheets/" + ReadSheet.objects.filter(status=1).get().filename()
+
 write_path = os.getcwd() + "/media/write_sheets/write.xlsx"
-master_path = os.getcwd() + "/media/master_sheets/master_sheet.xlsx"
-interpretation_path = os.getcwd() + "/media/interpretation_sheets/Interpretation_table_v1.xlsx"
+
+master_path = os.getcwd() + "/media/master_sheets/" + MasterSheet.objects.filter(status=1).get().filename()
+
+interpretation_path = os.getcwd() + "/media/interpretation_sheets/" + InterpretationSheet.objects.filter(status=1).get().filename()
+
+
 
 dataset = []
 def getData():
@@ -437,6 +442,9 @@ def getFeedback(mode):
     
 def getDatabase(filename):
     base_path = os.getcwd() + '/media/attachments/database/'
+
+    filename = Database_Excel.objects.filter(status=1).filter(name=filename).get().filename()
+
     database_path = base_path + filename
 
     wb = openpyxl.load_workbook(database_path)
