@@ -767,18 +767,16 @@ def videos(request):
 @login_required
 def chatbot(request):
     msg = ''
-    if ReadSheet.objects.filter(status=1).count() == 0:
-        msg = 'Read sheet does not exist!'
-    
+    if InterpretationSheet.objects.filter(status=1).count() == 0:
+        msg = 'Interpretation sheet does not exist!'
 
     if MasterSheet.objects.filter(status=1).count() == 0: 
         msg = 'Master sheet does not exist!'
     
-
-    if InterpretationSheet.objects.filter(status=1).count() == 0:
-        msg = 'Interpretation sheet does not exist!'
+    if ReadSheet.objects.filter(status=1).count() == 0:
+        msg = 'Read sheet does not exist!'
     
-    print('-------msg--------------',msg)
+    
     return render(request, 'chatbot.html', {
         'msg': msg
     })
