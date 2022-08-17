@@ -23,10 +23,7 @@
                 </form>
             </div>
             <div class="col-md-3">
-                <form action="{% url 'deleteWriteSheet' %}" method="POST">
-                    {% csrf_token %}
-                    <button type="submit" style="float: right;" class="btn btn-danger" id="delete_btn">Delete</button>
-                </form>
+                <button data-bs-toggle="modal" data-bs-target="#delModal" style="float: right;" class="btn btn-danger">Delete</button>
             </div>
         </div>
     </div>
@@ -70,7 +67,7 @@
   
         <!-- Modal Header -->
         <div class="modal-header">
-          <h4 class="modal-title">Modal Heading</h4>
+          <h4 class="modal-title">Delete</h4>
           <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
         </div>
   
@@ -92,7 +89,27 @@
 {% block script %}
 <script>
     $().ready(function() {
-        
+        const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+        $('#del_btn').click(function() {
+            $.ajaxSetup({
+                headers: {
+                    "X-CSRFToken": csrftoken
+                }
+            });
+            $.ajax({
+                type: "POST",
+                url: "{% url 'deleteAAOutputSheet' %}",
+                success: function(res) {
+                    if (res.msg == 'success') {
+                        toastr.success('Delete Success!');
+                        setTimeout(function() {
+                            location.reload();
+                        }, 2000);
+                    }
+                }
+            });
+            
+        });
     });
 </script>
 {% endblock %}

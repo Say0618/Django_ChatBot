@@ -699,8 +699,12 @@ def exportWriteSheet(request):
             return render(request, 'output/write_sheet.html')
 
 def deleteWriteSheet(request):
-    WriteSheet.objects.all().delete()
-    return render(request, 'output/write_sheet.html')
+    path = os.getcwd() + '/media/write_sheets/write.xlsx'
+    if os.path.isfile(path):
+        os.remove(path)
+        return JsonResponse({
+            'msg': 'success'
+        })
 
 @login_required
 def aa_output_sheet(request):
@@ -748,8 +752,12 @@ def exportAAOutputSheet(request):
             return render(request, 'output/aa_output.html')
 
 def deleteAAOutputSheet(request):
-
-    return render(request, 'output/aa_output.html')
+    path = os.getcwd() + '/media/aa_outputs/aaOutputSheet.xlsx'
+    if os.path.isfile(path):
+        os.remove(path)
+        return JsonResponse({
+            'msg': 'success'
+        })
 
 @login_required
 def videos(request):
