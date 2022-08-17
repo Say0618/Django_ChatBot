@@ -15,11 +15,12 @@
 {% endblock %}
 {% block content %}
 <div class="chat" id="chatStart">
-    <form class="form-container-first" id="formStart">
+    <div class="form-container-first" id="formStart">
         <img src="{% static 'chatbot/assets/images/Bot.png' %}" alt="Bot-chat" class="bot-image">
         <p class="bot-way" id="welcome">Empathy has no script.<br> There is no right or wrong way.<br>I will try my best!</p>
-        <button class="open-button" id="startChat" onclick="openForm();return false;">Start Chat</button>
-    </form>
+        <!-- <button class="open-button" id="startChat" onclick="openForm();return false;">Start Chat</button> -->
+        <button class="open-button" id="startChat">Start Chat</button>
+    </div>
 </div>
 
 <div class="chat-popup" id="myForm">
@@ -62,6 +63,35 @@
 <script>
     $(document).ready(function() {
         
+        $('#startChat').click(function() {
+            var validate_msg = "{{msg}}";
+            console.log(validate_msg)
+            if (validate_msg != '') {
+                toastr.error(validate_msg);
+                return;
+            }
+
+            setCurTime();
+            start_time = getCurDateTime();
+
+            document.getElementById("myForm").style.display = "block";
+            document.getElementById("chatStart").style.display = "none";
+            document.getElementById("viewOption").style.display = "none";
+
+            if (document.getElementById('typing').style.display == 'none') {
+                if (document.getElementById('options').style.display == 'none') {
+                    document.getElementById('typingHidden').style.display = 'block';
+                }
+            }
+
+            var botChat = document.getElementById("botChat").innerHTML;
+            if (botChat === "") {
+                document.getElementById('typingHidden').style.display = 'none';
+                document.getElementById("userAnswer").disabled = true;
+                // get_Next_Question(8);
+                get_First_Question();
+            }
+        });
     });
 
     // declaring global variables
@@ -94,28 +124,6 @@
 
     //start chat
     function openForm() {
-
-        setCurTime();
-        start_time = getCurDateTime();
-
-        document.getElementById("myForm").style.display = "block";
-        document.getElementById("chatStart").style.display = "none";
-        document.getElementById("viewOption").style.display = "none";
-
-        if (document.getElementById('typing').style.display == 'none') {
-            if (document.getElementById('options').style.display == 'none') {
-                document.getElementById('typingHidden').style.display = 'block';
-            }
-        }
-
-        var botChat = document.getElementById("botChat").innerHTML;
-        if (botChat === "") {
-            document.getElementById('typingHidden').style.display = 'none';
-            document.getElementById("userAnswer").disabled = true;
-            // get_Next_Question(8);
-            get_First_Question();
-        }
-
     }
 
     //cors ajax setup

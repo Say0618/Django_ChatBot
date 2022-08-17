@@ -215,7 +215,7 @@
                     success: function(res) {
         
                         if (res.msg == 'activated') {
-                            toastr.success('user activated successfully!');
+                            toastr.success('sheet activated successfully!');
                             tr.siblings()[3].innerHTML = 'active';
                             
                             select_group = document.getElementsByTagName('select')
@@ -250,7 +250,7 @@
                             select.html(new_select);
                         }
                         if (res.msg == 'de-activated') {
-                            toastr.success('user de-activated successfully!');
+                            toastr.success('sheet de-activated successfully!');
                             tr.siblings()[3].innerHTML = 'inactive';
 
                             var new_select = `
@@ -288,7 +288,7 @@
                 data: {id: del_id, type: 'delete'},
                 success: function(res) {
                     if (res.msg == 'deleted') {
-                        toastr.success('user deleted successfully!');
+                        toastr.success('sheet deleted successfully!');
                         setTimeout(function() {
                             location.reload();
                         }, 2000);
