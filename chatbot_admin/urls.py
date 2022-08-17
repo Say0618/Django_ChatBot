@@ -44,9 +44,11 @@ urlpatterns = [
 
     path('output/write_sheet', views.write_sheet, name='write_sheet'),
     path('output/export_write_sheet', views.exportWriteSheet, name='exportWriteSheet'),
+    path('output/delete_write_sheet', views.deleteWriteSheet, name='deleteWriteSheet'),
 
     path('output/aa_output_sheet', views.aa_output_sheet, name='aa_output_sheet'),
     path('output/export_aa_output_sheet', views.exportAAOutputSheet, name='exportAAOutputSheet'),
+    path('output/delete_aa_output_sheet', views.deleteAAOutputSheet, name='deleteAAOutputSheet'),
 
     path('attachments/videos', views.videos, name='videos'),
 

@@ -6,7 +6,6 @@
 {% block breadcrumb-item %}AA Output Sheet{% endblock %}
 {% block css %}
 <style>
-
     body {
         overflow: hidden;
     }
@@ -14,16 +13,24 @@
 {% endblock %}
 {% block content %}
 <div id="main_content">
+    {% if btn_display == True %}
     <div class="offset-md-6">
         <div class="row">
-            <div class="offset-md-9">
-                <form action="{% url 'exportAAOutputSheet' %}" method="POST">
+            <div class="col-md-9">
+                <form action="{% url 'exportWriteSheet' %}" method="POST">
                     {% csrf_token %}
-                    <button type="submit" class="btn btn-success" id="export_btn">Export</button>
+                    <button style="float: right;" type="submit" class="btn btn-success" id="export_btn">Export</button>
+                </form>
+            </div>
+            <div class="col-md-3">
+                <form action="{% url 'deleteWriteSheet' %}" method="POST">
+                    {% csrf_token %}
+                    <button type="submit" style="float: right;" class="btn btn-danger" id="delete_btn">Delete</button>
                 </form>
             </div>
         </div>
     </div>
+    {% endif %}
     <br/>
     <div class="row" style="overflow: auto; max-height: 400px; max-width: 1600px;">
         <table id="aa_table" class="table table-fixed table-bordered table-hover table-stripped">
@@ -54,15 +61,38 @@
                 {% endfor %}
              </tbody>
         </table>
-        <!-- <div id="sudo_form"></div> -->
     </div>
 </div>
 
+<div class="modal" id="delModal">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+  
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Modal Heading</h4>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+  
+        <!-- Modal body -->
+        <div class="modal-body">
+          Are you sure to delete?
+        </div>
+  
+        <!-- Modal footer -->
+        <div class="modal-footer">
+            <button type="button" id="del_btn" data-bs-dismiss="modal" class="btn btn-primary">Ok</button>
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+        </div>
+  
+      </div>
+    </div>
+</div>
 {% endblock %}
 {% block script %}
 <script>
     $().ready(function() {
-    
+        
     });
 </script>
 {% endblock %}

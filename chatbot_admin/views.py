@@ -677,10 +677,13 @@ def write_sheet(request):
 
         return render(request, 'output/write_sheet.html', {
             'thead': thead,
-            'dataset': total_result
+            'dataset': total_result,
+            'btn_display': True
         })
     else:
-        return render(request, 'output/write_sheet.html')
+        return render(request, 'output/write_sheet.html', {
+            'btn_display': False
+        })
 
 def exportWriteSheet(request):
     if request.method == 'POST':
@@ -694,6 +697,10 @@ def exportWriteSheet(request):
                 return response
         else:
             return render(request, 'output/write_sheet.html')
+
+def deleteWriteSheet(request):
+    WriteSheet.objects.all().delete()
+    return render(request, 'output/write_sheet.html')
 
 @login_required
 def aa_output_sheet(request):
@@ -718,10 +725,13 @@ def aa_output_sheet(request):
         
         return render(request, 'output/aa_output.html', {
             'thead': thead,
-            'dataset': total_result
+            'dataset': total_result,
+            'btn_display': True
         })
     else:
-        return render(request, 'output/aa_output.html')
+        return render(request, 'output/aa_output.html', {
+            'btn_display': False
+        })
         
 def exportAAOutputSheet(request):
     if request.method == 'POST':
@@ -736,6 +746,10 @@ def exportAAOutputSheet(request):
                 return response
         else:
             return render(request, 'output/aa_output.html')
+
+def deleteAAOutputSheet(request):
+
+    return render(request, 'output/aa_output.html')
 
 @login_required
 def videos(request):
