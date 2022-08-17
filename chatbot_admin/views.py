@@ -178,6 +178,13 @@ def uploadMasterSheet(request):
             sheet = MasterSheet.objects.last()
             sheet.name = file
             sheet.save()
+            # make other sheets inactive
+            save_id = sheet.id
+            other_sheets = MasterSheet.objects.exclude(id=save_id)
+            for data in other_sheets:
+                data.status = 0
+                data.save() 
+
             return redirect('master_sheet')
         else:
             return redirect('master_sheet')
@@ -210,6 +217,13 @@ def operateMasterSheet(request):
             sheet = MasterSheet.objects.filter(pk=id).get()
             sheet.status = 1
             sheet.save()
+            
+            # make other sheets inactive
+            save_id = sheet.id
+            other_sheets = MasterSheet.objects.exclude(id=save_id)
+            for data in other_sheets:
+                data.status = 0
+                data.save() 
 
             return JsonResponse({
                 'msg': 'activated'
@@ -269,6 +283,13 @@ def uploadReadSheet(request):
             sheet = ReadSheet.objects.last()
             sheet.name = file
             sheet.save()
+            # make other sheets inactive
+            save_id = sheet.id
+            other_sheets = ReadSheet.objects.exclude(id=save_id)
+            for data in other_sheets:
+                data.status = 0
+                data.save() 
+
             return redirect('read_sheet')
         else:
             return redirect('read_sheet')
@@ -301,6 +322,13 @@ def operateReadSheet(request):
             sheet = ReadSheet.objects.filter(pk=id).get()
             sheet.status = 1
             sheet.save()
+            
+            # make other sheets inactive
+            save_id = sheet.id
+            other_sheets = ReadSheet.objects.exclude(id=save_id)
+            for data in other_sheets:
+                data.status = 0
+                data.save() 
 
             return JsonResponse({
                 'msg': 'activated'
@@ -360,6 +388,13 @@ def uploadInterpretationSheet(request):
             sheet = InterpretationSheet.objects.last()
             sheet.name = file
             sheet.save()
+            # make other sheets inactive
+            save_id = sheet.id
+            other_sheets = InterpretationSheet.objects.exclude(id=save_id)
+            for data in other_sheets:
+                data.status = 0
+                data.save() 
+
             return redirect('interpretation_sheet')
         else:
             return redirect('interpretation_sheet')
@@ -392,6 +427,13 @@ def operateInterpretationSheet(request):
             sheet = InterpretationSheet.objects.filter(pk=id).get()
             sheet.status = 1
             sheet.save()
+            
+            # make other sheets inactive
+            save_id = sheet.id
+            other_sheets = InterpretationSheet.objects.exclude(id=save_id)
+            for data in other_sheets:
+                data.status = 0
+                data.save() 
 
             return JsonResponse({
                 'msg': 'activated'

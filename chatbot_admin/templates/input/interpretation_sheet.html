@@ -218,6 +218,25 @@
                             toastr.success('user activated successfully!');
                             tr.siblings()[3].innerHTML = 'active';
 
+                            select_group = document.getElementsByTagName('select')
+                            for (i = 0; i <= select_group.length; i++) {
+                                if ($(select_group[i]).text().includes('De-activate')) {
+                                    var content = `
+                                                    <div class="select">
+                                                        <select id="standard-select">
+                                                            <option value="">Action</option>
+                                                            <option value="Activate">Activate</option>
+                                                            <option value="delete">delete</option>
+                                                        </select>
+                                                        <span class="focus"></span>
+                                                    </div>
+                                            `;
+                                    $(select_group[i]).html(content)
+                                    console.log($(select_group[i]).parent().parent().siblings()[3])
+                                    $($(select_group[i]).parent().parent().siblings()[3]).text('inactive'); 
+                                }
+                            }
+
                             var new_select = `
                                     <div class="select">
                                         <select id="standard-select">
