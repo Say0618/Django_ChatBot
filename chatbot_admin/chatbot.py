@@ -3,7 +3,6 @@ import openpyxl
 from os.path import exists
 # from datetime import datetime
 import datetime
-print(datetime.__file__)
 import base64
 import json
 from PIL import Image 
@@ -20,13 +19,19 @@ from .models import InterpretationSheet
 from .models import Images_Bot
 from .models import Database_Excel
 
-read_path = os.getcwd() + "/media/read_sheets/" + ReadSheet.objects.filter(status=1).get().filename()
+if ReadSheet.objects.count() > 0:
+    if ReadSheet.objects.filter(status=1).count() > 0:
+        read_path = os.getcwd() + "/media/read_sheets/" + ReadSheet.objects.filter(status=1).get().filename()
 
 write_path = os.getcwd() + "/media/write_sheets/write.xlsx"
 
-master_path = os.getcwd() + "/media/master_sheets/" + MasterSheet.objects.filter(status=1).get().filename()
+if MasterSheet.objects.count() > 0:
+    if MasterSheet.objects.filter(status=1).count() > 0:
+        master_path = os.getcwd() + "/media/master_sheets/" + MasterSheet.objects.filter(status=1).get().filename()
 
-interpretation_path = os.getcwd() + "/media/interpretation_sheets/" + InterpretationSheet.objects.filter(status=1).get().filename()
+if InterpretationSheet.objects.count() > 0:
+    if InterpretationSheet.objects.filter(status=1).count() > 0:
+        interpretation_path = os.getcwd() + "/media/interpretation_sheets/" + InterpretationSheet.objects.filter(status=1).get().filename()
 
 
 
@@ -105,9 +110,11 @@ def getData():
     
     return dataset
 
-def getImageData(img_path):
+def getImageData(img_name):
     basewidth = 1600
     default_path = os.getcwd() + '/media/attachments/images/'
+    img_path = Images_Bot.objects.filter(name=img_name).filter(status=1).get().filename()
+    
     image = Image.open(default_path + img_path)
     wpercent = (basewidth / float(image.size[0]))
     hsize = int((float(image.size[1]) * float(wpercent)))
