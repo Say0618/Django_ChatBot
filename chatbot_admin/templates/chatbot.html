@@ -62,7 +62,9 @@
 <!-- <script type="text/javascript" src="{% static 'chatbot/js/main.js' %}"></script> -->
 <script>
     $(document).ready(function() {
-        
+        toastr.options = {
+            'timeOut': '4000',
+        }
         $('#startChat').click(function() {
             var validate_msg = "{{msg}}";
             console.log(validate_msg)

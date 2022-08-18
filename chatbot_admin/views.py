@@ -768,15 +768,65 @@ def videos(request):
 def chatbot(request):
     msg = ''
     if InterpretationSheet.objects.filter(status=1).count() == 0:
-        msg = 'Interpretation sheet does not exist!'
+        msg = 'Interpretation sheet does not exist or inactive. Please sovle this problem!'
 
     if MasterSheet.objects.filter(status=1).count() == 0: 
-        msg = 'Master sheet does not exist!'
+        msg = 'Master sheet does not exist or inactive. Please sovle this problem!'
     
     if ReadSheet.objects.filter(status=1).count() == 0:
-        msg = 'Read sheet does not exist!'
-    
-    
+        msg = 'Read sheet does not exist or inactive. Please sovle this problem!'
+
+    if msg == '':
+        read_path = os.getcwd() + '/media/read_sheets/' + ReadSheet.objects.filter(status=1).get().filename()
+        if os.path.isfile(read_path):
+            wb = openpyxl.load_workbook(read_path)
+            ws = wb.active
+
+            rows_cnt = ws.max_row
+            cols_cnt = ws.max_column
+
+            start_row = 0 #count real data starts
+            flag = False
+            for r in range(1, rows_cnt):
+                if flag == True:
+                    break
+                for c in range(1, cols_cnt):
+                    if ws.cell(row=r, column=c).value == "Q.No":
+                        start_row = r + 1
+                        flag = True
+                        break
+
+            for r in range(start_row, rows_cnt+1):
+                if (ws.cell(row=r, column=5).value) == 'Database response':
+                    db = ws.cell(row=r, column=7).value
+                    # print('db is ........', db)
+                    if Database_Excel.objects.filter(name=db).filter(status=1).count() == 0:
+                        msg = 'Database ' + db + ' does not exist or inactive. please solve this problem!'
+
+                if (ws.cell(row=r, column=5).value) == 'Q. picture single response' or (ws.cell(row=r, column=5).value) == 'Q. picture multiple response':
+                    img = ws.cell(row=r, column=3).value
+                    # print('img----', img)
+                    if Images_Bot.objects.filter(name=img).filter(status=1).count() == 0:
+                        msg = 'Image ' + img + ' does not exist or inactive. please solve this problem!'
+                
+                if (ws.cell(row=r, column=5).value) == 'Single picture response' or (ws.cell(row=r, column=5).value) == 'Multiple picture response':
+                    img_list = []
+                    count = 0
+                    for k in range(r+1, rows_cnt+1):
+                        count = count + 1
+                        if ws.cell(row=k, column=5).value != None:
+                            break
+                    # print('000count000----',count)
+                    for t in range(0, count):
+                        img_list.append(ws.cell(row=r+t, column=7).value.split('>')[0])
+                    # print('img list is ----------------', img_list)
+                    if len(img_list):
+                        for img in img_list:
+                            if Images_Bot.objects.filter(name=img).filter(status=1).count() == 0:
+                                msg = 'Image ' + img + ' does not exist or inactive. please solve this problem!'
+
+
+
     return render(request, 'chatbot.html', {
         'msg': msg
     })
