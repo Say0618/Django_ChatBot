@@ -768,13 +768,13 @@ def videos(request):
 def chatbot(request):
     msg = ''
     if InterpretationSheet.objects.filter(status=1).count() == 0:
-        msg = 'Interpretation sheet does not exist or inactive. Please sovle this problem!'
+        msg = 'Interpretation sheet does not exist or inactive. Please check this problem!'
 
     if MasterSheet.objects.filter(status=1).count() == 0: 
-        msg = 'Master sheet does not exist or inactive. Please sovle this problem!'
+        msg = 'Master sheet does not exist or inactive. Please check this problem!'
     
     if ReadSheet.objects.filter(status=1).count() == 0:
-        msg = 'Read sheet does not exist or inactive. Please sovle this problem!'
+        msg = 'Read sheet does not exist or inactive. Please check this problem!'
 
     if msg == '':
         read_path = os.getcwd() + '/media/read_sheets/' + ReadSheet.objects.filter(status=1).get().filename()
@@ -801,13 +801,13 @@ def chatbot(request):
                     db = ws.cell(row=r, column=7).value
                     # print('db is ........', db)
                     if Database_Excel.objects.filter(name=db).filter(status=1).count() == 0:
-                        msg = 'Database ' + db + ' does not exist or inactive. please solve this problem!'
+                        msg = 'Database ' + db + ' does not exist or inactive. please check this problem!'
 
                 if (ws.cell(row=r, column=5).value) == 'Q. picture single response' or (ws.cell(row=r, column=5).value) == 'Q. picture multiple response':
                     img = ws.cell(row=r, column=3).value
                     # print('img----', img)
                     if Images_Bot.objects.filter(name=img).filter(status=1).count() == 0:
-                        msg = 'Image ' + img + ' does not exist or inactive. please solve this problem!'
+                        msg = 'Image ' + img + ' does not exist or inactive. please check this problem!'
                 
                 if (ws.cell(row=r, column=5).value) == 'Single picture response' or (ws.cell(row=r, column=5).value) == 'Multiple picture response':
                     img_list = []
@@ -823,7 +823,7 @@ def chatbot(request):
                     if len(img_list):
                         for img in img_list:
                             if Images_Bot.objects.filter(name=img).filter(status=1).count() == 0:
-                                msg = 'Image ' + img + ' does not exist or inactive. please solve this problem!'
+                                msg = 'Image ' + img + ' does not exist or inactive. please check this problem!'
 
 
 
