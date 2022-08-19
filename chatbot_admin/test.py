@@ -13,10 +13,11 @@ from calc_algo_v6 import (
 )
 
 
-master_path = "/var/www/Django_ChatBot/master_sheets/master_sheet.xlsx"
+master_path = "/var/www/Django_ChatBot/media/master_sheets/master_sheet.xlsx"
+
 print(master_path)
-write_path = "/var/www/Django_ChatBot/write_sheets/write.xlsx"
-interpretation_path ="/var/www/Django_ChatBot/interpretation_sheets/Interpretation_table_v1.xlsx"
+write_path = "/var/www/Django_ChatBot/media/write_sheets/write.xlsx"
+interpretation_path ="/var/www/Django_ChatBot/media/interpretation_sheets/Interpretation_table_v1.xlsx"
 
 
 process_master_file(master_path)
