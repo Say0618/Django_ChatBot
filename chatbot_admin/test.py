@@ -15,7 +15,6 @@ from calc_algo_v6 import (
 
 master_path = "/var/www/Django_ChatBot/media/master_sheets/master_sheet.xlsx"
 
-print(master_path)
 write_path = "/var/www/Django_ChatBot/media/write_sheets/write.xlsx"
 interpretation_path ="/var/www/Django_ChatBot/media/interpretation_sheets/Interpretation_table_v1.xlsx"
 
@@ -117,4 +116,4 @@ def getFeedback(mode):
         # print(len(feedbacks))
         return feedbacks
 
-get_Feedback()
+getFeedback()
