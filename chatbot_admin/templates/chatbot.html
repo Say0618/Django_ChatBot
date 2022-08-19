@@ -26,11 +26,12 @@
 <div class="chat-popup" id="myForm">
     <form class="form-container">
         {% csrf_token %}
-        <div class="chat-header">
+        <!-- <div class="chat-header">
             <img src="{% static 'chatbot/assets/images/back.png' %}" alt="back" class="back-errow" onclick="closeForm();return false;">
             <img src="{% static 'chatbot/assets/images/Profile-Pic.png' %}" alt="profile picture" class="profile-image">
             <p class="user-name">Lux <span><br>Chat Bot</span></p>
-        </div>
+        </div> -->
+        <br><br>
         <div class="bot-time">
             <p></p>
         </div>
@@ -1220,7 +1221,8 @@
                     <div id="myProgress">
                     <div id="myBar">0%</div>
                     </div>
-                    <p id="timer" style="display:none">Wait while analyzing the contents.<br><br>Your approximate waste time is 5 seconds</p>
+                    <br>
+                    <p id="timer" style="display:none "></p>
                 </div>`;
 
         $('#botChat').append(elem);
