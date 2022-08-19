@@ -24,7 +24,7 @@ process_case_file(write_path)
 do_calculation()
 
     
-output_file_name = '/var/www/Django_ChatBot/chatbot_admin/media/aa_outputs/aaOutputSheet.xlsx'
+output_file_name = '/var/www/Django_ChatBot/media/aa_outputs/aaOutputSheet.xlsx'
     
 global aa
 aa = output_file_name
