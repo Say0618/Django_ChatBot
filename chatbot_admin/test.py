@@ -19,7 +19,6 @@ print(master_path)
 write_path = "/var/www/Django_ChatBot/media/write_sheets/write.xlsx"
 interpretation_path ="/var/www/Django_ChatBot/media/interpretation_sheets/Interpretation_table_v1.xlsx"
 
-/var/www/Django_ChatBot/chatbot_admin/media/aa_outputs/aaOutputSheet.xlsx
 process_master_file(master_path)
 process_case_file(write_path)
 do_calculation()
