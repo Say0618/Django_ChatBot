@@ -116,4 +116,4 @@ def getFeedback(mode):
         # print(len(feedbacks))
         return feedbacks
 
-getFeedback()
+getFeedback('User')
