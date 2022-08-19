@@ -114,7 +114,7 @@ def getImageData(img_name):
     basewidth = 1600
     default_path = os.getcwd() + '/media/attachments/images/'
     img_path = Images_Bot.objects.filter(name=img_name).filter(status=1).get().filename()
-    
+
     image = Image.open(default_path + img_path)
     wpercent = (basewidth / float(image.size[0]))
     hsize = int((float(image.size[1]) * float(wpercent)))
@@ -404,7 +404,7 @@ def getFeedback(mode):
                 feedbacks.extend([elem1, elem2, elem3, elem4])
 
         print(feedbacks)
-        print(len(feedbacks))
+        # print(len(feedbacks))
         return feedbacks
     else:
         top = []
@@ -444,8 +444,8 @@ def getFeedback(mode):
        
 
         print(feedbacks)
-        print(len(feedbacks))
-        return feedbacks;
+        # print(len(feedbacks))
+        return feedbacks
     
 def getDatabase(filename):
     base_path = os.getcwd() + '/media/attachments/database/'

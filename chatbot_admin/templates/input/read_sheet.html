@@ -146,11 +146,21 @@
         </div>
     </div>
 </div>
-
+<a id="redirect" href="{% url 'read_sheet' %}" style="display: hidden;"></a>
 {% endblock %}
 {% block script %}
 <script>
+    var vali_msg = '{{msg}}';
+    console.log('validate msg is --------------------------------------------',vali_msg);
     $().ready(function() {
+        if (vali_msg.length > 0) {
+            toastr.options = {
+                'timeOut': '10000'
+            }
+            toastr.error(vali_msg);
+            // $('#redirect').click();
+        }
+
         var del_id = -1;
 
         var table = $('#ms_table').DataTable({
@@ -289,9 +299,11 @@
                 success: function(res) {
                     if (res.msg == 'deleted') {
                         toastr.success('sheet deleted successfully!');
-                        setTimeout(function() {
-                            location.reload();
-                        }, 2000);
+                        $('tr').each(function() {
+                            console.log($(this).attr('user_id'))
+                            if ($(this).attr('user_id') == del_id)
+                                $(this).remove();
+                        })
                     }
                 },
                 error: function(res) {

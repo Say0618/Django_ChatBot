@@ -277,11 +277,17 @@ def uploadReadSheet(request):
     if request.method == "POST":
         form = ReadSheetForm(request.POST, request.FILES)
         if form.is_valid():
+            set_flag = 0
+            if ReadSheet.objects.filter(status=1).count() > 0:
+                origin_active_sheet = ReadSheet.objects.filter(status=1).get()
+                set_flag = 1
+
             file = request.FILES['file']
             form.save()
             sheet = ReadSheet.objects.last()
             sheet.name = file
             sheet.save()
+
             # make other sheets inactive
             save_id = sheet.id
             other_sheets = ReadSheet.objects.exclude(id=save_id)
@@ -289,7 +295,54 @@ def uploadReadSheet(request):
                 data.status = 0
                 data.save() 
 
-            return redirect('read_sheet')
+            # validate
+            msg = ''
+
+            read_path = os.getcwd() + '/media/read_sheets/' + ReadSheet.objects.filter(status=1).get().filename()
+            if os.path.isfile(read_path):
+                wb = openpyxl.load_workbook(read_path)
+                ws = wb.active
+
+                rows_cnt = ws.max_row
+                cols_cnt = ws.max_column
+
+                start_row = 0 #count real data starts
+                flag = False
+                for r in range(1, rows_cnt):
+                    if flag == True:
+                        break
+                    for c in range(1, cols_cnt):
+                        if ws.cell(row=r, column=c).value == "Q.No":
+                            start_row = r + 1
+                            flag = True
+                            break
+                
+            for r in range(start_row, rows_cnt+1):
+                if ws.cell(row=r, column=5).value == 'Q. picture single response' or ws.cell(row=r, column=5).value == 'Q. picture multiple response':
+                    if ws.cell(row=r, column=3).value == None:
+                        msg = '"Q. picture single response" or "Q. picture multiple response" is incorrect. please see if you have filled the "Question Media"field'  
+                        # print(msg)
+
+                if ws.cell(row=r, column=5).value == 'Q. media single response' or ws.cell(row=r, column=5).value == 'Q. media multiple response':
+                    if ws.cell(row=r, column=3).value == None:
+                        msg = '"Q. media single response" or "Q. media multiple response" is incorrect. please see if you have filled the "Question Media"field'  
+                        # print(msg)
+
+            if msg != '':
+                mm = ReadSheet.objects.filter(pk=save_id).get()
+                mm.file.close()
+                mm.file.delete()
+                ReadSheet.objects.filter(pk=save_id).delete()
+                if set_flag == 1:
+                    origin_active_sheet.status = 1
+                    origin_active_sheet.save()
+            
+            sheets = ReadSheet.objects.all()
+            return render(request, 'input/read_sheet.html', {
+                'sheets': sheets,
+                'msg': msg
+            })           
+            # return redirect('read_sheet')
         else:
             return redirect('read_sheet')
 
