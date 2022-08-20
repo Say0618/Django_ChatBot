@@ -79,8 +79,17 @@ def settings(request):
     terms = ''
     if Settings.objects.filter(type='terms').count() > 0:
         terms = Settings.objects.filter(type='terms').get().content
+    title = ''
+    if Settings.objects.filter(type='title').count() > 0:
+        title = Settings.objects.filter(type='title').get().content
+    welcome = ''
+    if Settings.objects.filter(type='welcome').count() > 0:
+        welcome = Settings.objects.filter(type='welcome').get().content
+
     return render(request, 'settings.html', {
-        'terms':terms,
+        'terms': terms,
+        'title': title,
+        'welcome': welcome
     })
 
 def terms_save(request):
