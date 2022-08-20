@@ -35,11 +35,11 @@
     </div>
 </div><br>
 <div class="row">
-    <form action="" method="POST">
+    <form action="{% url 'logoUpload' %}" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="custom-file">
-            <input type="file" class="custom-file-input" id="logoFile" name="logoFile">
-            <label class="custom-file-label" for="logoFile">Choose Logo imgae file</label><br>
+            <input type="file" class="custom-file-input" id="id_file" name="file" required >
+            <label class="custom-file-label" for="id_file">Choose Logo imgae file</label><br>
         </div><br>
         <div class="mt-3">
             <button type="submit" id="logo_btn" style="float: right;" class="btn btn-primary">save</button>
@@ -47,11 +47,11 @@
     </form>
 </div><br>
 <div class="row">
-    <form action="" method="POST">
+    <form action="{% url 'loginUpload' %}" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="custom-file">
-            <input type="file" class="custom-file-input" id="loginFile" name="loginFile">
-            <label class="custom-file-label" for="loginFile">Choose Login page imgae file</label><br>
+            <input type="file" class="custom-file-input" id="id_file" name="file" required >
+            <label class="custom-file-label" for="id_file">Choose Login page imgae file</label><br>
         </div><br>
         <div class="mt-3">
             <button type="submit" id="login_btn" style="float: right;" class="btn btn-primary">save</button>
@@ -59,11 +59,11 @@
     </form>
 </div><br>
 <div class="row">
-    <form action="" method="POST">
+    <form action="{% url 'faviconUpload' %}" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="custom-file">
-            <input type="file" class="custom-file-input" id="faviconFile" name="loginFile">
-            <label class="custom-file-label" for="faviconFile">Choose Favicon imgae file</label><br>
+            <input type="file" class="custom-file-input" id="id_file" name="file" required >
+            <label class="custom-file-label" for="id_file">Choose Favicon imgae file</label><br>
         </div><br>
         <div class="mt-3">
             <button type="submit" id="favicon_btn" style="float: right;" class="btn btn-primary">save</button>

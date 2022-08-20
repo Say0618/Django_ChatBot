@@ -140,6 +140,66 @@ def welcome_save(request):
             'msg': 'success'
         })
 
+def logoUpload(request):
+    if request.method == "POST":
+        form = SettingsForm(request.POST, request.FILES)
+        if form.is_valid():
+            if Settings_Image.objects.filter(type='logo').count() > 0:
+                mm = Settings_Image.objects.filter(type='logo').get()
+                mm.file.close()
+                mm.file.delete()
+                Settings_Image.objects.filter(type='logo').delete()
+            
+            file = request.FILES['file']
+            form.save()
+            img = Settings_Image.objects.last()
+            img.name = file
+            img.type = 'logo'
+            img.save()
+            return redirect('settings')
+        else:
+            return redirect('settings')
+
+def loginUpload(request):
+    if request.method == "POST":
+        form = SettingsForm(request.POST, request.FILES)
+        if form.is_valid():
+            if Settings_Image.objects.filter(type='login').count() > 0:
+                mm = Settings_Image.objects.filter(type='login').get()
+                mm.file.close()
+                mm.file.delete()
+                Settings_Image.objects.filter(type='login').delete()
+
+            file = request.FILES['file']
+            form.save()
+            img = Settings_Image.objects.last()
+            img.name = file
+            img.type = 'login'
+            img.save()
+            return redirect('settings')
+        else:
+            return redirect('settings')
+
+def faviconUpload(request):
+    if request.method == "POST":
+        form = SettingsForm(request.POST, request.FILES)
+        if form.is_valid():
+            if Settings_Image.objects.filter(type='favicon').count() > 0:
+                mm = Settings_Image.objects.filter(type='favicon').get()
+                mm.file.close()
+                mm.file.delete()
+                Settings_Image.objects.filter(type='favicon').delete()
+
+            file = request.FILES['file']
+            form.save()
+            img = Settings_Image.objects.last()
+            img.name = file
+            img.type = 'favicon'
+            img.save()
+            return redirect('settings')
+        else:
+            return redirect('settings')
+
 @login_required
 def users(request):
     user_list = User.objects.exclude(is_superuser=1)

@@ -61,6 +61,9 @@ urlpatterns = [
     path('settings/terms_save', views.terms_save, name='terms_save'),
     path('settings/title_save', views.title_save, name='title_save'),
     path('settings/welcome_save', views.welcome_save, name='welcome_save'),
+    path('settings/logo/upload', views.logoUpload, name='logoUpload'),
+    path('settings/login/upload', views.loginUpload, name='loginUpload'),
+    path('settings/favicon/upload', views.faviconUpload, name='faviconUpload'),
 
     path('terms_conditions', views.terms_conditions, name='terms_conditions')
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
