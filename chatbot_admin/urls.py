@@ -15,8 +15,6 @@ urlpatterns = [
     path('user/edit', views.editUser, name='editUser'),
     path('user/operateUser', views.operateUser, name='operateUser'),
 
-    path('settings', views.settings, name='settings'),
-
     path('input/master_sheet', views.master_sheet, name='master_sheet'),
     path('upload/mastersheet', views.uploadMasterSheet, name='uploadMasterSheet'),
     path('input/master_sheet/operate', views.operateMasterSheet, name='operateMasterSheet'),          
@@ -58,6 +56,11 @@ urlpatterns = [
     path('chatbot/get_next_query', views.getNextQuery, name='getNextQuery'),
     path('chatbot/get_feedbacks', views.get_Feedback, name='getFeedback'),
     path('chatbot/write_output', views.writeOutput, name='writeOutput'),
+    
+    path('settings', views.settings, name='settings'),
+    path('settings/terms_save', views.terms_save, name='terms_save'),
+    path('settings/title_save', views.title_save, name='title_save'),
+    path('settings/welcome_save', views.welcome_save, name='welcome_save'),
 
     path('terms_conditions', views.terms_conditions, name='terms_conditions')
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

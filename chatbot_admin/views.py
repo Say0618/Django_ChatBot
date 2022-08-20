@@ -31,12 +31,15 @@ from .models import ReadSheet
 from .models import InterpretationSheet
 from .models import Images_Bot
 from .models import Database_Excel
+from .models import Settings
+from .models import Settings_Image
 
 from .forms import MasterSheetForm
 from .forms import ReadSheetForm
 from .forms import InterpretationSheetForm
 from .forms import Images_BotForm
 from .forms import Database_ExcelForm
+from .forms import SettingsForm
 #chat bot 
 from .chatbot import *
 
@@ -73,7 +76,60 @@ def logout_attempt(request):
 
 @login_required
 def settings(request):
-    return render(request, 'settings.html')
+    terms = ''
+    if Settings.objects.filter(type='terms').count() > 0:
+        terms = Settings.objects.filter(type='terms').get().content
+    return render(request, 'settings.html', {
+        'terms':terms,
+    })
+
+def terms_save(request):
+    if request.method == 'POST':
+        content = request.POST['content']
+
+        if Settings.objects.filter(type='terms').count() > 0:
+            terms = Settings.objects.filter(type='terms').get()
+            terms.content = content
+            terms.save()
+        else:
+            newModel = Settings.objects.create(content=content, type='terms')
+            newModel.save()
+        
+        return JsonResponse({
+            'msg': 'success'
+        })
+
+def title_save(request):
+    if request.method == 'POST':
+        content = request.POST['content']
+
+        if Settings.objects.filter(type='title').count() > 0:
+            terms = Settings.objects.filter(type='title').get()
+            terms.content = content
+            terms.save()
+        else:
+            newModel = Settings.objects.create(content=content, type='title')
+            newModel.save()
+        
+        return JsonResponse({
+            'msg': 'success'
+        })
+
+def welcome_save(request):
+    if request.method == 'POST':
+        content = request.POST['content']
+
+        if Settings.objects.filter(type='welcome').count() > 0:
+            terms = Settings.objects.filter(type='welcome').get()
+            terms.content = content
+            terms.save()
+        else:
+            newModel = Settings.objects.create(content=content, type='welcome')
+            newModel.save()
+        
+        return JsonResponse({
+            'msg': 'success'
+        })
 
 @login_required
 def users(request):

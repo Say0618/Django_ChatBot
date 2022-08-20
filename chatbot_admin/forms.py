@@ -5,6 +5,7 @@ from .models import ReadSheet
 from .models import InterpretationSheet
 from .models import Images_Bot
 from .models import Database_Excel
+from .models import Settings_Image
 
 class MasterSheetForm(forms.ModelForm):
     class Meta:
@@ -29,4 +30,9 @@ class Images_BotForm(forms.ModelForm):
 class Database_ExcelForm(forms.ModelForm):
     class Meta:
         model = Database_Excel
+        fields = ['file']
+
+class SettingsForm(forms.ModelForm):
+    class Meta:
+        model = Settings_Image
         fields = ['file']
