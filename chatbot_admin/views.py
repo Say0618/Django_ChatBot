@@ -1046,7 +1046,14 @@ def chatbot_getDatabase(request):
 def writeOutput(request):
     if request.method == "POST":
         write_dataset = json.loads(request.POST['write_dataset'])
-        writeExcel(write_dataset)
+
+        username = None
+        # if request.user.is_authenticated():
+        username = request.user.username
+
+        writeExcel(write_dataset, username)
+        data_science()
+
         return JsonResponse({
             'msg': 'file processing is succeed!'
         })

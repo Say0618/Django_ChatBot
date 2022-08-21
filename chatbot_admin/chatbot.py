@@ -176,7 +176,7 @@ def getAlpha():
     return alpha_set
     print("alpha set is ....",alpha_set)
 
-def writeExcel(write_data_set):
+def writeExcel(write_data_set, username):
     wb1 = openpyxl.load_workbook(read_path)
     ws1 = wb1.active
     rows_cnt = ws1.max_row
@@ -235,7 +235,8 @@ def writeExcel(write_data_set):
         c1.value = "Code " + str(start_point-4)
 
         c1= ws.cell(row=3, column=start_point)
-        c1.value = "usename " + str(start_point-4)  # type: ignore
+        c1.value = username  # type: ignore
+        # c1.value = "usename " + str(start_point-4)  # type: ignore
 
         c1= ws.cell(row=4, column=start_point)
         c1.value = start_time
@@ -290,9 +291,11 @@ def writeExcel(write_data_set):
         c1.value = "Code 1"
 
         c1= ws.cell(row=3, column=3)
-        c1.value = "usename" 
+        c1.value = "username" 
+        # c1.value = "usename" 
         c1= ws.cell(row=3, column=5)
-        c1.value = "usename 1"
+        c1.value = username
+        # c1.value = "usename 1"
 
         c1= ws.cell(row=4, column=3)
         c1.value = "start time"
@@ -346,7 +349,7 @@ def writeExcel(write_data_set):
 
         wb.save(write_path)
 
-    data_science()
+    # data_science()
 
 def data_science():
     process_master_file(master_path)
