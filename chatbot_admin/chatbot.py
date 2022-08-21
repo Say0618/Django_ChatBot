@@ -19,19 +19,19 @@ from .models import InterpretationSheet
 from .models import Images_Bot
 from .models import Database_Excel
 
-# if ReadSheet.objects.count() > 0:
-#     if ReadSheet.objects.filter(status=1).count() > 0:
-#         read_path = os.getcwd() + "/media/read_sheets/" + ReadSheet.objects.filter(status=1).get().filename()
+if ReadSheet.objects.count() > 0:
+    if ReadSheet.objects.filter(status=1).count() > 0:
+        read_path = os.getcwd() + "/media/read_sheets/" + ReadSheet.objects.filter(status=1).get().filename()
 
-# write_path = os.getcwd() + "/media/write_sheets/write.xlsx"
+write_path = os.getcwd() + "/media/write_sheets/write.xlsx"
 
-# if MasterSheet.objects.count() > 0:
-#     if MasterSheet.objects.filter(status=1).count() > 0:
-#         master_path = os.getcwd() + "/media/master_sheets/" + MasterSheet.objects.filter(status=1).get().filename()
+if MasterSheet.objects.count() > 0:
+    if MasterSheet.objects.filter(status=1).count() > 0:
+        master_path = os.getcwd() + "/media/master_sheets/" + MasterSheet.objects.filter(status=1).get().filename()
 
-# if InterpretationSheet.objects.count() > 0:
-#     if InterpretationSheet.objects.filter(status=1).count() > 0:
-#         interpretation_path = os.getcwd() + "/media/interpretation_sheets/" + InterpretationSheet.objects.filter(status=1).get().filename()
+if InterpretationSheet.objects.count() > 0:
+    if InterpretationSheet.objects.filter(status=1).count() > 0:
+        interpretation_path = os.getcwd() + "/media/interpretation_sheets/" + InterpretationSheet.objects.filter(status=1).get().filename()
 
 
 
