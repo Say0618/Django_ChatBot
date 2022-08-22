@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>main</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
     <link rel="icon" href="{% static 'chatbot/favicon.ico' %}" type="image/x-icon" />
     
@@ -22,7 +22,7 @@
         }
     </style>
 </head>
-<body style="position: relative;">
+<body>
     <nav class="navbar navbar-inverse navbar-static-top">
         <div class="container-fluid">
           <!-- Brand and toggle get grouped for better mobile display -->
@@ -87,16 +87,21 @@
             <input type="hidden" name="flag" id="flag" value="">
         </form>
     </div>
-    
-    
-    <footer>
-        
+    <div class="row">
+        <div class="col-md-11">
+            <button id="collapse_btn" class="btn btn-info" style="display: none; float: right;">Collapse</button>
+        </div>
+    </div>
+    <!-- Footer -->
+    <footer id="footer" style="position: relative; top: 80px;" class="bg-light text-center text-lg-start">
+        <!-- Copyright Footer -->
+        <div class="p-3">
+            &copy; 2022 Copyright:
+            <a class="text-dark" href="{% url 'terms_conditions' %}">Terms & conditions</a>
+        </div>
+        <!-- Copyright Footer-->
     </footer>
-
-    
-    <footer class="bg-dark text-center text-white">
-        
-    </footer>
+    <!-- Footer -->
 
     <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
@@ -108,7 +113,19 @@
             toastr.options = {
                 'timeOut': '4000',
             }
+            
+            $('#collapse_btn').click(function() {
+                location.reload()
+                // $('#chatStart').show();
+                // $('footer').show();
+                // $('#collapse_btn').hide();
+                // $('#myForm').hide();
+            });
+
             $('#startChat').click(function() {
+                $('#collapse_btn').show();
+                $('footer').hide();
+
                 var validate_msg = "{{msg}}";
                 console.log(validate_msg)
                 if (validate_msg != '') {
@@ -1530,6 +1547,5 @@
         }
         
     </script>
-    
 </body>
 </html>

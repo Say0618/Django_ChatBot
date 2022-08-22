@@ -1,1 +1,60 @@
-this is terms and conditions page
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms & conditions</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="icon" href="{% static 'chatbot/favicon.ico' %}" type="image/x-icon" />
+</head>
+<body>
+    <nav class="navbar navbar-inverse navbar-static-top">
+        <div class="container-fluid">
+          <!-- Brand and toggle get grouped for better mobile display -->
+          <div class="navbar-header">
+            <a class="navbar-brand" href="{% url 'userIndex' %}">Chatbot</a>
+          </div>
+      
+          <!-- Collect the nav links, forms, and other content for toggling -->
+          <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                  <!-- <li role="separator" class="divider"></li> -->
+                  <li><a href="{% url 'user_logout_attempt' %}">Log out</a></li>
+                </ul>
+              </li>
+            </ul>
+          </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+    </nav>
+
+    <div class="row">
+        <div class="col-md-offset-3 col-md-6">
+            <center><h1>Terms and conditions</h1></center>
+            <div id="terms" style="border: 3px solid rgb(47, 47, 122); border-radius: 40px;">
+                <div style="margin-left: 35px; margin-top: 10px;">
+
+                    {{terms | safe}}
+                    <!-- <center>{{terms | safe}}</center> -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+    <script>
+        $().ready(function() {
+            // terms = `{{terms}}`;
+            // terms = terms.replace('&lt;', '<');
+            // terms = terms.replace('&gt;', '>');
+            // $('#terms').text(terms);
+        });
+    </script>
+</body>
+</html>

@@ -42,4 +42,11 @@ def logout_attempt(request):
     
 @login_required
 def terms_conditions(request):
-    return render(request, 'terms_and_conditions.html')
+    terms = ''
+
+    if Settings.objects.filter(type='terms').count() > 0:
+        terms = Settings.objects.filter(type='terms').get().content
+
+    return render(request, 'terms_and_conditions.html', {
+        'terms': terms
+    })
