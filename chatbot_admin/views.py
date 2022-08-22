@@ -58,10 +58,10 @@ def login_attempt(request):
     password = request.POST['password']
 
     user = authenticate(request, username=username, password=password)
-    print('user active and superuser is ......', user)
-    print('user active and superuser is ......')
+    
     if user is not None and user.is_active:
         login(request, user)
+
         if user.is_superuser == 1:
             return redirect(settings.LOGIN_REDIRECT_URL)
         else:
@@ -223,7 +223,7 @@ def addUser(request):
                 'msg': 'user already exists'
             })
 
-        newUser = User.objects.create(username=username)
+        newUser = User.objects.create(username=username, is_active=1)
         newUser.set_password(pwd)
         newUser.save()
 
@@ -1072,3 +1072,10 @@ def get_Feedback(request):
 @login_required
 def terms_conditions(request):
     return render(request, 'terms_and_conditions.html')
+
+
+# def checkAdmin(request):
+#     if request.user.is_superuser == 1:
+#         return True
+#     else:
+#         return render(request, '404.html')

@@ -20,4 +20,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('django.contrib.auth.urls')),
     path('', include('chatbot_admin.urls')),
+    path('usertrial/', include('chatbot_users.urls')),
 ]
