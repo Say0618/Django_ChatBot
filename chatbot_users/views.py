@@ -39,3 +39,7 @@ def login_attempt(request):
 def logout_attempt(request):
     logout(request)
     return redirect('userIndex')
+    
+@login_required
+def terms_conditions(request):
+    return render(request, 'terms_and_conditions.html')
