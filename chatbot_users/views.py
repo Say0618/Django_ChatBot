@@ -15,6 +15,8 @@ from django.conf import settings as conf_settings
 import openpyxl
 from os.path import exists
 
+from chatbot_admin.models import *
+
 # Create your views here.
 def index(request):
     if request.user.is_authenticated:
