@@ -32,10 +32,10 @@ def login_attempt(request):
 
     if user is not None and user.is_active:
         login(request, user)
-        return render(request, 'main.html')
+        return redirect('userIndex')
     else:
         return render(request, 'userLogin.html')
 
 def logout_attempt(request):
     logout(request)
-    return render(request, 'userLogin.html')
+    return redirect('userIndex')
