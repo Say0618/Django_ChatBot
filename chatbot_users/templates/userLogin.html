@@ -8,6 +8,7 @@
     <title>User_Login</title>
     <style>
         body {
+            /* background: url('media/{{background}}') no-repeat fixed center center; */
             background: url('http://i.imgur.com/Eor57Ae.jpg') no-repeat fixed center center;
             background-size: cover;
             font-family: Montserrat;
@@ -16,6 +17,9 @@
         .logo {
             width: 213px;
             height: 36px;
+            /* width: 1500px;
+            height: 357px; */
+            /* background: url('media/{{logo}}') no-repeat; */
             background: url('http://i.imgur.com/fd8Lcso.png') no-repeat;
             margin: 30px auto;
         }
@@ -102,7 +106,7 @@
     <div class="login-block">
         <form action="{% url 'user_login_attempt' %}" method="POST">
             {% csrf_token %}
-            <h1>Welcome to Our Chatbot!</h1>
+            <h1>{{welcome}}</h1>
             <input type="text" placeholder="Username" id="username" name="username" />
             <input type="password" placeholder="Password" id="password" name="password" />
             <button type="submit">Submit</button>

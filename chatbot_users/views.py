@@ -22,7 +22,25 @@ def index(request):
     if request.user.is_authenticated:
         return render(request, 'main.html')
     else:
-        return render(request, 'userLogin.html')
+
+        welcome = ''
+        logo = 'settings/'
+        background = 'settings/'
+
+        if Settings.objects.filter(type='welcome').count() > 0:
+            welcome = Settings.objects.filter(type='welcome').get().content
+        
+        if Settings_Image.objects.filter(type='logo').count() > 0:
+            logo = logo + Settings_Image.objects.filter(type='logo').get().filename()
+        
+        if Settings_Image.objects.filter(type='login').count() > 0:
+            background = background + Settings_Image.objects.filter(type='login').get().filename()
+
+        return render(request, 'userLogin.html',{
+            'welcome': welcome,
+            'logo': logo,
+            'background': background
+        })
 
 def login_attempt(request):
     username = request.POST['username']
@@ -34,7 +52,24 @@ def login_attempt(request):
         login(request, user)
         return redirect('userIndex')
     else:
-        return render(request, 'userLogin.html')
+        welcome = ''
+        logo = 'settings/'
+        background = 'settings/'
+
+        if Settings.objects.filter(type='welcome').count() > 0:
+            welcome = Settings.objects.filter(type='welcome').get().content
+        
+        if Settings_Image.objects.filter(type='logo').count() > 0:
+            logo = logo + Settings_Image.objects.filter(type='logo').get().filename()
+        
+        if Settings_Image.objects.filter(type='login').count() > 0:
+            background = background + Settings_Image.objects.filter(type='login').get().filename()
+
+        return render(request, 'userLogin.html',{
+            'welcome': welcome,
+            'logo': logo,
+            'background': background
+        })
 
 def logout_attempt(request):
     logout(request)
