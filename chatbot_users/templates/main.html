@@ -163,10 +163,14 @@
 
     <script>
         var w_width = window.innerWidth;
-        var rigth_margin = (w_width - 900) / 2;
+        var w_height = window.innerHeight;
 
-        // console.log(rigth_margin)
+        var rigth_margin = (w_width - 900) / 2;
+        var bottom_margin = (w_height - 630) / 2;
+
+        console.log(bottom_margin)
         $('.chat-popup').css("right", rigth_margin);
+        $('.chat-popup').css("bottom", bottom_margin);
 
     </script>
 
