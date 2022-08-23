@@ -14,7 +14,7 @@
     <link rel="stylesheet" type="text/css" href="{% static 'chatbot/css/responsive.css' %}">
     <style>
         .chat {
-            bottom: -30px;
+            /* bottom: -30px; */
         }
 
         /* #collapse_btn {
@@ -166,11 +166,14 @@
         var w_height = window.innerHeight;
 
         var rigth_margin = (w_width - 900) / 2;
-        var bottom_margin = (w_height - 630) / 2;
+        var bottom_margin = (w_height - 640) / 2 -30;
 
-        console.log(bottom_margin)
+        var bot_top = (w_height - 100 - 427) / 2;
+        // console.log(bottom_margin)
         $('.chat-popup').css("right", rigth_margin);
         $('.chat-popup').css("bottom", bottom_margin);
+        $('.chat').css('top', bot_top);
+        // $('.chat').css('top', bot_top);
 
     </script>
 
