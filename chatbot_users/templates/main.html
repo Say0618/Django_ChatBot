@@ -20,6 +20,24 @@
         .chat {
             bottom: -30px;
         }
+
+        #collapse_btn {
+            height: 30px;
+            width: 30px;
+            /* position: relative;
+             */
+            background: url("{% static '/chatbot/assets/images/close.svg' %}") no-repeat top left;
+            background-size: contain;
+            cursor: pointer;
+            display: inline-block;
+            border-radius: 35px;
+            border-color: white;
+        }
+
+        /* #collapse_btn:visited {
+            border-color: rgb(75, 85, 129);
+        } */
+
     </style>
 </head>
 <body>
@@ -88,8 +106,9 @@
         </form>
     </div>
     <div class="row">
-        <div class="col-md-11">
-            <button id="collapse_btn" class="btn btn-info" style="display: none; float: right;">Collapse</button>
+        <div class="col-md-12">
+            <button id="collapse_btn" class="btn btn-info" style="display: none; float: right; margin-right: 50px;">
+            </button>
         </div>
     </div>
     <!-- Footer -->
