@@ -59,16 +59,11 @@ def login_attempt(request):
 
     user = authenticate(request, username=username, password=password)
     
-    if user is not None and user.is_active:
+    if user is not None and user.is_active and user.is_superuser:
         login(request, user)
-
-        if user.is_superuser == 1:
-            return redirect(settings.LOGIN_REDIRECT_URL)
-        else:
-            return render(request, 'nomarl_user/nomal_user.html')
-            
+        return redirect(conf_settings.LOGIN_REDIRECT_URL)
     else:
-        return render(request, 'registration/login.html', {'msg': 'failed'})    
+        return render(request, 'registration/login.html', {'msg': 'Login failed!'})    
 
 def logout_attempt(request):
     logout(request)
