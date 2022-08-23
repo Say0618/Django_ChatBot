@@ -14,7 +14,7 @@
     <link rel="stylesheet" type="text/css" href="{% static 'chatbot/css/responsive.css' %}">
     <style>
         .chat-popup {
-            right: 220px;
+            /* right: 220px; */
         }
 
         .chat {
@@ -164,6 +164,15 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
+
+    <script>
+        var w_width = window.innerWidth;
+        var rigth_margin = (w_width - 900) / 2;
+
+        // console.log(rigth_margin)
+        $('.chat-popup').css("right", rigth_margin);
+
+    </script>
 
     <script>
         $(document).ready(function() {
