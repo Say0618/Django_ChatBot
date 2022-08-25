@@ -50,6 +50,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'chatbot_users.middleware.url_auth_middleware'
 ]
 
 ROOT_URLCONF = 'chatbot_web_version.urls'
