@@ -21,13 +21,13 @@ def url_auth_middleware(get_response):
 
     def middleware(request):
         response = get_response(request)
-        if not request.user.is_anonymous:
-            print(request.user)
-            if not request.user.is_superuser:
-                get_url = request.path
-                pattern = '/home/'
-                if pattern not in get_url:
-                    return redirect('userIndex')
+        # if not request.user.is_anonymous:
+        #     print(request.user)
+        #     if not request.user.is_superuser:
+        #         get_url = request.path
+        #         pattern = '/home/'
+        #         if pattern not in get_url:
+        #             return redirect('userIndex')
 
         return response
     
