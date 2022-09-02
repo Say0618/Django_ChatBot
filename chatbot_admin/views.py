@@ -637,19 +637,24 @@ def interpretationSheetDownload(request):
             files = InterpretationSheet.objects.filter(id__in=ids)
 
             paths = []
+            names = []
             for file in files:
                 prefix = os.getcwd() + '/media/interpretation_sheets/'
                 path = prefix + file.filename()
                 paths.append(path)
+                name = file.name
+                names.append(name)
             
             print('path is ...', paths)
             
             if len(ids) == 1:
                 file_path = paths[0]
+                file_name = names[0]
                 if os.path.exists(file_path):
                     with open(file_path, 'rb') as fh:
                         response = HttpResponse(fh.read(), content_type="application/vnd.ms-excel")
-                        response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
+                        # response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
+                        response['Content-Disposition'] = 'inline; filename=' + file_name
                         return response
             else:
 
@@ -736,19 +741,24 @@ def imagesDownload(request):
             files = Images_Bot.objects.filter(id__in=ids)
 
             paths = []
+            names = []
             for file in files:
                 prefix = os.getcwd() + '/media/attachments/images/'
                 path = prefix + file.filename()
                 paths.append(path)
+                name = file.name
+                names.append(name)
             
             print('path is ...', paths)
 
             if len(ids) == 1:
                 file_path = paths[0]
+                file_name = names[0]
                 if os.path.exists(file_path):
                     with open(file_path, 'rb') as fh:
                         response = HttpResponse(fh.read(), content_type="application/vnd.ms-excel")
-                        response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
+                        # response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
+                        response['Content-Disposition'] = 'inline; filename=' + file_name
                         return response
             else:
             
@@ -835,19 +845,24 @@ def databaseDownload(request):
             files = Database_Excel.objects.filter(id__in=ids)
 
             paths = []
+            names = []
             for file in files:
                 prefix = os.getcwd() + '/media/attachments/database/'
                 path = prefix + file.filename()
                 paths.append(path)
+                name = file.name
+                names.append(name)
             
             print('path is ...', paths)
 
             if len(ids) == 1:
                 file_path = paths[0]
+                file_name = names[0]
                 if os.path.exists(file_path):
                     with open(file_path, 'rb') as fh:
                         response = HttpResponse(fh.read(), content_type="application/vnd.ms-excel")
-                        response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
+                        # response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
+                        response['Content-Disposition'] = 'inline; filename=' + file_name
                         return response
             else:
             
