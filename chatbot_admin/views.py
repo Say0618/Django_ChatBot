@@ -384,9 +384,11 @@ def masterSheetDownload(request):
                 in_memory = BytesIO()
                 zip = ZipFile(in_memory, "a")
 
+                index = 0
                 for path in paths:
-                    fname = os.path.split(path)[1]
+                    fname = names[index]
                     zip.write(path, fname)
+                    index += 1
 
                 zip.close()
                 
@@ -555,9 +557,12 @@ def readSheetDownload(request):
                 in_memory = BytesIO()
                 zip = ZipFile(in_memory, "a")
 
+                index = 0
                 for path in paths:
-                    fname = os.path.split(path)[1]
+                    # fname = os.path.split(path)[1]
+                    fname = names[index]
                     zip.write(path, fname)
+                    index += 1
 
                 zip.close()
                 
@@ -673,9 +678,12 @@ def interpretationSheetDownload(request):
                 in_memory = BytesIO()
                 zip = ZipFile(in_memory, "a")
 
+                index = 0
                 for path in paths:
-                    fname = os.path.split(path)[1]
+                    # fname = os.path.split(path)[1]
+                    fname = names[index]
                     zip.write(path, fname)
+                    index += 1
 
                 zip.close()
                 
@@ -777,9 +785,12 @@ def imagesDownload(request):
                 in_memory = BytesIO()
                 zip = ZipFile(in_memory, "a")
 
+                index = 0
                 for path in paths:
-                    fname = os.path.split(path)[1]
+                    # fname = os.path.split(path)[1]
+                    fname = names[index]
                     zip.write(path, fname)
+                    index += 1
 
                 zip.close()
                 
@@ -881,9 +892,12 @@ def databaseDownload(request):
                 in_memory = BytesIO()
                 zip = ZipFile(in_memory, "a")
 
+                index = 0
                 for path in paths:
-                    fname = os.path.split(path)[1]
+                    # fname = os.path.split(path)[1]
+                    fname = names[index]
                     zip.write(path, fname)
+                    index += 1
 
                 zip.close()
                 
