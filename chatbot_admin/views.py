@@ -354,7 +354,6 @@ def masterSheetDownload(request):
         ids = request.POST['ids']
         ids = ids.split(',')
 
-        print(ids)
         if len(ids) > 0:
 
             files = MasterSheet.objects.filter(id__in=ids)
@@ -366,25 +365,34 @@ def masterSheetDownload(request):
                 paths.append(path)
             
             print('path is ...', paths)
-            
-            zip_filename = "master.zip"
 
-            in_memory = BytesIO()
-            zip = ZipFile(in_memory, "a")
+            if len(ids) == 1:
+                file_path = paths[0]
+                if os.path.exists(file_path):
+                    with open(file_path, 'rb') as fh:
+                        response = HttpResponse(fh.read(), content_type="application/vnd.ms-excel")
+                        response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
+                        return response
+            else: 
+                zip_filename = "master.zip"
 
-            for path in paths:
-                fname = os.path.split(path)[1]
-                zip.write(path, fname)
+                in_memory = BytesIO()
+                zip = ZipFile(in_memory, "a")
 
-            zip.close()
-            
-            resp = HttpResponse(content_type = "application/x-zip-compressed")
-            resp['Content-Disposition'] = 'attachment; filename=%s' % zip_filename
+                for path in paths:
+                    fname = os.path.split(path)[1]
+                    zip.write(path, fname)
 
-            in_memory.seek(0)    
-            resp.write(in_memory.read())
+                zip.close()
+                
+                resp = HttpResponse(content_type = "application/x-zip-compressed")
+                resp['Content-Disposition'] = 'attachment; filename=%s' % zip_filename
 
-            return resp
+                in_memory.seek(0)    
+                resp.write(in_memory.read())
+
+                return resp
+
 
 @login_required
 def read_sheet(request):
@@ -523,25 +531,33 @@ def readSheetDownload(request):
                 paths.append(path)
             
             print('path is ...', paths)
-            
-            zip_filename = "read.zip"
 
-            in_memory = BytesIO()
-            zip = ZipFile(in_memory, "a")
+            if len(ids) == 1:
+                file_path = paths[0]
+                if os.path.exists(file_path):
+                    with open(file_path, 'rb') as fh:
+                        response = HttpResponse(fh.read(), content_type="application/vnd.ms-excel")
+                        response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
+                        return response
+            else:
+                zip_filename = "read.zip"
 
-            for path in paths:
-                fname = os.path.split(path)[1]
-                zip.write(path, fname)
+                in_memory = BytesIO()
+                zip = ZipFile(in_memory, "a")
 
-            zip.close()
-            
-            resp = HttpResponse(content_type = "application/x-zip-compressed")
-            resp['Content-Disposition'] = 'attachment; filename=%s' % zip_filename
+                for path in paths:
+                    fname = os.path.split(path)[1]
+                    zip.write(path, fname)
 
-            in_memory.seek(0)    
-            resp.write(in_memory.read())
+                zip.close()
+                
+                resp = HttpResponse(content_type = "application/x-zip-compressed")
+                resp['Content-Disposition'] = 'attachment; filename=%s' % zip_filename
 
-            return resp
+                in_memory.seek(0)    
+                resp.write(in_memory.read())
+
+                return resp
 
 @login_required
 def interpretation_sheet(request):
@@ -628,24 +644,33 @@ def interpretationSheetDownload(request):
             
             print('path is ...', paths)
             
-            zip_filename = "interpretation.zip"
+            if len(ids) == 1:
+                file_path = paths[0]
+                if os.path.exists(file_path):
+                    with open(file_path, 'rb') as fh:
+                        response = HttpResponse(fh.read(), content_type="application/vnd.ms-excel")
+                        response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
+                        return response
+            else:
 
-            in_memory = BytesIO()
-            zip = ZipFile(in_memory, "a")
+                zip_filename = "interpretation.zip"
 
-            for path in paths:
-                fname = os.path.split(path)[1]
-                zip.write(path, fname)
+                in_memory = BytesIO()
+                zip = ZipFile(in_memory, "a")
 
-            zip.close()
-            
-            resp = HttpResponse(content_type = "application/x-zip-compressed")
-            resp['Content-Disposition'] = 'attachment; filename=%s' % zip_filename
+                for path in paths:
+                    fname = os.path.split(path)[1]
+                    zip.write(path, fname)
 
-            in_memory.seek(0)    
-            resp.write(in_memory.read())
+                zip.close()
+                
+                resp = HttpResponse(content_type = "application/x-zip-compressed")
+                resp['Content-Disposition'] = 'attachment; filename=%s' % zip_filename
 
-            return resp
+                in_memory.seek(0)    
+                resp.write(in_memory.read())
+
+                return resp
 
 @login_required
 def images(request):
@@ -717,25 +742,34 @@ def imagesDownload(request):
                 paths.append(path)
             
             print('path is ...', paths)
+
+            if len(ids) == 1:
+                file_path = paths[0]
+                if os.path.exists(file_path):
+                    with open(file_path, 'rb') as fh:
+                        response = HttpResponse(fh.read(), content_type="application/vnd.ms-excel")
+                        response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
+                        return response
+            else:
             
-            zip_filename = "images.zip"
+                zip_filename = "images.zip"
 
-            in_memory = BytesIO()
-            zip = ZipFile(in_memory, "a")
+                in_memory = BytesIO()
+                zip = ZipFile(in_memory, "a")
 
-            for path in paths:
-                fname = os.path.split(path)[1]
-                zip.write(path, fname)
+                for path in paths:
+                    fname = os.path.split(path)[1]
+                    zip.write(path, fname)
 
-            zip.close()
-            
-            resp = HttpResponse(content_type = "application/x-zip-compressed")
-            resp['Content-Disposition'] = 'attachment; filename=%s' % zip_filename
+                zip.close()
+                
+                resp = HttpResponse(content_type = "application/x-zip-compressed")
+                resp['Content-Disposition'] = 'attachment; filename=%s' % zip_filename
 
-            in_memory.seek(0)    
-            resp.write(in_memory.read())
+                in_memory.seek(0)    
+                resp.write(in_memory.read())
 
-            return resp
+                return resp
 
 @login_required
 def database(request):
@@ -807,25 +841,34 @@ def databaseDownload(request):
                 paths.append(path)
             
             print('path is ...', paths)
+
+            if len(ids) == 1:
+                file_path = paths[0]
+                if os.path.exists(file_path):
+                    with open(file_path, 'rb') as fh:
+                        response = HttpResponse(fh.read(), content_type="application/vnd.ms-excel")
+                        response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
+                        return response
+            else:
             
-            zip_filename = "database.zip"
+                zip_filename = "database.zip"
 
-            in_memory = BytesIO()
-            zip = ZipFile(in_memory, "a")
+                in_memory = BytesIO()
+                zip = ZipFile(in_memory, "a")
 
-            for path in paths:
-                fname = os.path.split(path)[1]
-                zip.write(path, fname)
+                for path in paths:
+                    fname = os.path.split(path)[1]
+                    zip.write(path, fname)
 
-            zip.close()
-            
-            resp = HttpResponse(content_type = "application/x-zip-compressed")
-            resp['Content-Disposition'] = 'attachment; filename=%s' % zip_filename
+                zip.close()
+                
+                resp = HttpResponse(content_type = "application/x-zip-compressed")
+                resp['Content-Disposition'] = 'attachment; filename=%s' % zip_filename
 
-            in_memory.seek(0)    
-            resp.write(in_memory.read())
+                in_memory.seek(0)    
+                resp.write(in_memory.read())
 
-            return resp
+                return resp
 
 @login_required
 def write_sheet(request):

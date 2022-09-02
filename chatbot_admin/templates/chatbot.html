@@ -72,28 +72,29 @@
             if (validate_msg != '') {
                 toastr.error(validate_msg);
                 return;
-            }
-
-            setCurTime();
-            start_time = getCurDateTime();
-
-            document.getElementById("myForm").style.display = "block";
-            document.getElementById("chatStart").style.display = "none";
-            document.getElementById("viewOption").style.display = "none";
-
-            if (document.getElementById('typing').style.display == 'none') {
-                if (document.getElementById('options').style.display == 'none') {
-                    document.getElementById('typingHidden').style.display = 'block';
+            } else {
+                setCurTime();
+                start_time = getCurDateTime();
+    
+                document.getElementById("myForm").style.display = "block";
+                document.getElementById("chatStart").style.display = "none";
+                document.getElementById("viewOption").style.display = "none";
+    
+                if (document.getElementById('typing').style.display == 'none') {
+                    if (document.getElementById('options').style.display == 'none') {
+                        document.getElementById('typingHidden').style.display = 'block';
+                    }
+                }
+    
+                var botChat = document.getElementById("botChat").innerHTML;
+                if (botChat === "") {
+                    document.getElementById('typingHidden').style.display = 'none';
+                    document.getElementById("userAnswer").disabled = true;
+                    // get_Next_Question(8);
+                    get_First_Question();
                 }
             }
 
-            var botChat = document.getElementById("botChat").innerHTML;
-            if (botChat === "") {
-                document.getElementById('typingHidden').style.display = 'none';
-                document.getElementById("userAnswer").disabled = true;
-                // get_Next_Question(8);
-                get_First_Question();
-            }
         });
     });
 
