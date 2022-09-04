@@ -359,19 +359,24 @@ def masterSheetDownload(request):
             files = MasterSheet.objects.filter(id__in=ids)
 
             paths = []
+            names = []
             for file in files:
                 prefix = os.getcwd() + '/media/master_sheets/'
                 path = prefix + file.filename()
                 paths.append(path)
+                name = file.name
+                names.append(name)
             
             print('path is ...', paths)
 
             if len(ids) == 1:
                 file_path = paths[0]
+                file_name = names[0]
                 if os.path.exists(file_path):
                     with open(file_path, 'rb') as fh:
                         response = HttpResponse(fh.read(), content_type="application/vnd.ms-excel")
-                        response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
+                        # response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
+                        response['Content-Disposition'] = 'inline; filename=' + file_name
                         return response
             else: 
                 zip_filename = "master.zip"
@@ -379,9 +384,11 @@ def masterSheetDownload(request):
                 in_memory = BytesIO()
                 zip = ZipFile(in_memory, "a")
 
+                index = 0
                 for path in paths:
-                    fname = os.path.split(path)[1]
+                    fname = names[index]
                     zip.write(path, fname)
+                    index += 1
 
                 zip.close()
                 
@@ -525,19 +532,24 @@ def readSheetDownload(request):
             files = ReadSheet.objects.filter(id__in=ids)
 
             paths = []
+            names = []
             for file in files:
                 prefix = os.getcwd() + '/media/read_sheets/'
                 path = prefix + file.filename()
                 paths.append(path)
+                name = file.name
+                names.append(name)
             
             print('path is ...', paths)
 
             if len(ids) == 1:
                 file_path = paths[0]
+                file_name = names[0]
                 if os.path.exists(file_path):
                     with open(file_path, 'rb') as fh:
                         response = HttpResponse(fh.read(), content_type="application/vnd.ms-excel")
-                        response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
+                        # response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
+                        response['Content-Disposition'] = 'inline; filename=' + file_name
                         return response
             else:
                 zip_filename = "read.zip"
@@ -545,9 +557,12 @@ def readSheetDownload(request):
                 in_memory = BytesIO()
                 zip = ZipFile(in_memory, "a")
 
+                index = 0
                 for path in paths:
-                    fname = os.path.split(path)[1]
+                    # fname = os.path.split(path)[1]
+                    fname = names[index]
                     zip.write(path, fname)
+                    index += 1
 
                 zip.close()
                 
@@ -637,19 +652,24 @@ def interpretationSheetDownload(request):
             files = InterpretationSheet.objects.filter(id__in=ids)
 
             paths = []
+            names = []
             for file in files:
                 prefix = os.getcwd() + '/media/interpretation_sheets/'
                 path = prefix + file.filename()
                 paths.append(path)
+                name = file.name
+                names.append(name)
             
             print('path is ...', paths)
             
             if len(ids) == 1:
                 file_path = paths[0]
+                file_name = names[0]
                 if os.path.exists(file_path):
                     with open(file_path, 'rb') as fh:
                         response = HttpResponse(fh.read(), content_type="application/vnd.ms-excel")
-                        response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
+                        # response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
+                        response['Content-Disposition'] = 'inline; filename=' + file_name
                         return response
             else:
 
@@ -658,9 +678,12 @@ def interpretationSheetDownload(request):
                 in_memory = BytesIO()
                 zip = ZipFile(in_memory, "a")
 
+                index = 0
                 for path in paths:
-                    fname = os.path.split(path)[1]
+                    # fname = os.path.split(path)[1]
+                    fname = names[index]
                     zip.write(path, fname)
+                    index += 1
 
                 zip.close()
                 
@@ -736,19 +759,24 @@ def imagesDownload(request):
             files = Images_Bot.objects.filter(id__in=ids)
 
             paths = []
+            names = []
             for file in files:
                 prefix = os.getcwd() + '/media/attachments/images/'
                 path = prefix + file.filename()
                 paths.append(path)
+                name = file.name
+                names.append(name)
             
             print('path is ...', paths)
 
             if len(ids) == 1:
                 file_path = paths[0]
+                file_name = names[0]
                 if os.path.exists(file_path):
                     with open(file_path, 'rb') as fh:
                         response = HttpResponse(fh.read(), content_type="application/vnd.ms-excel")
-                        response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
+                        # response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
+                        response['Content-Disposition'] = 'inline; filename=' + file_name
                         return response
             else:
             
@@ -757,9 +785,12 @@ def imagesDownload(request):
                 in_memory = BytesIO()
                 zip = ZipFile(in_memory, "a")
 
+                index = 0
                 for path in paths:
-                    fname = os.path.split(path)[1]
+                    # fname = os.path.split(path)[1]
+                    fname = names[index]
                     zip.write(path, fname)
+                    index += 1
 
                 zip.close()
                 
@@ -835,19 +866,24 @@ def databaseDownload(request):
             files = Database_Excel.objects.filter(id__in=ids)
 
             paths = []
+            names = []
             for file in files:
                 prefix = os.getcwd() + '/media/attachments/database/'
                 path = prefix + file.filename()
                 paths.append(path)
+                name = file.name
+                names.append(name)
             
             print('path is ...', paths)
 
             if len(ids) == 1:
                 file_path = paths[0]
+                file_name = names[0]
                 if os.path.exists(file_path):
                     with open(file_path, 'rb') as fh:
                         response = HttpResponse(fh.read(), content_type="application/vnd.ms-excel")
-                        response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
+                        # response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
+                        response['Content-Disposition'] = 'inline; filename=' + file_name
                         return response
             else:
             
@@ -856,9 +892,12 @@ def databaseDownload(request):
                 in_memory = BytesIO()
                 zip = ZipFile(in_memory, "a")
 
+                index = 0
                 for path in paths:
-                    fname = os.path.split(path)[1]
+                    # fname = os.path.split(path)[1]
+                    fname = names[index]
                     zip.write(path, fname)
+                    index += 1
 
                 zip.close()
                 
