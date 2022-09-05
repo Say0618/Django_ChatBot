@@ -329,8 +329,8 @@ input:focus, textarea:focus, select:focus{
 .dots {
     position: absolute;
     width: 50px !important;
-    left: 22px;
-    bottom: -9px;
+    left: 27px;
+    bottom: -11px;
 }
 .bot-footer > img {
     position: absolute;
