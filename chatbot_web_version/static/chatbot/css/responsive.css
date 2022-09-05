@@ -168,3 +168,9 @@
 	    left: 13% !important;
 	}*/
 }
+
+@media screen and (min-height: 769px) {
+    #footer {
+        top: 150px !important;
+    }
+}
