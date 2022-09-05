@@ -48,7 +48,10 @@ from .chatbot import *
 @login_required
 def index(request):
     if request.user.is_authenticated:
-        return render(request, 'index.html')
+        if not request.user.is_superuser:
+            return redirect('userIndex')
+        else:
+            return render(request, 'index.html')
     else:
         return render(request, 'registration/login.html')
 
