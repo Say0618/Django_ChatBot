@@ -169,7 +169,7 @@
 	}*/
 }
 
-@media screen and (min-height: 540px) {
+@media screen and (min-height: 700px) {
     #footer {
         top: 150px !important;
     }
