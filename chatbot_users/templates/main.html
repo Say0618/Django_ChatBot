@@ -26,7 +26,7 @@
         } */
 
         body {
-            overflow-x: hidden;
+            /* overflow-x: hidden; */
         }
 
         #collapse_btn {
@@ -74,6 +74,15 @@
         }
         svg:not(:host).svg-inline--fa, svg:not(:root).svg-inline--fa {
             color: white;
+        }
+
+        .navbar-inverse .navbar-nav>li>a {
+            color: #e4e4e4;
+        }
+
+        .navbar-inverse .navbar-nav>.open>a, .navbar-inverse .navbar-nav>.open>a:focus, .navbar-inverse .navbar-nav>.open>a:hover {
+            color: #fff;
+            background-color: transparent;
         }
     </style>
 </head>
@@ -150,7 +159,7 @@
         </div>
     </div>
     <!-- Footer -->
-    <footer id="footer" style="position: relative; top: 80px;" class="bg-light text-center text-lg-start">
+    <footer id="footer" style="position: relative; top: 60px;" class="bg-light text-center text-lg-start">
         <!-- Copyright Footer -->
         <div class="p-3">
             &copy; 2022 Copyright:
