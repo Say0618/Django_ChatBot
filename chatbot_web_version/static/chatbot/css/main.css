@@ -1,6 +1,15 @@
 body {font-family: Arial, Helvetica, sans-serif;}
 * {box-sizing: border-box;}
 
+.navbar-inverse {
+    background-image: linear-gradient(315deg, #03C0FC 0%, #253ADE 74%);
+    border-color: transparent;
+}
+
+.navbar-inverse .navbar-brand {
+    color: #dfdfdf;
+}
+
 .videoInsert {
     width: 100%; 
     height: 100%;  
