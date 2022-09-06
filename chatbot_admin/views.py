@@ -1186,9 +1186,13 @@ def get_Feedback(request):
         })
 
 
-@login_required
-def terms_conditions(request):
-    return render(request, 'terms_and_conditions.html')
+# @login_required
+# def terms_conditions(request):
+#     return render(request, 'terms_and_conditions.html')
+
+# @login_required
+# def cookie_policy(request):
+#     return render(request, 'cookie_policy.html')
 
 
 # def checkAdmin(request):

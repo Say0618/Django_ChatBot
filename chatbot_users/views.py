@@ -85,3 +85,14 @@ def terms_conditions(request):
     return render(request, 'terms_and_conditions.html', {
         'terms': terms
     })
+
+@login_required
+def cookie_policy(request):
+    cookie = ''
+
+    if Settings.objects.filter(type='cookie').count() > 0:
+        cookie = Settings.objects.filter(type='cookie').get().content
+
+    return render(request, 'cookie_policy.html', {
+        'cookie': cookie
+    })
