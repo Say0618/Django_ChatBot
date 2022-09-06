@@ -59,6 +59,7 @@ urlpatterns = [
     
     path('settings', views.settings, name='settings'),
     path('settings/terms_save', views.terms_save, name='terms_save'),
+    path('settings/cookie_save', views.cookie_save, name='cookie_save'),
     path('settings/title_save', views.title_save, name='title_save'),
     path('settings/welcome_save', views.welcome_save, name='welcome_save'),
     path('settings/logo/upload', views.logoUpload, name='logoUpload'),

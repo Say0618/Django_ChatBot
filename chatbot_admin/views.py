@@ -77,6 +77,9 @@ def settings(request):
     terms = ''
     if Settings.objects.filter(type='terms').count() > 0:
         terms = Settings.objects.filter(type='terms').get().content
+    cookie = ''
+    if Settings.objects.filter(type='cookie').count() > 0:
+        cookie = Settings.objects.filter(type='cookie').get().content
     title = ''
     if Settings.objects.filter(type='title').count() > 0:
         title = Settings.objects.filter(type='title').get().content
@@ -86,6 +89,7 @@ def settings(request):
 
     return render(request, 'settings.html', {
         'terms': terms,
+        'cookie': cookie,
         'title': title,
         'welcome': welcome
     })
@@ -100,6 +104,22 @@ def terms_save(request):
             terms.save()
         else:
             newModel = Settings.objects.create(content=content, type='terms')
+            newModel.save()
+        
+        return JsonResponse({
+            'msg': 'success'
+        })
+
+def cookie_save(request):
+    if request.method == 'POST':
+        content = request.POST['content']
+
+        if Settings.objects.filter(type='cookie').count() > 0:
+            cookie = Settings.objects.filter(type='cookie').get()
+            cookie.content = content
+            cookie.save()
+        else:
+            newModel = Settings.objects.create(content=content, type='cookie')
             newModel.save()
         
         return JsonResponse({
