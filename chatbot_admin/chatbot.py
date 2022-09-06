@@ -19,24 +19,8 @@ from .models import InterpretationSheet
 from .models import Images_Bot
 from .models import Database_Excel
 
-if ReadSheet.objects.count() > 0:
-    if ReadSheet.objects.filter(status=1).count() > 0:
-        read_path = os.getcwd() + "/media/read_sheets/" + ReadSheet.objects.filter(status=1).get().filename()
-
-write_path = os.getcwd() + "/media/write_sheets/write.xlsx"
-
-if MasterSheet.objects.count() > 0:
-    if MasterSheet.objects.filter(status=1).count() > 0:
-        master_path = os.getcwd() + "/media/master_sheets/" + MasterSheet.objects.filter(status=1).get().filename()
-
-if InterpretationSheet.objects.count() > 0:
-    if InterpretationSheet.objects.filter(status=1).count() > 0:
-        interpretation_path = os.getcwd() + "/media/interpretation_sheets/" + InterpretationSheet.objects.filter(status=1).get().filename()
-
-
-
 dataset = []
-def getData():
+def getData(read_path):
 
     wb = openpyxl.load_workbook(read_path)
     ws = wb.active
@@ -130,7 +114,7 @@ def getFirstQuestion():
     return dataset[0]
 
 
-def getAlpha():
+def getAlpha(read_path):
     wb = openpyxl.load_workbook(read_path)
     ws = wb.active
     rows_cnt = ws.max_row
@@ -176,7 +160,7 @@ def getAlpha():
     return alpha_set
     print("alpha set is ....",alpha_set)
 
-def writeExcel(write_data_set, username):
+def writeExcel(write_data_set, read_path, write_path, username):
     wb1 = openpyxl.load_workbook(read_path)
     ws1 = wb1.active
     rows_cnt = ws1.max_row
@@ -195,7 +179,7 @@ def writeExcel(write_data_set, username):
 
 
     ans = write_data_set[0]
-    alpha_set = getAlpha()
+    alpha_set = getAlpha(read_path)
 
     for obj_ans in ans:
         break_flag = False
@@ -351,7 +335,7 @@ def writeExcel(write_data_set, username):
 
     # data_science()
 
-def data_science():
+def data_science(master_path, write_path):
     process_master_file(master_path)
 
     process_case_file(write_path)
@@ -363,7 +347,7 @@ def data_science():
     aa = output_file_name
     output_result_to_excel(output_file_name)
 
-def getFeedback(mode):
+def getFeedback(mode, interpretation_path):
     time.sleep(7)
     feedbacks = []
     aa_path = aa

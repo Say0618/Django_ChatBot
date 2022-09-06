@@ -1097,8 +1097,12 @@ def chatbot(request):
     })
 
 def chatbot_start(request):
+    if ReadSheet.objects.count() > 0:
+        if ReadSheet.objects.filter(status=1).count() > 0:
+            read_path = os.getcwd() + "/media/read_sheets/" + ReadSheet.objects.filter(status=1).get().filename()
+
     global dataset
-    dataset = getData()
+    dataset = getData(read_path)
     start_data = dataset[0]
     return JsonResponse({
         'start_data': start_data 
@@ -1130,9 +1134,18 @@ def writeOutput(request):
         username = None
         # if request.user.is_authenticated():
         username = request.user.username
+        if ReadSheet.objects.count() > 0:
+            if ReadSheet.objects.filter(status=1).count() > 0:
+                read_path = os.getcwd() + "/media/read_sheets/" + ReadSheet.objects.filter(status=1).get().filename()
 
-        writeExcel(write_dataset, username)
-        data_science()
+        write_path = os.getcwd() + "/media/write_sheets/write.xlsx"
+        writeExcel(write_dataset, read_path, write_path, username)
+
+        if MasterSheet.objects.count() > 0:
+            if MasterSheet.objects.filter(status=1).count() > 0:
+                master_path = os.getcwd() + "/media/master_sheets/" + MasterSheet.objects.filter(status=1).get().filename()
+
+        data_science(master_path, write_path)
 
         return JsonResponse({
             'msg': 'file processing is succeed!'
@@ -1142,7 +1155,11 @@ def get_Feedback(request):
     if request.method == 'POST':
         mode = request.POST['mode']
         
-        feedbacks = getFeedback(mode)
+        if InterpretationSheet.objects.count() > 0:
+            if InterpretationSheet.objects.filter(status=1).count() > 0:
+                interpretation_path = os.getcwd() + "/media/interpretation_sheets/" + InterpretationSheet.objects.filter(status=1).get().filename()
+
+        feedbacks = getFeedback(mode, interpretation_path)
 
         return JsonResponse({
             'feedbacks': feedbacks
