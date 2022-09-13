@@ -26,7 +26,8 @@
         } */
 
         body {
-            overflow-x: hidden;
+            /* overflow-x: hidden; */
+            overflow: scroll;
         }
 
         #collapse_btn {
@@ -92,33 +93,36 @@
             box-shadow: 0px 3px 15px 4px rgba(0, 0, 0, 0.5);
             /* border-image: linear-gradient(315deg, #03C0FC 0%, #253ADE 74%) !important; */
         }
+
+        /* .chat-header {
+            padding: 10px;
+        } */
+
     </style>
 </head>
 <body>
     <nav class="navbar navbar-inverse navbar-static-top">
         <div class="container-fluid">
-          <!-- Brand and toggle get grouped for better mobile display -->
           <div class="navbar-header">
             <a class="navbar-brand" href="{% url 'userIndex' %}">Chatbot</a>
           </div>
       
-          <!-- Collect the nav links, forms, and other content for toggling -->
           <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav navbar-right">
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="caret"></span></a>
                 <ul class="dropdown-menu">
-                  <!-- <li role="separator" class="divider"></li> -->
+                  <li role="separator" class="divider"></li>
                   <li><a href="{% url 'terms_conditions' %}">Terms & Conditions</a></li>
                   <li><a href="{% url 'cookie_policy' %}">Cookie Policy</a></li>
                   <li><a href="{% url 'user_logout_attempt' %}">Log out</a></li>
                 </ul>
               </li>
             </ul>
-          </div><!-- /.navbar-collapse -->
-        </div><!-- /.container-fluid -->
+          </div>
+        </div>
     </nav>
-
+    
     <div class="chat" id="chatStart">
         <div class="form-container-first" id="formStart">
             <img src="{% static 'chatbot/assets/images/Bot.png' %}" alt="Bot-chat" class="bot-image">
@@ -130,12 +134,12 @@
     <div class="chat-popup" id="myForm">
         <form class="form-container">
             {% csrf_token %}
-            <!-- <div class="chat-header">
-                <img src="{% static 'chatbot/assets/images/back.png' %}" alt="back" class="back-errow" onclick="closeForm();return false;">
+            <div class="chat-header">
+                <img src="{% static 'chatbot/assets/images/back.png' %}" alt="back" class="back-errow" onclick="location.reload()">
                 <img src="{% static 'chatbot/assets/images/Profile-Pic.png' %}" alt="profile picture" class="profile-image">
                 <p class="user-name">Lux <span><br>Chat Bot</span></p>
-            </div> -->
-            <br><br>
+            </div>
+            <br>
             <div class="bot-time">
                 <p></p>
             </div>
@@ -163,7 +167,7 @@
     </div>
     <div class="row">
         <div class="col-md-12">
-            <button id="collapse_btn" class="btn btn-info" style="display: none; float: right; margin-right: 50px;">
+            <button id="collapse_btn" class="btn btn-info" style="display: none; float: right; margin-right: 50px; margin-top: 50px;">
                 <!-- <i class="fa-duotone fa-xmark-large"></i> -->
             </button>
         </div>
@@ -189,7 +193,7 @@
         var w_height = window.innerHeight;
 
         var rigth_margin = (w_width - 900) / 2;
-        var bottom_margin = (w_height - 640) / 2 -30;
+        var bottom_margin = (w_height - 640) / 2 - 200;
 
         var bot_top = (w_height - 100 - 427) / 2;
         // console.log(bottom_margin)
@@ -216,7 +220,9 @@
 
             $('#startChat').click(function() {
                 $('#collapse_btn').show();
-                $('footer').hide();
+                // $('footer').hide();
+                $('.chat-header').show();
+                $('nav').hide();
 
                 var validate_msg = "{{msg}}";
                 console.log(validate_msg)
