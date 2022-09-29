@@ -9,10 +9,7 @@ from django.core import serializers
 import json
 
 from django.contrib.auth.models import User
-import os
-import mimetypes
 from django.conf import settings as conf_settings
-import openpyxl
 from os.path import exists
 
 from chatbot_admin.models import *
