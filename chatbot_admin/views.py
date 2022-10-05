@@ -1135,6 +1135,7 @@ def chatbot_start(request):
             read_path = os.getcwd() + "/media/read_sheets/" + ReadSheet.objects.filter(status=1).get().filename()
 
     global dataset
+    dataset = []
     dataset = getData(read_path)
     start_data = dataset[0]
     return JsonResponse({

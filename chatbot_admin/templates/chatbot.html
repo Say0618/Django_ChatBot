@@ -1051,12 +1051,12 @@
 
     //get next query
     function get_Next_Question(next) {
+        console.log('next is ---------------------', next);
         if (!next) {
             if (MTR_GROUP.length > 0) {
                 next = MTR_GROUP[0];
                 MTR_GROUP.splice(0, 1);
             } else {
-
                 $('#typing').hide();
                 $("#userAnswer").attr('disabled', true);
                 var write_data_set = getResults();
@@ -1097,18 +1097,19 @@
 
                 return;
             }
+        } else {
+            ajax_setup();
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'getNextQuery' %}",
+                data: {'index': next},
+                success: function(res) {
+                    var data = res.dataset
+                    display(data);
+                }
+            });
         }
 
-        ajax_setup();
-        $.ajax({
-            type: 'POST',
-            url: "{% url 'getNextQuery' %}",
-            data: {'index': next},
-            success: function(res) {
-                var data = res.dataset
-                display(data);
-            }
-        });
         // data = await eel.getQuestion(next)();
     }
 
