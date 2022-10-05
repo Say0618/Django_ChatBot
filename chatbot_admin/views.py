@@ -86,12 +86,25 @@ def settings(request):
     welcome = ''
     if Settings.objects.filter(type='welcome').count() > 0:
         welcome = Settings.objects.filter(type='welcome').get().content
+    
+    logo = ''
+    if Settings_Image.objects.filter(type='logo').count() > 0:
+        logo = Settings_Image.objects.filter(type='logo').get().name
+    login = ''
+    if Settings_Image.objects.filter(type='login').count() > 0:
+        login = Settings_Image.objects.filter(type='login').get().name
+    favicon = ''
+    if Settings_Image.objects.filter(type='favicon').count() > 0:
+        favicon = Settings_Image.objects.filter(type='favicon').get().name
 
     return render(request, 'settings.html', {
         'terms': terms,
         'cookie': cookie,
         'title': title,
-        'welcome': welcome
+        'welcome': welcome,
+        'logo': logo,
+        'login': login,
+        'favicon': favicon
     })
 
 def terms_save(request):

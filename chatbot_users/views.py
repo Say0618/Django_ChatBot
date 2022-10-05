@@ -16,16 +16,16 @@ from chatbot_admin.models import *
 
 # Create your views here.
 def index(request):
+    welcome = ''
+    if Settings.objects.filter(type='welcome').count() > 0:
+        welcome = Settings.objects.filter(type='welcome').get().content
+
     if request.user.is_authenticated:
-        return render(request, 'main.html')
+        return render(request, 'main.html', {'welcome': welcome})
     else:
 
-        welcome = ''
         logo = 'settings/'
         background = 'settings/'
-
-        if Settings.objects.filter(type='welcome').count() > 0:
-            welcome = Settings.objects.filter(type='welcome').get().content
         
         if Settings_Image.objects.filter(type='logo').count() > 0:
             logo = logo + Settings_Image.objects.filter(type='logo').get().filename()

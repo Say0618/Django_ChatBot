@@ -47,6 +47,7 @@
     </div>
 </div><br>
 <div class="row">
+    <label>{{logo}}</label>
     <form action="{% url 'logoUpload' %}" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="custom-file">
@@ -59,6 +60,7 @@
     </form>
 </div><br>
 <div class="row">
+    <label>{{login}}</label>
     <form action="{% url 'loginUpload' %}" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="custom-file">
@@ -71,6 +73,7 @@
     </form>
 </div><br>
 <div class="row">
+    <label>{{favicon}}</label>
     <form action="{% url 'faviconUpload' %}" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="custom-file">
