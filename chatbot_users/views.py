@@ -20,15 +20,14 @@ def index(request):
     if Settings.objects.filter(type='welcome').count() > 0:
         welcome = Settings.objects.filter(type='welcome').get().content
 
-    if request.user.is_authenticated:
-        return render(request, 'main.html', {'welcome': welcome})
-    else:
+    logo = 'settings/'
+    if Settings_Image.objects.filter(type='logo').count() > 0:
+        logo = logo + Settings_Image.objects.filter(type='logo').get().filename()
 
-        logo = 'settings/'
+    if request.user.is_authenticated:
+        return render(request, 'main.html', {'welcome': welcome, 'logo': logo})
+    else:
         background = 'settings/'
-        
-        if Settings_Image.objects.filter(type='logo').count() > 0:
-            logo = logo + Settings_Image.objects.filter(type='logo').get().filename()
         
         if Settings_Image.objects.filter(type='login').count() > 0:
             background = background + Settings_Image.objects.filter(type='login').get().filename()
