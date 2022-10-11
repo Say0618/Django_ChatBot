@@ -77,9 +77,15 @@ def terms_conditions(request):
 
     if Settings.objects.filter(type='terms').count() > 0:
         terms = Settings.objects.filter(type='terms').get().content
+    
+    logo = 'settings/'
+    if Settings_Image.objects.filter(type='logo').count() > 0:
+        logo = logo + Settings_Image.objects.filter(type='logo').get().filename()
+
 
     return render(request, 'terms_and_conditions.html', {
-        'terms': terms
+        'terms': terms,
+        'logo': logo
     })
 
 @login_required
@@ -88,7 +94,13 @@ def cookie_policy(request):
 
     if Settings.objects.filter(type='cookie').count() > 0:
         cookie = Settings.objects.filter(type='cookie').get().content
+    
+    logo = 'settings/'
+    if Settings_Image.objects.filter(type='logo').count() > 0:
+        logo = logo + Settings_Image.objects.filter(type='logo').get().filename()
+
 
     return render(request, 'cookie_policy.html', {
-        'cookie': cookie
+        'cookie': cookie,
+        'logo': logo
     })
