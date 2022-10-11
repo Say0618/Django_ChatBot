@@ -21,7 +21,7 @@ from .models import Database_Excel
 
 dataset = []
 def getData(read_path):
-
+    dataset = []
     wb = openpyxl.load_workbook(read_path)
     ws = wb.active
     # sheet_names = wb.sheetnames

@@ -1133,10 +1133,11 @@ def chatbot_start(request):
     if ReadSheet.objects.count() > 0:
         if ReadSheet.objects.filter(status=1).count() > 0:
             read_path = os.getcwd() + "/media/read_sheets/" + ReadSheet.objects.filter(status=1).get().filename()
+    print('read path is ....................', read_path)
 
     global dataset
-    dataset = []
     dataset = getData(read_path)
+    print('data test------------', dataset[6])
     start_data = dataset[0]
     return JsonResponse({
         'start_data': start_data 
