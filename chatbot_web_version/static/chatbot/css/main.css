@@ -448,6 +448,7 @@ p > .spn1 {
 }
 p > .greeting-img {
     width: 150px;
+    height: 100px;
 }
 .opt {
     position: relative;
