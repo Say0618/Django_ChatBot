@@ -314,6 +314,12 @@ input:focus, textarea:focus, select:focus{
     border-bottom:1px solid #03C0FC;
     transition: .3s;
 }
+
+.submit-button:hover >  svg:not(:host).svg-inline--fa, svg:not(:root).svg-inline--fa{
+    color: black;
+}
+
+
 .options {
     margin: 5%;
     padding: 1% 8%;
