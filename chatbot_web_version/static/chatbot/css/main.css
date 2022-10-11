@@ -284,6 +284,11 @@ input:focus, textarea:focus, select:focus{
     transition: .5s;
     color: #fff;
 }
+
+#optionsVid {
+    background-color: transparent;
+}
+
 #options > p {
     display: inline;
     background: transparent;
@@ -385,7 +390,7 @@ input:focus, textarea:focus, select:focus{
 .greeting-img {
 	border-radius: 10px;
     width: 180px;
-    height: 120px;
+    height: 110px;
 }
 
 .greeting-img1 {
@@ -470,6 +475,7 @@ p > .greeting-img {
     transition: .3s;
 }
 
+
 .opt > iframe {
     cursor: pointer;
 }
@@ -480,7 +486,8 @@ p > .greeting-img {
     color: #03C0FC;
     width: 7%;
     margin-left: 83px;
-    margin-bottom: 22px;
+    /* margin-bottom: 22px; */
+    margin-bottom: 20px;
 }
 .opt > span {
     position: absolute;
