@@ -239,7 +239,7 @@ input:focus, textarea:focus, select:focus{
     padding-bottom: 1%;
     display: flex;
     width: 100%;
-    margin-left: 53%;
+    margin-left: 45%;
     position: relative;
 }
 .bot-footer > img {
