@@ -213,7 +213,7 @@ def writeExcel(write_data_set, read_path, write_path, username):
         start_point = max_col + 1
 
         c1= ws.cell(row=1, column=start_point)
-        c1.value = str(start_point-4)
+        c1.value = "900" + str(start_point-4)
 
         c1= ws.cell(row=2, column=start_point)
         c1.value = "Code " + str(start_point-4)
@@ -267,7 +267,7 @@ def writeExcel(write_data_set, read_path, write_path, username):
         c1= ws.cell(row=1, column=4)
         c1.value = "Sub-features"
         c1= ws.cell(row=1, column=5)
-        c1.value = "1" 
+        c1.value = "9001" 
 
         c1= ws.cell(row=2, column=3)
         c1.value = "Ideal code"
