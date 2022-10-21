@@ -85,4 +85,15 @@ class Settings_Image(models.Model):
     def filename(self):
         return os.path.basename(self.file.name)
 
+class TestSheet(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=255)
+    file = models.FileField(upload_to='test_sheets')
+    upload_date = models.DateTimeField(auto_now_add=True)
+    status = models.IntegerField(default=1)
+    type = models.CharField(max_length=255)
+
+    def filename(self):
+        return os.path.basename(self.file.name)
+
 

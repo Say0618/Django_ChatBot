@@ -1,3 +1,4 @@
+import pkgutil
 from django.shortcuts import render, redirect
 
 # Create your views here.
@@ -33,6 +34,7 @@ from .models import Images_Bot
 from .models import Database_Excel
 from .models import Settings
 from .models import Settings_Image
+from .models import TestSheet
 
 from .forms import MasterSheetForm
 from .forms import ReadSheetForm
@@ -40,6 +42,7 @@ from .forms import InterpretationSheetForm
 from .forms import Images_BotForm
 from .forms import Database_ExcelForm
 from .forms import SettingsForm
+from .forms import TestSheetForm
 #chat bot 
 from .chatbot import *
 
@@ -1133,11 +1136,11 @@ def chatbot_start(request):
     if ReadSheet.objects.count() > 0:
         if ReadSheet.objects.filter(status=1).count() > 0:
             read_path = os.getcwd() + "/media/read_sheets/" + ReadSheet.objects.filter(status=1).get().filename()
-    print('read path is ....................', read_path)
+    # print('read path is ....................', read_path)
 
     global dataset
     dataset = getData(read_path)
-    print('data test------------', dataset[6])
+    # print('data test------------', dataset[6])
     start_data = dataset[0]
     return JsonResponse({
         'start_data': start_data 
@@ -1200,6 +1203,92 @@ def get_Feedback(request):
             'feedbacks': feedbacks
         })
 
+
+def test_sheets(request):
+    sheets = TestSheet.objects.all()
+    return render(request, 'test_sheets.html', {
+        'sheets': sheets
+    })
+
+def upload_test_sheets(request):
+    if request.method == "POST":
+        form = TestSheetForm(request.POST, request.FILES)
+        if form.is_valid():
+            file = request.FILES['file']
+            form.save()
+            sheet = TestSheet.objects.last()
+            sheet.name = file
+            sheet.save()
+            return redirect('test_sheets')
+        else:
+            return redirect('test_sheets')
+
+def processTestSheet(request):
+    if is_ajax(request) and request.method == "POST":
+        if request.method == 'POST':
+            id = request.POST['id']
+            file = TestSheet.objects.filter(pk=id).get()
+            file_name = file.name
+
+            if MasterSheet.objects.count() > 0:
+                if MasterSheet.objects.filter(status=1).count() > 0:
+                    master_path = os.getcwd() + "/media/master_sheets/" + MasterSheet.objects.filter(status=1).get().filename()
+                    print('master_path is..............', master_path)
+
+            write_path = '/media/test_sheets/' + file_name
+            test_science(master_path, write_path, id)
+
+            return JsonResponse({
+                'msg': 'success',
+                'id': id
+            })
+
+            
+
+def downloadAATestSheet(request):
+    if request.method == 'POST':
+        id = request.POST['id']
+        file_path = "media/aa_tests/aa_TestOutputSheet_" + id + ".xlsx"
+        if os.path.exists(file_path):
+            print('ok')
+            with open(file_path, 'rb') as fh:
+                response = HttpResponse(fh.read(), content_type="application/vnd.ms-excel")
+                response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
+                return response
+        else:
+            return redirect('test_sheets')
+
+def downloadTestSheet(request):
+    if request.method == 'POST':
+        BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+        id = request.POST['id']
+        file = TestSheet.objects.filter(pk=id).get()
+        name = file.name
+        file_path = BASE_DIR + '/media/test_sheets/' + name
+        
+        if os.path.exists(file_path):
+            with open(file_path, 'rb') as fh:
+                response = HttpResponse(fh.read(), content_type="application/vnd.ms-excel")
+                response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
+                return response
+        else:
+            return redirect('test_sheets')
+
+def operateTestSheet(request):
+    if is_ajax(request) and request.method == "POST":
+        id = request.POST['id']
+        type = request.POST['type']
+
+        if type == 'delete':
+            mm = TestSheet.objects.filter(pk=id).get()
+            mm.file.close()
+            mm.file.delete()
+            TestSheet.objects.filter(pk=id).delete()
+
+            return JsonResponse({
+                'msg': 'deleted'
+            })
 
 # @login_required
 # def terms_conditions(request):

@@ -64,6 +64,13 @@ urlpatterns = [
     path('settings/welcome_save', views.welcome_save, name='welcome_save'),
     path('settings/logo/upload', views.logoUpload, name='logoUpload'),
     path('settings/login/upload', views.loginUpload, name='loginUpload'),
-    path('settings/favicon/upload', views.faviconUpload, name='faviconUpload')
+    path('settings/favicon/upload', views.faviconUpload, name='faviconUpload'),
+
+    path('test_sheets', views.test_sheets, name='test_sheets'),
+    path('test_sheets/upload_test_sheets', views.upload_test_sheets, name='upload_test_sheets'),
+    path('test_sheets/processTestSheet', views.processTestSheet, name='processTestSheet'),
+    path('test_sheets/downloadTestSheet', views.downloadTestSheet, name='downloadTestSheet'),
+    path('test_sheets/downloadAATestSheet', views.downloadAATestSheet, name='downloadAATestSheet'),
+    path('test_sheets/operateTestSheet', views.operateTestSheet, name='operateTestSheet'),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
