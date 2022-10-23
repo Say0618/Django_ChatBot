@@ -1228,14 +1228,13 @@ def processTestSheet(request):
         if request.method == 'POST':
             id = request.POST['id']
             file = TestSheet.objects.filter(pk=id).get()
-            file_name = file.name
+            file_path = file.file
 
             if MasterSheet.objects.count() > 0:
                 if MasterSheet.objects.filter(status=1).count() > 0:
                     master_path = os.getcwd() + "/media/master_sheets/" + MasterSheet.objects.filter(status=1).get().filename()
-                    print('master_path is..............', master_path)
 
-            write_path = '/media/test_sheets/' + file_name
+            write_path =  os.getcwd() + '/media/' + str(file_path)
             test_science(master_path, write_path, id)
 
             return JsonResponse({
@@ -1250,7 +1249,6 @@ def downloadAATestSheet(request):
         id = request.POST['id']
         file_path = "media/aa_tests/aa_TestOutputSheet_" + id + ".xlsx"
         if os.path.exists(file_path):
-            print('ok')
             with open(file_path, 'rb') as fh:
                 response = HttpResponse(fh.read(), content_type="application/vnd.ms-excel")
                 response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
@@ -1265,12 +1263,13 @@ def downloadTestSheet(request):
         id = request.POST['id']
         file = TestSheet.objects.filter(pk=id).get()
         name = file.name
-        file_path = BASE_DIR + '/media/test_sheets/' + name
+        path = str(file.file)
+        file_path = BASE_DIR + '/media/' + path
         
         if os.path.exists(file_path):
             with open(file_path, 'rb') as fh:
                 response = HttpResponse(fh.read(), content_type="application/vnd.ms-excel")
-                response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
+                response['Content-Disposition'] = 'inline; filename=' + os.path.basename(name)
                 return response
         else:
             return redirect('test_sheets')
