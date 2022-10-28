@@ -347,13 +347,13 @@ def data_science(master_path, write_path):
     aa = output_file_name
     output_result_to_excel(output_file_name)
 
-def test_science(master_path, write_path, id):
+def test_science(master_path, write_path, aa_name):
     process_master_file(master_path)
 
     process_case_file(write_path)
     do_calculation()
 
-    file_name = 'aa_TestOutputSheet_' + id + ".xlsx"
+    file_name = 'AAoutput_' + aa_name
     output_file_name = os.getcwd() + '/media/aa_tests/' + file_name
     output_result_to_excel(output_file_name)
 

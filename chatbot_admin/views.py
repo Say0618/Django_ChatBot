@@ -1229,13 +1229,14 @@ def processTestSheet(request):
             id = request.POST['id']
             file = TestSheet.objects.filter(pk=id).get()
             file_path = file.file
+            aa_name = file.name
 
             if MasterSheet.objects.count() > 0:
                 if MasterSheet.objects.filter(status=1).count() > 0:
                     master_path = os.getcwd() + "/media/master_sheets/" + MasterSheet.objects.filter(status=1).get().filename()
 
             write_path =  os.getcwd() + '/media/' + str(file_path)
-            test_science(master_path, write_path, id)
+            test_science(master_path, write_path, aa_name)
 
             return JsonResponse({
                 'msg': 'success',
@@ -1247,7 +1248,9 @@ def processTestSheet(request):
 def downloadAATestSheet(request):
     if request.method == 'POST':
         id = request.POST['id']
-        file_path = "media/aa_tests/aa_TestOutputSheet_" + id + ".xlsx"
+        file_name = TestSheet.objects.filter(pk=id).get().name
+        file_path = "media/aa_tests/AAoutput_" + file_name
+        print(file_path)
         if os.path.exists(file_path):
             with open(file_path, 'rb') as fh:
                 response = HttpResponse(fh.read(), content_type="application/vnd.ms-excel")
