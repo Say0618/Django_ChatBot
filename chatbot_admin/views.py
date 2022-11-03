@@ -9,6 +9,8 @@ from django.views.decorators.csrf import csrf_exempt, csrf_protect
 from django.http import JsonResponse
 import datetime
 from django.core import serializers
+from django.contrib.auth.hashers import make_password, check_password
+
 
 # import zipfile
 from zipfile import ZipFile
@@ -1145,6 +1147,38 @@ def chatbot_start(request):
     return JsonResponse({
         'start_data': start_data 
     })
+
+def changePassword(request):
+    return render(request, "change_password.html")
+
+def checkOldPassword(request):
+    if request.method == 'POST':
+        oldPass = request.POST['oldPassword']
+        dbPass = User.objects.filter(is_superuser=1).get().password
+        
+        check = check_password(oldPass, dbPass)
+       
+        if check == True:
+            return JsonResponse({
+                'msg': 'success'
+            }) 
+        else:
+            return JsonResponse({
+                'msg': 'fail'
+            })
+
+def amendPass(request):
+    if request.method == 'POST':
+        new_pass = request.POST['new_pass']
+
+        superadmin = User.objects.filter(is_superuser=1).get()
+        superadmin.set_password(new_pass)
+        superadmin.save()
+        return JsonResponse({
+            'msg': 'success'
+        })
+
+
 
 def getNextQuery(request):
     if request.method == 'POST':

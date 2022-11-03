@@ -65,6 +65,9 @@ urlpatterns = [
     path('settings/logo/upload', views.logoUpload, name='logoUpload'),
     path('settings/login/upload', views.loginUpload, name='loginUpload'),
     path('settings/favicon/upload', views.faviconUpload, name='faviconUpload'),
+    path('settings/change_password', views.changePassword, name='changePassword'),
+    path('settings/check_old_password', views.checkOldPassword, name='checkOldPassword'),
+    path('settings/amendPass', views.amendPass, name='amendPass'),
 
     path('test_sheets', views.test_sheets, name='test_sheets'),
     path('test_sheets/upload_test_sheets', views.upload_test_sheets, name='upload_test_sheets'),
