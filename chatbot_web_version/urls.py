@@ -15,10 +15,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from chatbot_admin.views import index
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    # path('admin/', admin.site.urls),
     path('', include('django.contrib.auth.urls')),
-    path('', include('chatbot_admin.urls')),
+    path('', index, name='home_page'),
+    path('admin/', include('chatbot_admin.urls')),
     path('home/', include('chatbot_users.urls')),
 ]
